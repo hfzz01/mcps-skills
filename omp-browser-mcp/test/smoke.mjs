@@ -1,10 +1,14 @@
 /**
  * 冒烟测试：启动 MCP server，完成握手，然后驱动本地测试页面走一遍完整流程。
  * 用法：node test/smoke.mjs
+ *
+ * 测试页面由 test/serve-fixtures.mjs 内建服务提供，无需额外起 HTTP 服务。
+ * 想指向别的页面：SMOKE_URL=https://example.com node test/smoke.mjs
  */
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { startFixtureServer } from "./serve-fixtures.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -69,7 +73,8 @@ function show(label, response) {
   return response.result;
 }
 
-const PAGE = process.env.SMOKE_URL || "http://127.0.0.1:8099/fixtures/app.html";
+const fixture = await startFixtureServer();
+const PAGE = process.env.SMOKE_URL || fixture.url;
 const { child, request, notify } = startServer();
 let failures = 0;
 
@@ -136,6 +141,7 @@ try {
   console.log(`✗ 测试中断：${error.message}`);
 } finally {
   child.kill("SIGTERM");
+  await fixture.close();
   await new Promise((resolve) => setTimeout(resolve, 500));
 }
 

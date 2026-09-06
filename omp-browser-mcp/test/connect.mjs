@@ -5,18 +5,22 @@
  * 共享 profile 从而天然带登录态，且 close 时只断开、绝不关闭用户的浏览器。
  *
  * 用法：node test/connect.mjs
+ *
+ * 测试页面由 test/serve-fixtures.mjs 内建服务提供，无需额外起 HTTP 服务。
  */
 import { spawn, execSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { startFixtureServer } from "./serve-fixtures.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const PORT = 9333;
 const PROFILE = path.join(os.tmpdir(), `omp-connect-profile-${Date.now()}`);
 const CHROME = process.env.OMP_TEST_CHROME || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const PAGE = process.env.SMOKE_URL || "http://127.0.0.1:8099/fixtures/app.html";
+const fixture = await startFixtureServer();
+const PAGE = process.env.SMOKE_URL || fixture.url;
 
 function waitForCdp(url, timeoutMs = 20000) {
   const deadline = Date.now() + timeoutMs;
@@ -149,6 +153,7 @@ try {
   try {
     fs.rmSync(PROFILE, { recursive: true, force: true });
   } catch {}
+  await fixture.close();
 }
 
 console.log(`\n${failures === 0 ? "connect 模式全部通过" : `${failures} 项失败`}`);

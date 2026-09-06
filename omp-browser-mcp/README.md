@@ -229,14 +229,17 @@ browser_open(name="erp", mode="connect", cdp_url="http://127.0.0.1:9222")
 ## 八、测试
 
 ```bash
-# 起一个本地测试站点
-python -m http.server 8099 --bind 127.0.0.1
-
 # 完整流程冒烟（headless）
 node test/smoke.mjs
 
 # connect 模式（接管已登录浏览器）
 node test/connect.mjs
+```
+
+测试页面在 `test/fixtures/app.html`，由 `test/serve-fixtures.mjs` 内建服务提供（端口自动分配），**无需额外起 HTTP 服务**，没装 python 也能跑。想指向别的页面：
+
+```bash
+SMOKE_URL=https://example.com node test/smoke.mjs
 ```
 
 两个测试均已在 Windows + Node 22 + Chrome 152 上验证通过，覆盖：MCP 握手、工具列表、观察、文本定位点击、ref 填值、等待、正文抽取、截图压缩、错误提示、进程回收、以及「kill 不杀用户浏览器」这条安全语义。

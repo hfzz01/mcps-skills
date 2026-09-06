@@ -5,20 +5,6 @@ package-lock.json
 # WorkBuddy 本地工作区数据
 .workbuddy/
 
-# oh-my-pi 源码克隆残留：61MB 半成品，仅调研过程用，已完成使命
-omp-src/
-
-# 测试与运行产物
-shots/
-logs/
-*.log
-.playwright-cli/
-omp-shot-*.webp
-omp-shot-*.jpg
-omp-shot-*.png
-omp-connect-profile-*/
-omp-headless-profile-*/
-
 .DS_Store
 Thumbs.db
 .idea/
