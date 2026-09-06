@@ -50,6 +50,15 @@ npm install
 
 > 仓库**故意不提交 `package-lock.json`**：内网 npm 通常指向内部镜像，lock 文件会把包地址锁死在公网 registry，反而导致安装失败。
 
+### 装完自检
+
+```bash
+# 直接启动 server：不报错就说明依赖完整（stdio 模式，Ctrl+C 退出）
+node src/index.js
+```
+
+若报 `Cannot find package 'proxy-agent'` 之类的模块缺失，说明 `npm install` 时被杀毒软件/安全策略拦掉了部分文件——**这不是包本身的问题，删掉 `node_modules` 重装即可**。
+
 ### 分发给内网其他机器
 
 ```bash
