@@ -26,21 +26,27 @@ omp 本体装不了——它要接自己的模型供应商，而你没有外部 
 
 ## 二、安装
 
-### 从 GitHub 拉取（内网 npx 可用时）
+### 从 GitHub 拉取
+
+本工具位于 `hfzz01/mcps-skills` 仓库的 `omp-browser-mcp/` 子目录。
 
 ```bash
-# 方式 A：clone 后本地安装（推荐）
-git clone https://github.com/hfzz01/omp-browser-mcp.git
+# 方式 A：稀疏克隆，只拉这一个目录（推荐，最快）
+git clone --depth 1 --filter=blob:none --sparse https://github.com/hfzz01/mcps-skills.git
+cd mcps-skills
+git sparse-checkout set omp-browser-mcp
 cd omp-browser-mcp
 npm install
 ```
 
 ```bash
-# 方式 B：npx 直接跑 GitHub 仓库
-npx -y github:hfzz01/omp-browser-mcp
+# 方式 B：整仓克隆
+git clone --depth 1 https://github.com/hfzz01/mcps-skills.git
+cd mcps-skills/omp-browser-mcp
+npm install
 ```
 
-> **注册 MCP 请用方式 A。** `npx github:` 每次启动都要重新 clone + install，作为 MCP server 会明显拖慢冷启动；方式 A 装一次即可长期复用。
+> 想用 `npx -y github:hfzz01/omp-browser-mcp` 一条命令直接跑的话，需要**单独建一个同名仓库**——npm 的 GitHub 简写不支持子目录。目前没这么做，是因为它更适合作为 mcps-skills 的一部分。
 
 > 仓库**故意不提交 `package-lock.json`**：内网 npm 通常指向内部镜像，lock 文件会把包地址锁死在公网 registry，反而导致安装失败。
 
