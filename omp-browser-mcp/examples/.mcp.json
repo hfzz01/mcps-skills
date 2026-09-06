@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "omp-browser": {
+      "command": "node",
+      "args": ["/absolute/path/to/omp-browser-mcp/src/index.js"],
+      "env": {
+        "OMP_BROWSER_HEADLESS": "1",
+        "OMP_BROWSER_CDP_URL": "http://127.0.0.1:9222",
+        "OMP_BROWSER_STEALTH": "1"
+      }
+    }
+  }
+}

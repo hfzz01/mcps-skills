@@ -1,0 +1,162 @@
+{
+  "agent-browser": {
+    "open": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser open \"http://127.0.0.1:8099/fixtures/app.html\"",
+      "ms": 2093,
+      "rc": 0,
+      "out": "✓ 订单管理 - 内部系统\n  http://127.0.0.1:8099/fixtures/app.html\n",
+      "err": "",
+      "chars": 56
+    },
+    "snapshot_i": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser snapshot -i",
+      "ms": 757,
+      "rc": 0,
+      "out": "- heading \"运营后台\" [level=1, ref=e5]\n- link \"订单管理\" [ref=e6]\n- link \"用户管理\" [ref=e7]\n- link \"商品中心\" [ref=e8]\n- link \"数据统计\" [ref=e9]\n- textbox \"输入订单号或客户名\" [ref=e1]\n- combobox [expanded=false, ref=e2]: 全部状态\n  - option \"全部状态\" [selected, ref=e10]\n  - option \"已完成\" [ref=e11]\n  - option \"待发货\" [ref=e12]\n  - option \"已取消\" [ref=e13]\n- button \"查询\" [ref=e3]\n- button \"重置\" [ref=e4]\n- columnheader \"订单号\" [ref=e14]\n- columnheader \"客户\" [ref=e15]\n- columnheader \"金额\" [ref=e16]\n- columnheader \"状态\" [ref=e17]\n- columnheader \"操作\" [ref=e18]\n- cell \"SO-20260901-001\" [ref=e19]\n- cell \"杭州云启科技\" [ref=e20]\n- cell \"¥ 12,800.00\" [ref=e21]\n- cell \"已完成\" [ref=e22]\n- cell \"详情\" [ref=e23]\n  - button \"详情\" [ref=e44]\n- cell \"SO-20260901-002\" [ref=e24]\n- cell \"深圳蓝湾物流\" [ref=e25]\n- cell \"¥ 3,450.00\" [ref=e26]\n- cell \"待发货\" [ref=e27]\n- cell \"详情\" [ref=e28]\n  - button \"详情\" [ref=e45]\n- cell \"SO-20260902-003\" [ref=e29]\n- cell \"北京恒信商贸\" [ref=e30]\n- cell \"¥ 28,000.00\" [ref=e31]\n- cell \"待发货\" [ref=e32]\n- cell \"详情\" [ref=e33]\n  - button \"详情\" [ref=e46]\n- cell \"SO-20260902-004\" [ref=e34]\n- cell \"上海锦程供应链\" [ref=e35]\n- cell \"¥ 960.00\" [ref=e36]\n- cell \"已取消\" [ref=e37]\n- cell \"详情\" [ref=e38]\n  - button \"详情\" [ref=e47]\n- cell \"SO-20260903-005\" [ref=e39]\n- cell \"广州南岭实业\" [ref=e40]\n- cell \"¥ 7,200.00\" [ref=e41]\n- cell \"已完成\" [ref=e42]\n- cell \"详情\" [ref=e43]\n  - button \"详情\" [ref=e48]\n",
+      "err": "",
+      "chars": 1327
+    },
+    "snapshot_full": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser snapshot",
+      "ms": 795,
+      "rc": 0,
+      "out": "- navigation\n  - heading \"运营后台\" [level=1, ref=e5]\n  - link \"订单管理\" [ref=e6]\n  - link \"用户管理\" [ref=e7]\n  - link \"商品中心\" [ref=e8]\n  - link \"数据统计\" [ref=e9]\n- generic\n  - StaticText \"页面加载时间：\"\n  - StaticText \"2026/9/5 17:48:03\"\n- textbox \"输入订单号或客户名\" [ref=e1]\n- combobox [expanded=false, ref=e2]: 全部状态\n  - MenuListPopup\n    - option \"全部状态\" [selected, ref=e10]\n    - option \"已完成\" [ref=e11]\n    - option \"待发货\" [ref=e12]\n    - option \"已取消\" [ref=e13]\n- button \"查询\" [ref=e3]\n- button \"重置\" [ref=e4]\n- table\n  - rowgroup\n    - row\n      - columnheader \"订单号\" [ref=e14]\n      - columnheader \"客户\" [ref=e15]\n      - columnheader \"金额\" [ref=e16]\n      - columnheader \"状态\" [ref=e17]\n      - columnheader \"操作\" [ref=e18]\n  - rowgroup\n    - row\n      - cell \"SO-20260901-001\" [ref=e19]\n      - cell \"杭州云启科技\" [ref=e20]\n      - cell \"¥ 12,800.00\" [ref=e21]\n      - cell \"已完成\" [ref=e22]\n      - cell \"详情\" [ref=e23]\n        - button \"详情\" [ref=e44]\n    - row\n      - cell \"SO-20260901-002\" [ref=e24]\n      - cell \"深圳蓝湾物流\" [ref=e25]\n      - cell \"¥ 3,450.00\" [ref=e26]\n      - cell \"待发货\" [ref=e27]\n      - cell \"详情\" [ref=e28]\n        - button \"详情\" [ref=e45]\n    - row\n      - cell \"SO-20260902-003\" [ref=e29]\n      - cell \"北京恒信商贸\" [ref=e30]\n      - cell \"¥ 28,000.00\" [ref=e31]\n      - cell \"待发货\" [ref=e32]\n      - cell \"详情\" [ref=e33]\n        - button \"详情\" [ref=e46]\n    - row\n      - cell \"SO-20260902-004\" [ref=e34]\n      - cell \"上海锦程供应链\" [ref=e35]\n      - cell \"¥ 960.00\" [ref=e36]\n      - cell \"已取消\" [ref=e37]\n      - cell \"详情\" [ref=e38]\n        - button \"详情\" [ref=e47]\n    - row\n      - cell \"SO-20260903-005\" [ref=e39]\n      - cell \"广州南岭实业\" [ref=e40]\n      - cell \"¥ 7,200.00\" [ref=e41]\n      - cell \"已完成\" [ref=e42]\n      - cell \"详情\" [ref=e43]\n        - button \"详情\" [ref=e48]\n",
+      "err": "",
+      "chars": 1750
+    },
+    "interactions": [
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser fill \"#kw\" \"恒信\"",
+        "ms": 786,
+        "rc": 0,
+        "out": "✓ Done\n",
+        "err": "",
+        "chars": 7
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser fill \"#kw\" \"SO-2026\"",
+        "ms": 771,
+        "rc": 0,
+        "out": "✓ Done\n",
+        "err": "",
+        "chars": 7
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser fill \"#kw\" \"锦程\"",
+        "ms": 753,
+        "rc": 0,
+        "out": "✓ Done\n",
+        "err": "",
+        "chars": 7
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser select \"#status\" \"wait\"",
+        "ms": 739,
+        "rc": 0,
+        "out": "✓ Done\n",
+        "err": "",
+        "chars": 7
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser click \"#btnSearch\"",
+        "ms": 709,
+        "rc": 0,
+        "out": "✓ Done\n",
+        "err": "",
+        "chars": 7
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser get text \"#result\"",
+        "ms": 814,
+        "rc": 0,
+        "out": "查询完成，共匹配 0 条记录（关键词：锦程）\n",
+        "err": "",
+        "chars": 23
+      }
+    ],
+    "screenshot": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\agent-browser screenshot shots/ab.png",
+      "ms": 838,
+      "rc": 0,
+      "out": "✓ Screenshot saved to shots/ab.png\n",
+      "err": "",
+      "chars": 35
+    }
+  },
+  "playwright-cli": {
+    "open": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli open \"http://127.0.0.1:8099/fixtures/app.html\"",
+      "ms": 2036,
+      "rc": 0,
+      "out": "### Browser `default` opened with pid 14864.\n### Ran Playwright code\n```js\nawait page.goto('http://127.0.0.1:8099/fixtures/app.html');\n```\n### Page\n- Page URL: http://127.0.0.1:8099/fixtures/app.html\n- Page Title: 订单管理 - 内部系统\n- Console: 1 errors, 0 warnings\n### Snapshot\n- [Snapshot](.playwright-cli\\page-2026-09-05T09-48-12-569Z.yml)\n### Events\n- New console entries: .playwright-cli\\console-2026-09-05T09-48-12-399Z.log#L1\n",
+      "err": "",
+      "chars": 425
+    },
+    "snapshot": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli snapshot",
+      "ms": 957,
+      "rc": 0,
+      "out": "### Page\n- Page URL: http://127.0.0.1:8099/fixtures/app.html\n- Page Title: 订单管理 - 内部系统\n- Console: 1 errors, 0 warnings\n### Snapshot\n```yaml\n- generic [ref=e2]:\n  - navigation [ref=e3]:\n    - heading \"运营后台\" [level=1] [ref=e4]\n    - link \"订单管理\" [ref=e5] [cursor=pointer]:\n      - /url: \"#\"\n    - link \"用户管理\" [ref=e6] [cursor=pointer]:\n      - /url: \"#\"\n    - link \"商品中心\" [ref=e7] [cursor=pointer]:\n      - /url: \"#\"\n    - link \"数据统计\" [ref=e8] [cursor=pointer]:\n      - /url: \"#\"\n  - generic [ref=e9]:\n    - generic [ref=e10]: 页面加载时间：2026/9/5 17:48:13\n    - generic [ref=e11]:\n      - textbox \"输入订单号或客户名\" [ref=e12]\n      - combobox [ref=e13]:\n        - option \"全部状态\" [selected]\n        - option \"已完成\"\n        - option \"待发货\"\n        - option \"已取消\"\n      - button \"查询\" [ref=e14] [cursor=pointer]\n      - button \"重置\" [ref=e15] [cursor=pointer]\n    - table [ref=e16]:\n      - rowgroup [ref=e17]:\n        - row [ref=e18]:\n          - columnheader \"订单号\" [ref=e19]\n          - columnheader \"客户\" [ref=e20]\n          - columnheader \"金额\" [ref=e21]\n          - columnheader \"状态\" [ref=e22]\n          - columnheader \"操作\" [ref=e23]\n      - rowgroup [ref=e24]:\n        - row [ref=e25]:\n          - cell \"SO-20260901-001\" [ref=e26]\n          - cell \"杭州云启科技\" [ref=e27]\n          - cell \"¥ 12,800.00\" [ref=e28]\n          - cell \"已完成\" [ref=e29]\n          - cell [ref=e31]:\n            - button \"详情\" [ref=e32] [cursor=pointer]\n        - row [ref=e33]:\n          - cell \"SO-20260901-002\" [ref=e34]\n          - cell \"深圳蓝湾物流\" [ref=e35]\n          - cell \"¥ 3,450.00\" [ref=e36]\n          - cell \"待发货\" [ref=e37]\n          - cell [ref=e39]:\n            - button \"详情\" [ref=e40] [cursor=pointer]\n        - row [ref=e41]:\n          - cell \"SO-20260902-003\" [ref=e42]\n          - cell \"北京恒信商贸\" [ref=e43]\n          - cell \"¥ 28,000.00\" [ref=e44]\n          - cell \"待发货\" [ref=e45]\n          - cell [ref=e47]:\n            - button \"详情\" [ref=e48] [cursor=pointer]\n        - row [ref=e49]:\n          - cell \"SO-20260902-004\" [ref=e50]\n          - cell \"上海锦程供应链\" [ref=e51]\n          - cell \"¥ 960.00\" [ref=e52]\n          - cell \"已取消\" [ref=e53]\n          - cell [ref=e55]:\n            - button \"详情\" [ref=e56] [cursor=pointer]\n        - row [ref=e57]:\n          - cell \"SO-20260903-005\" [ref=e58]\n          - cell \"广州南岭实业\" [ref=e59]\n          - cell \"¥ 7,200.00\" [ref=e60]\n          - cell \"已完成\" [ref=e61]\n          - cell [ref=e63]:\n            - button \"详情\" [ref=e64] [cursor=pointer]\n```\n",
+      "err": "",
+      "chars": 2448
+    },
+    "interactions": [
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli fill \"#kw\" \"恒信\"",
+        "ms": 857,
+        "rc": 0,
+        "out": "### Ran Playwright code\n```js\nawait page.locator('#kw').fill('恒信');\n```\n",
+        "err": "",
+        "chars": 72
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli fill \"#kw\" \"SO-2026\"",
+        "ms": 806,
+        "rc": 0,
+        "out": "### Ran Playwright code\n```js\nawait page.locator('#kw').fill('SO-2026');\n```\n",
+        "err": "",
+        "chars": 77
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli fill \"#kw\" \"锦程\"",
+        "ms": 840,
+        "rc": 0,
+        "out": "### Ran Playwright code\n```js\nawait page.locator('#kw').fill('锦程');\n```\n",
+        "err": "",
+        "chars": 72
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli select \"#status\" \"wait\"",
+        "ms": 897,
+        "rc": 0,
+        "out": "### Ran Playwright code\n```js\nawait page.locator('#status').selectOption('wait');\n```\n### Page\n- Page URL: http://127.0.0.1:8099/fixtures/app.html\n- Page Title: 订单管理 - 内部系统\n- Console: 1 errors, 0 warnings\n### Snapshot\n- [Snapshot](.playwright-cli\\page-2026-09-05T09-48-17-232Z.yml)\n",
+        "err": "",
+        "chars": 282
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli click \"#btnSearch\"",
+        "ms": 1383,
+        "rc": 0,
+        "out": "### Ran Playwright code\n```js\nawait page.locator('#btnSearch').click();\n```\n### Page\n- Page URL: http://127.0.0.1:8099/fixtures/app.html\n- Page Title: 订单管理 - 内部系统\n- Console: 1 errors, 0 warnings\n### Snapshot\n- [Snapshot](.playwright-cli\\page-2026-09-05T09-48-18-604Z.yml)\n",
+        "err": "",
+        "chars": 272
+      },
+      {
+        "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli eval \"document.getElementById('result').textContent\"",
+        "ms": 1406,
+        "rc": 0,
+        "out": "### Result\n\"查询完成，共匹配 0 条记录（关键词：锦程）\"\n### Ran Playwright code\n```js\nawait page.evaluate('() => (document.getElementById(\\'result\\').textContent)');\n```\n",
+        "err": "",
+        "chars": 150
+      }
+    ],
+    "screenshot": {
+      "cmd": "E:\\CODE\\mcps-skills\\browser-bench\\node_modules\\.bin\\playwright-cli screenshot --filename=shots/pw.png",
+      "ms": 892,
+      "rc": 0,
+      "out": "### Result\n- [Screenshot of viewport](shots\\pw.png)\n### Ran Playwright code\n```js\n// Screenshot viewport and save it as shots\\pw.png\nawait page.screenshot({\n  path: 'shots\\\\pw.png',\n  scale: 'css',\n  type: 'png'\n});\n```\n",
+      "err": "",
+      "chars": 220
+    }
+  }
+}

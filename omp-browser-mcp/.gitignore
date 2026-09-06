@@ -1,0 +1,19 @@
+node_modules/
+package-lock.json
+
+# 截图与测试产物
+shots/
+logs/
+*.log
+omp-shot-*.webp
+omp-shot-*.jpg
+omp-shot-*.png
+
+# 调试用浏览器 profile
+omp-connect-profile-*/
+omp-headless-profile-*/
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

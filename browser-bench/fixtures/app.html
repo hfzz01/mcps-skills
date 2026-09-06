@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>订单管理 - 内部系统</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #303133; }
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar { width: 200px; background: #001529; color: #fff; padding: 16px 0; }
+  .sidebar h1 { font-size: 16px; padding: 0 20px 20px; font-weight: 500; }
+  .sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,.65); text-decoration: none; font-size: 14px; }
+  .sidebar a.active { background: #1677ff; color: #fff; }
+  .main { flex: 1; padding: 24px; }
+  .toolbar { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
+  input[type=text], select { height: 32px; border: 1px solid #d9d9d9; border-radius: 6px; padding: 0 11px; font-size: 14px; }
+  button { height: 32px; padding: 0 15px; border-radius: 6px; border: 1px solid #d9d9d9; background: #fff; cursor: pointer; font-size: 14px; }
+  button.primary { background: #1677ff; border-color: #1677ff; color: #fff; }
+  table { width: 100%; background: #fff; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
+  th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+  th { background: #fafafa; font-weight: 500; }
+  tr:hover td { background: #f5f7fa; }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; }
+  .tag.ok { background: #e7f4e4; color: #389e0d; }
+  .tag.wait { background: #fff7e6; color: #d46b08; }
+  .tag.off { background: #f5f5f5; color: #8c8c8c; }
+  #result { margin-top: 16px; padding: 12px 16px; background: #fff; border-radius: 8px; display: none; font-size: 14px; }
+  #clock { margin-bottom: 12px; color: #8c8c8c; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <h1>运营后台</h1>
+    <a href="#" class="active">订单管理</a>
+    <a href="#">用户管理</a>
+    <a href="#">商品中心</a>
+    <a href="#">数据统计</a>
+  </nav>
+  <div class="main">
+    <div id="clock">页面加载时间：<span id="ts">--</span></div>
+    <div class="toolbar">
+      <input type="text" id="kw" placeholder="输入订单号或客户名">
+      <select id="status">
+        <option value="">全部状态</option>
+        <option value="ok">已完成</option>
+        <option value="wait">待发货</option>
+        <option value="off">已取消</option>
+      </select>
+      <button class="primary" id="btnSearch">查询</button>
+      <button id="btnReset">重置</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>订单号</th><th>客户</th><th>金额</th><th>状态</th><th>操作</th></tr>
+      </thead>
+      <tbody id="tb">
+        <tr><td>SO-20260901-001</td><td>杭州云启科技</td><td>¥ 12,800.00</td><td><span class="tag ok">已完成</span></td><td><button class="detail">详情</button></td></tr>
+        <tr><td>SO-20260901-002</td><td>深圳蓝湾物流</td><td>¥ 3,450.00</td><td><span class="tag wait">待发货</span></td><td><button class="detail">详情</button></td></tr>
+        <tr><td>SO-20260902-003</td><td>北京恒信商贸</td><td>¥ 28,000.00</td><td><span class="tag wait">待发货</span></td><td><button class="detail">详情</button></td></tr>
+        <tr><td>SO-20260902-004</td><td>上海锦程供应链</td><td>¥ 960.00</td><td><span class="tag off">已取消</span></td><td><button class="detail">详情</button></td></tr>
+        <tr><td>SO-20260903-005</td><td>广州南岭实业</td><td>¥ 7,200.00</td><td><span class="tag ok">已完成</span></td><td><button class="detail">详情</button></td></tr>
+      </tbody>
+    </table>
+    <div id="result"></div>
+  </div>
+</div>
+<script>
+  document.getElementById('ts').textContent = new Date().toLocaleString('zh-CN');
+  setInterval(function () {
+    document.getElementById('ts').textContent = new Date().toLocaleString('zh-CN');
+  }, 1000);
+
+  var rows = [
+    { id: 'SO-20260901-001', cus: '杭州云启科技', amt: '¥ 12,800.00', st: 'ok', txt: '已完成' },
+    { id: 'SO-20260901-002', cus: '深圳蓝湾物流', amt: '¥ 3,450.00', st: 'wait', txt: '待发货' },
+    { id: 'SO-20260902-003', cus: '北京恒信商贸', amt: '¥ 28,000.00', st: 'wait', txt: '待发货' },
+    { id: 'SO-20260902-004', cus: '上海锦程供应链', amt: '¥ 960.00', st: 'off', txt: '已取消' },
+    { id: 'SO-20260903-005', cus: '广州南岭实业', amt: '¥ 7,200.00', st: 'ok', txt: '已完成' }
+  ];
+
+  function render(list) {
+    var tb = document.getElementById('tb');
+    tb.innerHTML = '';
+    list.forEach(function (r) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + r.id + '</td><td>' + r.cus + '</td><td>' + r.amt +
+        '</td><td><span class="tag ' + r.st + '">' + r.txt + '</span></td>' +
+        '<td><button class="detail">详情</button></td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  document.getElementById('btnSearch').addEventListener('click', function () {
+    var kw = document.getElementById('kw').value.trim();
+    var st = document.getElementById('status').value;
+    var out = rows.filter(function (r) {
+      var m1 = !kw || r.id.indexOf(kw) >= 0 || r.cus.indexOf(kw) >= 0;
+      var m2 = !st || r.st === st;
+      return m1 && m2;
+    });
+    render(out);
+    var box = document.getElementById('result');
+    box.style.display = 'block';
+    box.textContent = '查询完成，共匹配 ' + out.length + ' 条记录' + (kw ? '（关键词：' + kw + '）' : '');
+  });
+
+  document.getElementById('btnReset').addEventListener('click', function () {
+    document.getElementById('kw').value = '';
+    document.getElementById('status').value = '';
+    render(rows);
+    document.getElementById('result').style.display = 'none';
+  });
+
+  document.getElementById('tb').addEventListener('click', function (e) {
+    if (e.target && e.target.className === 'detail') {
+      var tr = e.target.closest('tr');
+      var box = document.getElementById('result');
+      box.style.display = 'block';
+      box.textContent = '已选中订单：' + tr.children[0].textContent + ' / ' + tr.children[1].textContent;
+    }
+  });
+</script>
+</body>
+</html>
