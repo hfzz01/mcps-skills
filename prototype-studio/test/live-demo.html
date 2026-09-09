@@ -1,0 +1,77 @@
+<style>
+  .pv { padding: 20px; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; font-size: 13px; color: #2c2c2a; }
+  .pv h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .pv .sub { color: #888780; font-size: 12px; margin-bottom: 18px; }
+  .pv .cols { display: flex; gap: 24px; }
+  .pv .col { flex: 1; }
+  .pv .col h4 { font-size: 12px; font-weight: 500; color: #5f5e5a; margin-bottom: 8px; }
+  .pv .opt { border: 1px solid #dcdfe6; border-radius: 6px; padding: 11px 13px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .pv .opt:hover { border-color: #185fa5; }
+  .pv .opt.sel { border-color: #185fa5; background: #e6f1fb; }
+  .pv .score { font-size: 11px; color: #0f6e56; background: #e1f5ee; padding: 1px 8px; border-radius: 3px; }
+  .pv .meta { color: #909399; font-size: 12px; }
+  .pv .why { background: #fff; border: 1px solid #ebeef5; border-radius: 6px; padding: 14px; line-height: 1.9; color: #606266; }
+  .pv .bar { margin-top: 16px; display: flex; gap: 8px; }
+  .pv button { font: inherit; cursor: pointer; border-radius: 4px; padding: 7px 16px; border: 0; }
+  .pv .pri { background: #185fa5; color: #fff; }
+  .pv .sec { background: #fff; color: #606266; border: 1px solid #dcdfe6; }
+  .pv .res { margin-top: 14px; padding: 12px; background: #e6f1fb; color: #0c447c; border-radius: 6px; display: none; line-height: 1.7; }
+  .pv .res.show { display: block; }
+</style>
+<div class="pv">
+  <h3>智能派单推荐</h3>
+  <div class="sub">新增需求 · 可交互演示页（真实元素，非截图）</div>
+  <div class="cols">
+    <div class="col">
+      <h4>候选处置队伍</h4>
+      <div class="opt" data-team="高新中队 · 一组" data-meta="0.8km · 负载 1" data-sc="92">
+        <span>高新中队 · 一组 <span class="meta">0.8km · 负载 1</span></span><span class="score">92</span>
+      </div>
+      <div class="opt" data-team="高新中队 · 二组" data-meta="1.6km · 负载 0" data-sc="87">
+        <span>高新中队 · 二组 <span class="meta">1.6km · 负载 0</span></span><span class="score">87</span>
+      </div>
+      <div class="opt" data-team="特勤大队 · 机动组" data-meta="3.2km · 负载 2" data-sc="64">
+        <span>特勤大队 · 机动组 <span class="meta">3.2km · 负载 2</span></span><span class="score">64</span>
+      </div>
+    </div>
+    <div class="col">
+      <h4>匹配依据</h4>
+      <div class="why" id="pvWhy">选择左侧队伍后，此处展示加权得分明细：<br>距离 40% · 负载 30% · 技能标签 30%</div>
+    </div>
+  </div>
+  <div class="bar">
+    <button class="pri" id="pvGo">开始智能匹配</button>
+    <button class="sec" id="pvReset">重置</button>
+    <button class="sec" data-go="evt-list">返回事件列表</button>
+  </div>
+  <div class="res" id="pvRes"></div>
+</div>
+<script>
+  (function () {
+    var opts = document.querySelectorAll('.pv .opt');
+    var why = document.getElementById('pvWhy');
+    var res = document.getElementById('pvRes');
+    opts.forEach(function (o) {
+      o.onclick = function () {
+        opts.forEach(function (x) { x.classList.remove('sel'); });
+        o.classList.add('sel');
+        var sc = parseInt(o.getAttribute('data-sc'), 10);
+        why.innerHTML = '<b>' + o.getAttribute('data-team') + '</b><br>' +
+          '距离得分 ' + (sc - 12) + ' · 负载得分 ' + (sc - 20) + ' · 技能得分 ' + (sc - 8) +
+          '<br>加权总分 <b style="color:#0c447c">' + sc + '</b>';
+      };
+    });
+    document.getElementById('pvGo').onclick = function () {
+      var sel = document.querySelector('.pv .opt.sel');
+      res.classList.add('show');
+      res.innerHTML = sel
+        ? '已选定 <b>' + sel.getAttribute('data-team') + '</b>（综合得分 ' + sel.getAttribute('data-sc') + '），派单指令已下发，页面跳转至处置跟踪。'
+        : '未选择队伍时，系统自动按最高分 <b>高新中队 · 一组（92）</b> 派单，并在派单后 5 分钟内允许一键改派。';
+    };
+    document.getElementById('pvReset').onclick = function () {
+      opts.forEach(function (x) { x.classList.remove('sel'); });
+      res.classList.remove('show');
+      why.innerHTML = '选择左侧队伍后，此处展示加权得分明细：<br>距离 40% · 负载 30% · 技能标签 30%';
+    };
+  })();
+</script>

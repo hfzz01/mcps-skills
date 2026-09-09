@@ -1,0 +1,19 @@
+{
+  "name": "prototype-studio",
+  "version": "0.1.0",
+  "description": "从真实系统批量截图并自动导出热区，生成可跳转、可交互的原型站。零第三方依赖，适配内网离线环境。",
+  "type": "module",
+  "bin": {
+    "proto": "bin/proto.mjs"
+  },
+  "scripts": {
+    "probe": "node bin/proto.mjs probe",
+    "capture": "node bin/proto.mjs capture",
+    "build": "node bin/proto.mjs build"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

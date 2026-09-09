@@ -1,0 +1,55 @@
+{
+  "title": "IOC 综合运营平台",
+  "subtitle": "需求分析 · 可交互原型",
+  "baseUrl": "http://127.0.0.1:8931",
+  "browser": { "host": "127.0.0.1", "port": 9222, "keyword": "" },
+  "viewport": { "width": 1440, "height": 900 },
+  "shot": { "maxWidth": 1568, "maxBytes": 500000 },
+  "hotspots": { "includeCandidates": false },
+  "out": { "dir": "work", "dist": "dist" },
+  "pages": [
+    {
+      "id": "evt-list",
+      "title": "事件列表",
+      "group": "事件管理",
+      "url": "/",
+      "wait": 800,
+      "actions": [
+        { "state": "dialog", "click": "text:新增事件", "wait": 400, "back": "text:取消" }
+      ],
+      "notes": [
+        { "t": "查询条件", "d": "时间范围默认近 7 天；类型与状态为级联。", "x": 17, "y": 8 },
+        { "t": "新增入口", "d": "仅指挥调度员及以上角色可见。", "x": 63, "y": 8 }
+      ]
+    },
+    {
+      "id": "evt-detail",
+      "title": "事件详情",
+      "group": "事件管理",
+      "url": "/detail.html",
+      "wait": 600,
+      "notes": [
+        { "t": "处置时间轴", "d": "未完成的节点显示为灰色虚线框。", "x": 20, "y": 62 }
+      ]
+    },
+    {
+      "id": "overview",
+      "title": "运行总览",
+      "group": "态势感知",
+      "url": "/overview.html",
+      "wait": 600,
+      "notes": []
+    },
+    {
+      "id": "dispatch",
+      "title": "智能派单（新增需求）",
+      "group": "事件管理",
+      "type": "live",
+      "file": "test/live-demo.html",
+      "notes": [
+        { "t": "NEW · 匹配规则", "d": "按距离 40% + 负载 30% + 技能 30% 加权。" },
+        { "t": "NEW · 人工干预", "d": "推荐结果可手动改派，改派原因进入模型反馈。" }
+      ]
+    }
+  ]
+}

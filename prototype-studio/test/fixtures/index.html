@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>事件列表 - IOC 综合运营平台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar">IOC 综合运营平台
+  <a href="/">态势感知</a>
+  <a href="/overview.html">运行总览</a>
+</div>
+<div class="body">
+  <aside class="menu">
+    <a class="mi act" href="/">事件列表</a>
+    <a class="mi" href="/overview.html">运行总览</a>
+    <a class="mi" href="/detail.html">事件详情</a>
+  </aside>
+  <main>
+    <div class="filter">
+      <span>时间</span><div class="fld">2026-09-01 ~ 09-09</div>
+      <span>类型</span><div class="fld">全部</div>
+      <span>状态</span><div class="fld">全部</div>
+      <div class="btn">查询</div>
+      <div class="btn plain">重置</div>
+      <div class="btn" id="btnNew">+ 新增事件</div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th>事件编号</th><th>事件类型</th><th>紧急度</th><th>所属区域</th><th>上报时间</th><th>处置状态</th><th>操作</th></tr>
+        <tr><td><a href="/detail.html">SJ20260909001</a></td><td>交通拥堵</td><td><span class="lv h">紧急</span></td><td>高新园区</td><td>09-09 09:12</td><td>未处置</td><td><a href="/detail.html">派单</a></td></tr>
+        <tr><td><a href="/detail.html">SJ20260909002</a></td><td>设施损坏</td><td><span class="lv m">一般</span></td><td>老城区</td><td>09-09 08:47</td><td>处置中</td><td><a href="/detail.html">派单</a></td></tr>
+        <tr><td><a href="/detail.html">SJ20260908017</a></td><td>市容环境</td><td><span class="lv l">低</span></td><td>滨江区</td><td>09-08 19:30</td><td>已闭环</td><td><a href="/detail.html">详情</a></td></tr>
+        <tr><td><a href="/detail.html">SJ20260908016</a></td><td>安全隐患</td><td><span class="lv h">紧急</span></td><td>会展中心</td><td>09-08 17:05</td><td>处置中</td><td><a href="/detail.html">派单</a></td></tr>
+        <tr><td><a href="/detail.html">SJ20260908015</a></td><td>交通拥堵</td><td><span class="lv m">一般</span></td><td>火车站</td><td>09-08 16:22</td><td>已闭环</td><td><a href="/detail.html">详情</a></td></tr>
+      </table>
+    </div>
+  </main>
+</div>
+<div class="mask" id="dlg" style="display:none">
+  <div class="dlg">
+    <h3>新增事件登记</h3>
+    <div class="bd">
+      <div class="row"><label>事件类型</label><div class="fld">交通拥堵</div></div>
+      <div class="row"><label>紧急度</label><div class="fld">紧急</div></div>
+      <div class="row"><label>所属区域</label><div class="fld">高新园区 · 科技大道</div></div>
+      <div class="row"><label>事件描述</label><div class="fld" style="min-height:48px">道路施工导致双向四车道仅剩一道通行</div></div>
+    </div>
+    <div class="ft">
+      <div class="btn plain" id="btnCancel">取消</div>
+      <div class="btn">提交</div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('btnNew').onclick = function () {
+    document.getElementById('dlg').style.display = 'flex';
+  };
+  document.getElementById('btnCancel').onclick = function () {
+    document.getElementById('dlg').style.display = 'none';
+  };
+</script>
+</body>
+</html>

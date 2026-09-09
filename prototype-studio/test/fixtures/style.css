@@ -1,0 +1,35 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Microsoft YaHei", sans-serif; font-size: 13px; color: #2c2c2a; background: #f0f2f5; }
+.topbar { height: 46px; background: #12315c; color: #e6f1fb; display: flex; align-items: center; padding: 0 16px; gap: 24px; font-size: 15px; }
+.topbar a { color: #b5d4f4; font-size: 13px; text-decoration: none; }
+.body { display: flex; min-height: 560px; }
+.menu { width: 160px; background: #0f2848; padding: 10px 0; flex: none; }
+.mi { display: block; color: #b5d4f4; padding: 9px 20px; text-decoration: none; font-size: 13px; }
+.mi.act { background: #185fa5; color: #fff; border-left: 3px solid #85b7eb; padding-left: 17px; }
+main { flex: 1; padding: 14px; }
+.filter { background: #fff; padding: 11px 13px; border-radius: 4px; display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+.fld { border: 1px solid #dcdfe6; border-radius: 4px; padding: 5px 9px; color: #606266; background: #fff; min-width: 130px; }
+.btn { background: #185fa5; color: #fff; border-radius: 4px; padding: 6px 15px; font-size: 13px; cursor: pointer; }
+.btn.plain { background: #fff; color: #606266; border: 1px solid #dcdfe6; }
+.card { background: #fff; border-radius: 4px; padding: 14px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; color: #909399; font-weight: 400; padding: 10px 8px; border-bottom: 1px solid #ebeef5; }
+td { padding: 12px 8px; border-bottom: 1px solid #ebeef5; color: #606266; }
+td a, .lk { color: #185fa5; text-decoration: none; cursor: pointer; }
+.lv { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 12px; }
+.lv.h { background: #fcebeb; color: #a32d2d; }
+.lv.m { background: #faeeda; color: #854f0b; }
+.lv.l { background: #e1f5ee; color: #0f6e56; }
+.mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; }
+.dlg { background: #fff; border-radius: 6px; width: 470px; box-shadow: 0 8px 28px rgba(0,0,0,.2); }
+.dlg h3 { font-size: 15px; padding: 15px 18px; border-bottom: 1px solid #ebeef5; }
+.dlg .bd { padding: 18px; }
+.row { display: flex; align-items: center; margin-bottom: 14px; }
+.row label { width: 82px; text-align: right; margin-right: 10px; color: #606266; }
+.row .fld { flex: 1; }
+.dlg .ft { padding: 12px 18px; border-top: 1px solid #ebeef5; display: flex; gap: 8px; justify-content: flex-end; }
+.kpis { display: flex; gap: 12px; margin-bottom: 12px; }
+.kpi { flex: 1; background: #fff; border-radius: 4px; padding: 14px; }
+.kpi .t { color: #909399; font-size: 12px; }
+.kpi .v { font-size: 24px; margin: 6px 0; }
+.kpi .d { font-size: 12px; color: #0f6e56; }

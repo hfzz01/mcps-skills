@@ -9,6 +9,7 @@
 | 路径 | 内容 |
 |---|---|
 | `omp-browser-mcp/` | 浏览器自动化 MCP server（omp 风格改造版）：a11y 观察 + ref 数字定位 + CDP 接管已登录浏览器。纯 ESM JavaScript，依赖仅 `@modelcontextprotocol/sdk` + `puppeteer-core` |
+| `prototype-studio/` | 原型站生成器：批量截取真实系统 + 自动导出热区，产出可跳转可交互的原型站。零第三方依赖（Node 内置 fetch + WebSocket 直连 CDP），命令入口 `bin/proto.mjs`（init / routes / launch / probe / capture / build）。`SKILL.md` 是给 codeagent3.0 + GLM-5.2 看的操作说明 |
 | `opendesign-codeagent3-tutorial/` | Open Design 接入 codeagent3.0 的教程文档（中文 Markdown） |
 | `README.md` / `LICENSE` | 仓库级说明与 MIT 许可证 |
 | `.workbuddy/` | WorkBuddy 本地工作区数据（记忆、日志）。**已被 .gitignore，不要提交、不要删除** |

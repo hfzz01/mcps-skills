@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="NKVmWB2r7MLLxtl5LgdAJP">
+<head data-page-node-id="2H5MU20J5jQdv1B6sl3WWo">
+<meta charset="utf-8" data-page-node-id="UBr7gWy9vDhPv3ysurkbD5">
+<meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="fXlyx6SYgZp6L0BXALVRYd">
+<title>系统原型</title>
+<link rel="stylesheet" href="theme.css" data-page-node-id="Ydqpi6PSsVXij8GwuCYjHe">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #2c2c2a; font-size: 13px; overflow: hidden; }
+  .app { display: flex; flex-direction: column; height: 100vh; }
+  header { display: flex; align-items: center; gap: 10px; padding: 0 14px; height: 50px; background: #fff; border-bottom: 1px solid #e3e4e8; flex: none; }
+  header .brand { font-size: 14px; font-weight: 500; }
+  header .sub { font-size: 12px; color: #888780; }
+  .gap { flex: 1; }
+  .btn { font: inherit; font-size: 12px; padding: 5px 11px; border: 1px solid #d3d1c7; background: #fff; border-radius: 6px; cursor: pointer; color: #444441; white-space: nowrap; }
+  .btn:hover { border-color: #888780; }
+  .btn.on { background: #185fa5; border-color: #185fa5; color: #fff; }
+  .btn:disabled { opacity: .4; cursor: default; }
+  .chips { display: flex; gap: 6px; align-items: center; }
+  .chip { font-size: 12px; padding: 3px 10px; border-radius: 12px; background: #f1efe8; color: #5f5e5a; cursor: pointer; white-space: nowrap; }
+  .chip.on { background: #185fa5; color: #fff; }
+  .main { flex: 1; display: flex; min-height: 0; }
+  .side { width: 216px; flex: none; background: #fff; border-right: 1px solid #e3e4e8; display: flex; flex-direction: column; }
+  .search { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+  .search input { width: 100%; font: inherit; font-size: 12px; padding: 6px 9px; border: 1px solid #dcdfe6; border-radius: 6px; outline: none; }
+  .search input:focus { border-color: #185fa5; }
+  .tree { flex: 1; overflow: auto; padding: 6px 0 16px; }
+  .grp { font-size: 11px; color: #888780; padding: 10px 14px 4px; }
+  .item { padding: 6px 14px 6px 22px; cursor: pointer; color: #444441; border-left: 2px solid transparent; display: flex; align-items: center; gap: 6px; }
+  .item:hover { background: #f5f6f8; }
+  .item.cur { background: #e6f1fb; border-left-color: #185fa5; color: #0c447c; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: #ba7517; flex: none; }
+  .none { padding: 16px 14px; color: #888780; font-size: 12px; }
+  .stage { flex: 1; overflow: auto; padding: 18px; display: flex; flex-direction: column; align-items: center; }
+  .crumb { width: 100%; font-size: 12px; color: #888780; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .crumb b { color: #2c2c2a; font-weight: 500; }
+  .crumb .st { color: #ba7517; }
+  .frame { position: relative; display: inline-block; background: #fff; border: 1px solid #d3d1c7; border-radius: 8px; overflow: hidden; line-height: 0; }
+  .frame.fit { width: 100%; }
+  .frame img { width: 100%; display: block; }
+  .hs { position: absolute; border: 1px dashed transparent; border-radius: 3px; cursor: pointer; transition: .1s; }
+  .hs:hover { border-color: #185fa5; background: rgba(24,95,165,.14); box-shadow: 0 0 0 1px rgba(24,95,165,.25); }
+  .hs .tip { display: none; position: absolute; left: 0; top: -21px; white-space: nowrap; background: #185fa5; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 4px; line-height: 1.5; z-index: 5; }
+  .hs:hover .tip { display: block; }
+  .mark { position: absolute; width: 19px; height: 19px; border-radius: 50%; background: #ba7517; color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px rgba(186,117,23,.22); cursor: help; z-index: 4; line-height: 1; }
+  .empty-shot { padding: 60px 20px; text-align: center; color: #888780; line-height: 1.8; }
+  .live-wrap { background: #fff; border: 1px solid #d3d1c7; border-radius: 8px; width: 100%; min-height: 460px; }
+  .live-wrap .live-tag { padding: 8px 14px; background: #faeeda; color: #854f0b; font-size: 12px; border-bottom: 1px solid #f0e0c0; }
+  .pv-empty { padding: 40px; color: #a32d2d; text-align: center; line-height: 1.8; }
+  .notes { width: 258px; flex: none; background: #fff; border-left: 1px solid #e3e4e8; padding: 14px; overflow: auto; }
+  .notes h2 { font-size: 12px; font-weight: 500; color: #888780; margin-bottom: 10px; }
+  .note { padding: 8px 10px; background: #faeeda; border-left: 2px solid #ba7517; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 12px; line-height: 1.65; }
+  .note b { display: block; font-weight: 500; margin-bottom: 2px; }
+  .notes .none { padding: 0; }
+  body.demo .side, body.demo .notes, body.demo .crumb { display: none; }
+  body.demo .stage { padding: 10px; }
+  .hint { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: rgba(44,44,42,.9); color: #fff; font-size: 12px; padding: 6px 14px; border-radius: 16px; opacity: 0; transition: .25s; pointer-events: none; }
+  .hint.show { opacity: 1; }
+</style>
+</head>
+<body data-page-node-id="kI9bSA6BFpU7pnzIcfGtcr">
+<div class="app" data-page-node-id="UERg7AaTzc5yCXoJ6knnwr">
+  <header data-page-node-id="Nel6UKMsgcRJAEF7iHcHxP">
+    <div class="brand" id="brand" data-page-node-id="KCqd8GAmxwvgBbGz0t7ugR">系统原型</div>
+    <div class="sub" id="sub" data-page-node-id="SAq6KcOnG3PAxjTjqqQL1S"></div>
+    <div class="chips" id="chips" data-page-node-id="Z1awiHxQ3hMsW2yXSF0yjB"></div>
+    <div class="gap" data-page-node-id="6aWLeplf347R76rGqoFai2"></div>
+    <button class="btn" id="bBack" title="后退（左方向键）" data-page-node-id="xNrHvyQyRWalxQSznWzyOx">后退</button>
+    <button class="btn" id="bNotes" title="标注层（N）" data-page-node-id="lmWGt12uVjM6RCCwPPDSMG">标注：关</button>
+    <button class="btn" id="bHs" title="热区显示（H）" data-page-node-id="Gcm2BkeHm3yjZ5NboiaxIH">热区：显示</button>
+    <button class="btn" id="bZoom" title="适应宽度 / 原始大小" data-page-node-id="qunLIH9qFSlpQ5b74bcz8e">原始大小</button>
+    <button class="btn" id="bDemo" title="演示模式（F，Esc 退出）" data-page-node-id="QDWGIhxlINWj86Lza86OqU">演示模式</button>
+  </header>
+  <div class="main" data-page-node-id="lG7A7pRMvVp8tlQUCG7R5b">
+    <aside class="side" data-page-node-id="35U2047VyJqCu2J8AI0wIK">
+      <div class="search" data-page-node-id="vUMfEhJTjolnZr9PQg0uvR"><input id="q" placeholder="搜索页面…" data-page-node-id="F3S0JCigKPnb2NkkxueaXC"></div>
+      <div class="tree" id="tree" data-page-node-id="QTBqjEHVBIi5OPZBdNojJ2"></div>
+    </aside>
+    <section class="stage" id="stage" data-page-node-id="M5G58Tyk4a95snjSz5cIzc">
+      <div class="crumb" id="crumb" data-page-node-id="yiDcJBNvNFTC6OKQ1QTWKh"></div>
+      <div id="canvas" data-page-node-id="cZQCSzjQPdUwSVUpWG5qDp"></div>
+    </section>
+    <aside class="notes" id="notes" data-page-node-id="u13C8Er3XkpSxObEaCqsjr"></aside>
+  </div>
+</div>
+<div class="hint" id="hint" data-page-node-id="4KtTGMM9nQVS33jyRPfBho"></div>
+<script src="data.js"></script>
+<script>
+(function () {
+  var PAYLOAD = window.__PROTO_SITE__ || {};
+  var S = PAYLOAD.site || { pages: [], meta: {} };
+  var PAGES = S.pages || [];
+  var BY_ID = {};
+  PAGES.forEach(function (p) { BY_ID[p.id] = p; });
+
+  var cur = null, state = 'default', showNotes = false, showHs = true, raw = false, demo = false;
+  var hist = [], histPos = -1, filter = '';
+  var styleTag = document.createElement('style');
+  document.head.appendChild(styleTag);
+
+  var el = function (id) { return document.getElementById(id); };
+
+  function hint(text) {
+    var h = el('hint');
+    h.textContent = text;
+    h.classList.add('show');
+    clearTimeout(h._t);
+    h._t = setTimeout(function () { h.classList.remove('show'); }, 1400);
+  }
+
+  function renderTree() {
+    var groups = [], map = {};
+    PAGES.forEach(function (p) {
+      var g = p.group || '未分组';
+      if (!map[g]) { map[g] = []; groups.push(g); }
+      map[g].push(p);
+    });
+    var html = '', total = 0;
+    groups.forEach(function (g) {
+      var items = map[g].filter(function (p) {
+        return !filter || (p.title || '').indexOf(filter) >= 0 || (p.group || '').indexOf(filter) >= 0;
+      });
+      if (!items.length) return;
+      total += items.length;
+      html += '<div class="grp">' + esc(g) + '</div>';
+      items.forEach(function (p) {
+        html += '<div class="item' + (cur === p.id ? ' cur' : '') + '" data-go="' + esc(p.id) + '">' +
+          (p.type === 'live' ? '<span class="dot"></span>' : '') + esc(p.title) +
+          (p.type === 'live' ? '<span style="color:#ba7517;font-size:11px">可交互</span>' : '') +
+          '</div>';
+      });
+    });
+    if (!total) html += '<div class="none">没有匹配的页面</div>';
+    el('tree').innerHTML = html;
+    Array.prototype.forEach.call(el('tree').querySelectorAll('[data-go]'), function (n) {
+      n.onclick = function () { go(n.getAttribute('data-go')); };
+    });
+  }
+
+  function renderChips() {
+    var p = BY_ID[cur];
+    if (!p || p.type === 'live') { el('chips').innerHTML = ''; return; }
+    var keys = Object.keys(p.states || {});
+    if (keys.length < 2) { el('chips').innerHTML = ''; return; }
+    el('chips').innerHTML = keys.map(function (k) {
+      return '<span class="chip' + (k === state ? ' on' : '') + '" data-st="' + esc(k) + '">' +
+        (k === 'default' ? '默认' : esc(k)) + '</span>';
+    }).join('');
+    Array.prototype.forEach.call(el('chips').querySelectorAll('[data-st]'), function (n) {
+      n.onclick = function () { go(cur, n.getAttribute('data-st')); };
+    });
+  }
+
+  function renderStage() {
+    var p = BY_ID[cur];
+    if (!p) { el('canvas').innerHTML = '<div class="pv-empty">没有可显示的页面</div>'; return; }
+    el('crumb').innerHTML = esc(S.meta && S.meta.title ? S.meta.title : '') +
+      ' / <b>' + esc(p.group || '未分组') + '</b> / <b>' + esc(p.title) + '</b>' +
+      (state !== 'default' ? ' <span class="st">· 状态：' + esc(state) + '</span>' : '');
+
+    if (p.type === 'live') {
+      styleTag.textContent = p.style || '';
+      var wrap = document.createElement('div');
+      wrap.className = 'live-wrap';
+      wrap.innerHTML = '<div class="live-tag">可交互页 · 以下内容可真实操作</div>' + (p.body || '');
+      el('canvas').innerHTML = '';
+      el('canvas').appendChild(wrap);
+      // innerHTML 注入的 script 不会执行，重建一遍让它活起来
+      Array.prototype.forEach.call(wrap.querySelectorAll('script'), function (old) {
+        var s = document.createElement('script');
+        s.textContent = old.textContent;
+        old.parentNode.replaceChild(s, old);
+      });
+      Array.prototype.forEach.call(wrap.querySelectorAll('[data-go]'), function (n) {
+        n.onclick = function () { go(n.getAttribute('data-go')); };
+      });
+      return;
+    }
+
+    var st = (p.states || {})[state] || (p.states || {}).default;
+    if (!st || st.missing || !st.img) {
+      el('canvas').innerHTML = '<div class="frame fit"><div class="empty-shot">该页面没有截图<br>请检查采集日志，或重新执行 capture</div></div>';
+      return;
+    }
+    var html = '<div class="frame ' + (raw ? '' : 'fit') + '"' + (raw ? ' style="width:' + st.w + 'px"' : '') + '>' +
+      '<img src="' + esc(st.img) + '" alt="' + esc(p.title) + '">';
+    if (showHs) {
+      (st.hotspots || []).forEach(function (a) {
+        if (!a.to) return;
+        html += '<div class="hs" data-to="' + esc(a.to) + '" data-state="' + esc(a.state || 'default') +
+          '" style="left:' + a.x + '%;top:' + a.y + '%;width:' + a.w + '%;height:' + a.h + '%">' +
+          '<span class="tip">' + esc(a.label || '点击') + '</span></div>';
+      });
+    }
+    if (showNotes) {
+      (p.notes || []).forEach(function (n, i) {
+        if (typeof n.x !== 'number' || typeof n.y !== 'number') return;
+        html += '<div class="mark" style="left:' + n.x + '%;top:' + n.y + '%" title="' + esc(n.d || '') + '">' + (i + 1) + '</div>';
+      });
+    }
+    html += '</div>';
+    el('canvas').innerHTML = html;
+    Array.prototype.forEach.call(el('canvas').querySelectorAll('[data-to]'), function (n) {
+      n.onclick = function () { go(n.getAttribute('data-to'), n.getAttribute('data-state')); };
+    });
+  }
+
+  function renderNotes() {
+    var p = BY_ID[cur];
+    var box = el('notes');
+    if (!showNotes) { box.innerHTML = '<h2>需求标注</h2><div class="none">标注层已关闭，按 N 或点顶部按钮打开</div>'; return; }
+    if (!p || !p.notes || !p.notes.length) { box.innerHTML = '<h2>需求标注 · ' + esc(p ? p.title : '') + '</h2><div class="none">该页暂无标注</div>'; return; }
+    box.innerHTML = '<h2>需求标注 · ' + esc(p.title) + '</h2>' + p.notes.map(function (n, i) {
+      return '<div class="note"><b>' + (i + 1) + '. ' + esc(n.t || '标注') + '</b>' + esc(n.d || '') + '</div>';
+    }).join('');
+  }
+
+  function render() {
+    renderTree(); renderChips(); renderStage(); renderNotes();
+    el('bBack').disabled = histPos <= 0;
+  }
+
+  function go(id, st) {
+    if (!id || !BY_ID[id]) return;
+    var target = st || 'default';
+    if (!(BY_ID[id].states || {})[target]) target = 'default';
+    cur = id; state = target;
+    if (hist[histPos] !== id + '|' + target) {
+      hist = hist.slice(0, histPos + 1);
+      hist.push(id + '|' + target);
+      histPos = hist.length - 1;
+    }
+    location.hash = '#/' + id + '/' + target;
+    render();
+    el('stage').scrollTop = 0;
+  }
+
+  function back() {
+    if (histPos <= 0) return;
+    histPos--;
+    var parts = hist[histPos].split('|');
+    cur = parts[0]; state = parts[1] || 'default';
+    location.hash = '#/' + cur + '/' + state;
+    render();
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  el('bBack').onclick = back;
+  el('bNotes').onclick = function () {
+    showNotes = !showNotes;
+    el('bNotes').textContent = '标注：' + (showNotes ? '开' : '关');
+    el('bNotes').className = 'btn' + (showNotes ? ' on' : '');
+    renderNotes(); renderStage();
+  };
+  el('bHs').onclick = function () {
+    showHs = !showHs;
+    el('bHs').textContent = '热区：' + (showHs ? '显示' : '隐藏');
+    el('bHs').className = 'btn' + (showHs ? '' : ' on');
+    renderStage();
+  };
+  el('bZoom').onclick = function () {
+    raw = !raw;
+    el('bZoom').textContent = raw ? '适应宽度' : '原始大小';
+    renderStage();
+  };
+  el('bDemo').onclick = function () {
+    demo = !demo;
+    document.body.className = demo ? 'demo' : '';
+    el('bDemo').className = 'btn' + (demo ? ' on' : '');
+    el('bDemo').textContent = demo ? '退出演示' : '演示模式';
+  };
+  el('q').oninput = function (e) { filter = e.target.value.trim(); renderTree(); };
+
+  document.addEventListener('keydown', function (e) {
+    if (e.target && e.target.tagName === 'INPUT') return;
+    var k = e.key.toLowerCase();
+    if (k === 'arrowleft') { back(); e.preventDefault(); }
+    else if (k === 'n') { el('bNotes').click(); }
+    else if (k === 'h') { el('bHs').click(); }
+    else if (k === 'f') { el('bDemo').click(); e.preventDefault(); }
+    else if (k === 'escape' && demo) { el('bDemo').click(); }
+  });
+
+  el('brand').textContent = (PAYLOAD.brand && PAYLOAD.brand.title) || '系统原型';
+  el('sub').textContent = (PAYLOAD.brand && PAYLOAD.brand.subtitle) || '';
+  document.title = el('brand').textContent;
+
+  var startId = null, startState = 'default';
+  var m = (location.hash || '').match(/^#\/([^/]+)(?:\/(.+))?$/);
+  if (m && BY_ID[m[1]]) { startId = m[1]; startState = m[2] || 'default'; }
+  if (!startId && PAGES.length) { startId = PAGES[0].id; startState = 'default'; }
+  if (startId) go(startId, startState); else render();
+})();
+</script>
+</body>
+</html>

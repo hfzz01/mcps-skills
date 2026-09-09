@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>事件详情 - IOC 综合运营平台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar">IOC 综合运营平台
+  <a href="/">态势感知</a>
+  <a href="/overview.html">运行总览</a>
+</div>
+<div class="body">
+  <aside class="menu">
+    <a class="mi" href="/">事件列表</a>
+    <a class="mi" href="/overview.html">运行总览</a>
+    <a class="mi act" href="/detail.html">事件详情</a>
+  </aside>
+  <main>
+    <div class="filter">
+      <a class="btn plain" href="/">&lt; 返回列表</a>
+      <b style="font-size:15px">SJ20260909001</b>
+      <span class="lv h">紧急</span>
+      <span style="color:#606266">高新园区</span>
+      <div class="btn">派单</div>
+      <div class="btn plain">转派</div>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <table>
+        <tr><th style="width:160px">字段</th><th>内容</th></tr>
+        <tr><td>事件类型</td><td>交通拥堵</td></tr>
+        <tr><td>上报来源</td><td>视频巡检自动识别</td></tr>
+        <tr><td>上报时间</td><td>2026-09-09 09:12:33</td></tr>
+        <tr><td>当前责任人</td><td>未派单</td></tr>
+        <tr><td>处置状态</td><td>未处置</td></tr>
+        <tr><td>关联摄像头</td><td>CAM-0731 · 科技大道与高新路交叉口</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div style="color:#909399;margin-bottom:10px">处置时间轴</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lv h">上报 09:12</span>
+        <span style="color:#c0c4cc">→</span>
+        <span style="padding:1px 8px;border:1px dashed #dcdfe6;border-radius:3px;color:#c0c4cc">派单</span>
+        <span style="color:#c0c4cc">→</span>
+        <span style="padding:1px 8px;border:1px dashed #dcdfe6;border-radius:3px;color:#c0c4cc">到场</span>
+        <span style="color:#c0c4cc">→</span>
+        <span style="padding:1px 8px;border:1px dashed #dcdfe6;border-radius:3px;color:#c0c4cc">反馈</span>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
