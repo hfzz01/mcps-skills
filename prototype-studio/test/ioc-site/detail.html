@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>事件详情 - 城市事件管理平台</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="app" class="layout">
+  <aside class="sidebar">
+    <div class="logo">城市事件管理平台</div>
+    <ul class="el-menu">
+      <li class="el-submenu">
+        <div class="el-submenu__title">事件管理</div>
+        <ul class="el-menu">
+          <li class="el-menu-item" index="/event/list">事件列表</li>
+          <li class="el-menu-item" index="/event/audit">事件审核</li>
+        </ul>
+      </li>
+      <li class="el-submenu">
+        <div class="el-submenu__title">态势感知</div>
+        <ul class="el-menu">
+          <li class="el-menu-item" index="/overview">态势总览</li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  <main class="main">
+    <div class="crumbs">首页 / 事件管理 / 事件列表 / 事件详情</div>
+    <div class="toolbar">
+      <button class="el-button el-button--primary">派单</button>
+      <button class="el-button">退回</button>
+      <button class="el-button" id="btnBack">返回列表</button>
+    </div>
+    <div class="panel">
+      <h4 id="title">事件详情</h4>
+      <div class="detail-row"><div class="k">事件编号</div><div id="f1">-</div></div>
+      <div class="detail-row"><div class="k">事件名称</div><div id="f2">-</div></div>
+      <div class="detail-row"><div class="k">事件等级</div><div id="f3">-</div></div>
+      <div class="detail-row"><div class="k">所属区域</div><div id="f4">-</div></div>
+      <div class="detail-row"><div class="k">上报时间</div><div id="f5">-</div></div>
+      <div class="detail-row"><div class="k">事件描述</div><div id="f6">-</div></div>
+    </div>
+  </main>
+</div>
+<script>
+document.querySelectorAll('.el-menu-item').forEach(function (li) {
+  li.onclick = function () { location.href = li.getAttribute('index'); };
+});
+document.getElementById('btnBack').onclick = function () { location.href = '/event/list'; };
+
+// 参数控制的页面：同一个 URL，id 不同内容就不同
+var id = new URLSearchParams(location.search).get('id') || 'EVT20260001';
+fetch('/api/event?no=' + encodeURIComponent(id)).then(function (r) { return r.json(); }).then(function (res) {
+  var d = res.data || {};
+  document.getElementById('title').textContent = '事件详情（' + id + '）';
+  document.getElementById('f1').textContent = id;
+  document.getElementById('f2').textContent = d.eventName || '化工园区异味投诉';
+  document.getElementById('f3').textContent = d.level || '紧急';
+  document.getElementById('f4').textContent = d.area || '城东区';
+  document.getElementById('f5').textContent = d.time || '2026-09-10 09:12';
+  document.getElementById('f6').textContent = d.desc || '群众反映园区内有刺激性气味，需现场核查。';
+});
+</script>
+</body>
+</html>

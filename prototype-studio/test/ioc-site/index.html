@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>事件列表 - 城市事件管理平台</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="app" class="layout">
+  <aside class="sidebar">
+    <div class="logo">城市事件管理平台</div>
+    <ul class="el-menu">
+      <li class="el-submenu">
+        <div class="el-submenu__title">事件管理</div>
+        <ul class="el-menu">
+          <li class="el-menu-item active" index="/event/list">事件列表</li>
+          <li class="el-menu-item" index="/event/audit">事件审核</li>
+        </ul>
+      </li>
+      <li class="el-submenu">
+        <div class="el-submenu__title">态势感知</div>
+        <ul class="el-menu">
+          <li class="el-menu-item" index="/overview">态势总览</li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  <main class="main">
+    <div class="crumbs">首页 / 事件管理 / 事件列表</div>
+    <div class="toolbar">
+      <button class="el-button el-button--primary" id="btnAdd">+ 新增事件</button>
+      <button class="el-button">导出</button>
+      <span class="el-link">高级筛选</span>
+    </div>
+    <table class="el-table">
+      <thead>
+        <tr><th>事件编号</th><th>事件名称</th><th>等级</th><th>状态</th><th>区域</th><th>上报时间</th><th>操作</th></tr>
+      </thead>
+      <tbody id="rows"><tr class="el-table__row"><td colspan="7">加载中…</td></tr></tbody>
+    </table>
+    <div class="pager" id="pager"></div>
+  </main>
+</div>
+
+<div class="dialog-mask" id="mask" style="display:none">
+  <div class="dialog">
+    <div class="dialog-hd">新增事件<button class="dialog-x" id="btnX">×</button></div>
+    <div class="dialog-bd">
+      <div class="field"><label>事件名称</label><input class="el-input" placeholder="请输入事件名称"></div>
+      <div class="field"><label>所属区域</label><input class="el-input" placeholder="请选择所属区域"></div>
+      <div class="field"><label>事件等级</label><input class="el-input" placeholder="紧急 / 一般"></div>
+    </div>
+    <div class="dialog-ft">
+      <button class="el-button" id="btnCancel">取消</button>
+      <button class="el-button el-button--primary">确定</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 模拟 Vue2 + Vue Router 的运行时实例。
+// 注意 /event/detail/:id 这条是动态参数页，静态扫 src/router 也能扫到，
+// 但 /event/audit 是登录后动态注入的，只有运行时才拿得到 —— 这正是 discover 存在的意义。
+document.getElementById('app').__vue__ = {
+  $router: {
+    options: { routes: [
+      { path: '/event/list', name: 'EventList', meta: { title: '事件列表' } },
+      { path: '/event/detail/:id', name: 'EventDetail', meta: { title: '事件详情' } },
+      { path: '/event/audit', name: 'EventAudit', meta: { title: '事件审核' } },
+      { path: '/overview', name: 'Overview', meta: { title: '态势总览' } },
+    ] }
+  }
+};
+
+document.querySelectorAll('.el-menu-item').forEach(function (li) {
+  li.onclick = function () { location.href = li.getAttribute('index'); };
+});
+
+fetch('/api/events').then(function (r) { return r.json(); }).then(function (res) {
+  var recs = (res.data && res.data.records) || [];
+  var html = recs.map(function (r) {
+    var cls = r.level === '紧急' ? 'tag-danger' : (r.level === '一般' ? 'tag-warn' : 'tag-info');
+    return '<tr class="el-table__row">'
+      + '<td><a href="/detail.html?id=' + r.eventNo + '">' + r.eventNo + '</a></td>'
+      + '<td>' + r.eventName + '</td>'
+      + '<td><span class="tag ' + cls + '">' + r.level + '</span></td>'
+      + '<td>' + r.status + '</td>'
+      + '<td>' + r.area + '</td>'
+      + '<td>' + r.time + '</td>'
+      + '<td><span class="el-link">派单</span></td>'
+      + '</tr>';
+  }).join('');
+  document.getElementById('rows').innerHTML = html || '<tr><td colspan="7">暂无数据</td></tr>';
+  document.getElementById('pager').textContent = '共 ' + ((res.data && res.data.total) || recs.length) + ' 条';
+});
+
+var mask = document.getElementById('mask');
+document.getElementById('btnAdd').onclick = function () { mask.style.display = 'flex'; };
+document.getElementById('btnCancel').onclick = function () { mask.style.display = 'none'; };
+document.getElementById('btnX').onclick = function () { mask.style.display = 'none'; };
+</script>
+</body>
+</html>

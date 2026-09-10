@@ -23,16 +23,17 @@ cd prototype-studio
 # 1. 生成配置骨架
 node bin/proto.mjs init
 
-# 2. 从前端代码仓自动导页面清单（Vue2 / Vue3 都行）
-node bin/proto.mjs routes D:\code\ioc-web\src
-
-# 3. 开一个浏览器，人工登录系统（有单点登录，只能人来）
+# 2. 开一个浏览器，人工登录系统（有单点登录，只能人来）
 node bin/proto.mjs launch
 
-# 4. 确认能接管
-node bin/proto.mjs probe
+# 3. 运行时发现页面：动态菜单、参数页自动识别，
+#    /detail/:id 这类页面会自动从列表页抠真实 id 填充
+node bin/proto.mjs discover
 
-# 5. 批量截图 + 自动导出热区
+# 4.（可选）测试环境数据太少？开 mock：把 2 条数据放大成 12 条
+#    在 pages.json 里把 mock.enabled 改成 true
+
+# 5. 批量截图 + 自动导出热区（等数据加载完才截，不会截到空骨架）
 node bin/proto.mjs capture
 
 # 6. 生成原型站
@@ -83,9 +84,18 @@ prototype-studio/
 
 ## 常见问题
 
-**截图是登录页** —— 没登录。执行 `launch`，在打开的浏览器里登录完再 `capture`。
+**截图是登录页** —— 没登录。执行 `launch`，在打开的浏览器里登录完再 `discover`/`capture`。
 
-**热区太少或没有** —— 页面没渲染完。调大该页的 `wait`，或加 `ready` 选择器。
+**路由抓不全（菜单是后端下发的、页面靠参数区分）** —— 别用静态扫描，跑 `discover`：
+在已登录的浏览器里直接问系统"你都有哪些页面"，动态菜单和参数页都能拿到，
+`/detail/:id` 会自动填上真实 id。
+
+**截图里列表是空的、只有两三条数据** —— 在 pages.json 里开 `mock`，工具会在浏览器层
+把接口响应拦下来放大（2 条变 12 条，主键、名称、分页数同步改写），也可以用自己写的
+JSON 整体替换。后端不用动。
+
+**热区太少或没有** —— 页面没渲染完。加 `ready` 选择器或 `readyText`；列表页配
+`minRows`，等数据真正加载完才截。
 
 **弹窗状态没截到** —— `actions.click` 没点中。换成更精确的文字，或直接写 CSS 选择器。
 

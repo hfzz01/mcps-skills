@@ -1,0 +1,45 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, "Microsoft YaHei", Arial, sans-serif; color: #303133; background: #f0f2f5; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 210px; background: #1f2d3d; color: #bfcbd9; flex: 0 0 210px; }
+.logo { padding: 18px 16px; font-size: 15px; font-weight: 600; color: #fff; border-bottom: 1px solid #26374a; }
+.el-menu { list-style: none; margin: 0; padding: 8px 0; }
+.el-submenu__title { padding: 12px 18px; font-size: 13px; color: #8fa3b8; cursor: default; }
+.el-menu .el-menu { padding: 0; }
+.el-menu-item { padding: 11px 18px 11px 34px; font-size: 14px; cursor: pointer; }
+.el-menu-item:hover { background: #18222c; color: #fff; }
+.el-menu-item.active { background: #185fa5; color: #fff; }
+.main { flex: 1; padding: 18px 22px; }
+.crumbs { font-size: 13px; color: #909399; margin-bottom: 14px; }
+.toolbar { margin-bottom: 12px; display: flex; gap: 10px; align-items: center; }
+.el-button { border: 1px solid #dcdfe6; background: #fff; color: #606266; border-radius: 4px; padding: 7px 15px; font-size: 13px; cursor: pointer; }
+.el-button--primary { background: #185fa5; border-color: #185fa5; color: #fff; }
+.el-link { color: #185fa5; font-size: 13px; cursor: pointer; margin-left: auto; }
+.el-table { width: 100%; border-collapse: collapse; background: #fff; font-size: 13px; }
+.el-table th { background: #fafafa; color: #909399; font-weight: 500; text-align: left; padding: 11px 12px; border-bottom: 1px solid #ebeef5; }
+.el-table td { padding: 11px 12px; border-bottom: 1px solid #ebeef5; }
+.el-table__row:hover { background: #f5f7fa; }
+.el-table a { color: #185fa5; text-decoration: none; }
+.tag { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 12px; }
+.tag-danger { background: #fde2e2; color: #c45656; }
+.tag-warn { background: #fdf6ec; color: #b88230; }
+.tag-info { background: #f4f4f5; color: #909399; }
+.pager { margin-top: 14px; font-size: 13px; color: #606266; }
+.dialog-mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; }
+.dialog { width: 460px; background: #fff; border-radius: 4px; overflow: hidden; }
+.dialog-hd { padding: 14px 18px; font-size: 15px; border-bottom: 1px solid #ebeef5; position: relative; }
+.dialog-x { position: absolute; right: 14px; top: 12px; border: 0; background: none; font-size: 18px; color: #909399; cursor: pointer; }
+.dialog-bd { padding: 18px; }
+.field { display: flex; align-items: center; margin-bottom: 14px; }
+.field label { width: 78px; font-size: 13px; color: #606266; }
+.el-input { flex: 1; border: 1px solid #dcdfe6; border-radius: 4px; padding: 8px 10px; font-size: 13px; }
+.dialog-ft { padding: 12px 18px; text-align: right; border-top: 1px solid #ebeef5; }
+.dialog-ft .el-button { margin-left: 8px; }
+.cards { display: flex; gap: 14px; margin-bottom: 16px; }
+.card { flex: 1; background: #fff; border-radius: 4px; padding: 16px 18px; }
+.card .num { font-size: 26px; font-weight: 600; color: #185fa5; }
+.card .lbl { font-size: 12px; color: #909399; margin-top: 4px; }
+.panel { background: #fff; border-radius: 4px; padding: 16px 18px; margin-bottom: 14px; }
+.panel h4 { margin: 0 0 12px; font-size: 14px; }
+.detail-row { display: flex; padding: 9px 0; border-bottom: 1px solid #f2f6fc; font-size: 13px; }
+.detail-row .k { width: 100px; color: #909399; }

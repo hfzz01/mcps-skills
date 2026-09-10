@@ -2,13 +2,14 @@
 /**
  * prototype-studio 命令行入口
  *
- * 六个命令，按顺序跑完即可：
- *   init    生成配置文件骨架
- *   routes  从前端仓扫描路由，自动填页面清单
- *   launch  开一个带调试端口的浏览器（人工登录用）
- *   probe   检查能不能接管浏览器
- *   capture 批量截图并自动导出热区
- *   build   生成原型站
+ * 命令一览：
+ *   init     生成配置文件骨架
+ *   routes   从前端仓扫描路由，自动填页面清单（静态扫描，抓不全时用 discover）
+ *   discover 在已登录的浏览器里运行时发现页面（推荐：能拿到动态菜单与参数页）
+ *   launch   开一个带调试端口的浏览器（人工登录用）
+ *   probe    检查能不能接管浏览器
+ *   capture  批量截图并自动导出热区
+ *   build    生成原型站
  */
 
 import fs from 'node:fs';
@@ -19,6 +20,7 @@ import { findBrowser, launchDebug, waitForPort } from '../src/browser.mjs';
 import { capture } from '../src/capture.mjs';
 import { build } from '../src/build.mjs';
 import { scanRoutes } from '../src/routes.mjs';
+import { discover, writePages } from '../src/discover.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -52,6 +54,7 @@ function cmdHelp() {
     '',
     '  init              生成 pages.json 配置骨架与 live/ 目录',
     '  routes <前端src>   扫描 Vue Router 自动生成页面清单（会覆盖 pages.json，旧文件备份为 .bak）',
+    '  discover          在已登录的浏览器里运行时发现页面（推荐先试这个）',
     '  launch            启动带调试端口的浏览器，供人工登录系统',
     '  probe             检查浏览器调试端口是否可用',
     '  capture           按 pages.json 批量截图并导出热区，产出 work/',
@@ -60,8 +63,11 @@ function cmdHelp() {
     '常用参数：',
     '  --only=id1,id2    只重新采集指定页面',
     '  --config=xxx.json 指定配置文件（默认 pages.json）',
+    '  --no-click        discover 时只读取不点击菜单（更快、更安全）',
+    '  --no-seed         discover 时不去列表页抠真实 id',
     '',
-    '标准流程：init → routes → launch（人工登录）→ probe → capture → build',
+    '标准流程：init → launch（人工登录）→ discover → capture → build',
+    '备选流程：init → routes <前端src>（静态扫描）→ launch → capture → build',
   ].join('\n'));
 }
 
@@ -78,6 +84,16 @@ function cmdInit() {
     viewport: { width: 1920, height: 1080 },
     shot: { maxWidth: 1568, maxBytes: 500000 },
     hotspots: { includeCandidates: false },
+    vars: {},
+    mock: {
+      enabled: false,
+      dir: 'mocks',
+      mode: 'amplify',
+      amplify: { factor: 6, max: 20, variants: true },
+      match: ['/api/'],
+      record: true,
+      rules: [],
+    },
     out: { dir: 'work', dist: 'dist' },
     pages: [
       {
@@ -85,7 +101,11 @@ function cmdInit() {
         title: '首页',
         group: '示例分组',
         url: '/',
-        wait: 1500,
+        wait: 800,
+        ready: '',
+        readyText: '',
+        minRows: 0,
+        networkIdle: 700,
         actions: [],
         notes: [],
       },
@@ -143,6 +163,8 @@ function cmdRoutes(dir) {
     viewport: cfg.viewport || { width: 1920, height: 1080 },
     shot: cfg.shot || { maxWidth: 1568, maxBytes: 500000 },
     hotspots: cfg.hotspots || { includeCandidates: false },
+    vars: cfg.vars || {},
+    mock: cfg.mock || { enabled: false },
     out: cfg.out || { dir: 'work', dist: 'dist' },
     pages,
   };
@@ -154,6 +176,44 @@ function cmdRoutes(dir) {
     console.log('  如需放进原型，请手动加一条 page 并把 url 换成真实地址。');
   }
   console.log('下一步：把 pages 里的 group 改成中文分组名，确认 baseUrl，然后 launch → capture。');
+}
+
+async function cmdDiscover() {
+  const cfg = loadConfig({ optional: true }) || {};
+  if (!cfg.baseUrl || cfg.baseUrl === 'http://localhost:8080') {
+    console.log('提示：pages.json 里的 baseUrl 还是默认值，discover 会接管浏览器里已打开的系统。');
+    console.log('      建议先把它改成真实地址，例如 http://10.x.x.x:8080');
+  }
+  const click = flags['no-click'] !== true;
+  const seed = flags['no-seed'] !== true;
+  const maxMenu = Number(flags['max-menu'] || 0) || 60;
+
+  console.log('开始发现页面。前提：浏览器已带调试端口启动，并且已经人工登录进系统。');
+  if (click) console.log('会逐个点击左侧菜单以拿到真实 URL（含 query 参数），约需 1-2 分钟。');
+
+  const r = await discover(cfg, { click, seed, maxMenu });
+  if (!r.pages.length) {
+    console.log('\n一个页面都没发现。可能原因：');
+    console.log('  1. 还没登录，当前停在登录页 —— 请在浏览器里登录后再跑一次');
+    console.log('  2. baseUrl 不对，接管的标签不是目标系统 —— 用 "node bin/proto.mjs probe" 看看接管了哪个标签');
+    console.log('  3. 菜单不是 Element/Ant Design 的标准结构 —— 改用 "routes <前端src>" 静态扫描，或手工写 pages.json');
+    process.exitCode = 1;
+    return;
+  }
+
+  writePages(path.resolve(CONFIG), cfg, r, { backup: true });
+
+  console.log(`\n已发现 ${r.pages.length} 个页面，写入 ${CONFIG}（原文件备份为 ${CONFIG}.bak）。`);
+  const needSeed = r.pages.filter(p => p.skip);
+  if (needSeed.length) {
+    console.log(`其中 ${needSeed.length} 个页面因为缺真实参数被标记 skip：`);
+    needSeed.slice(0, 10).forEach(p => console.log(`  - ${p.title}  ${p.url}`));
+    console.log('补齐 url 里的参数值后，删掉该页的 "skip": true 即可参与采集。');
+  }
+  console.log('\n下一步：');
+  console.log('  1. 打开 pages.json 检查一遍：删掉不需要的页面，把 group 改成中文分组名');
+  console.log('  2. 如果测试环境数据很少，把 mock.enabled 改成 true 并配 amplify');
+  console.log('  3. 然后执行 "node bin/proto.mjs capture"');
 }
 
 async function cmdLaunch() {
@@ -228,6 +288,7 @@ async function main() {
   switch (cmd) {
     case 'init': cmdInit(); break;
     case 'routes': cmdRoutes(argv[1]); break;
+    case 'discover': await cmdDiscover(); break;
     case 'launch': await cmdLaunch(); break;
     case 'probe': await cmdProbe(); break;
     case 'capture': await cmdCapture(); break;

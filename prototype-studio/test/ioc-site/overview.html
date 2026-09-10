@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>态势总览 - 城市事件管理平台</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="app" class="layout">
+  <aside class="sidebar">
+    <div class="logo">城市事件管理平台</div>
+    <ul class="el-menu">
+      <li class="el-submenu">
+        <div class="el-submenu__title">事件管理</div>
+        <ul class="el-menu">
+          <li class="el-menu-item" index="/event/list">事件列表</li>
+          <li class="el-menu-item" index="/event/audit">事件审核</li>
+        </ul>
+      </li>
+      <li class="el-submenu">
+        <div class="el-submenu__title">态势感知</div>
+        <ul class="el-menu">
+          <li class="el-menu-item active" index="/overview">态势总览</li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+  <main class="main">
+    <div class="crumbs">首页 / 态势感知 / 态势总览</div>
+    <div class="cards">
+      <div class="card"><div class="num">128</div><div class="lbl">今日事件总量</div></div>
+      <div class="card"><div class="num">36</div><div class="lbl">待派单</div></div>
+      <div class="card"><div class="num">9</div><div class="lbl">超时未处置</div></div>
+      <div class="card"><div class="num">98.2%</div><div class="lbl">按期办结率</div></div>
+    </div>
+    <div class="panel">
+      <h4>各区域事件分布</h4>
+      <table class="el-table">
+        <thead><tr><th>区域</th><th>事件数</th><th>已办结</th><th>办结率</th></tr></thead>
+        <tbody>
+          <tr class="el-table__row"><td>城东区</td><td>42</td><td>40</td><td>95.2%</td></tr>
+          <tr class="el-table__row"><td>城西区</td><td>37</td><td>35</td><td>94.6%</td></tr>
+          <tr class="el-table__row"><td>高新区</td><td>31</td><td>31</td><td>100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script>
+document.querySelectorAll('.el-menu-item').forEach(function (li) {
+  li.onclick = function () { location.href = li.getAttribute('index'); };
+});
+</script>
+</body>
+</html>

@@ -3,3 +3,4 @@ dist/
 dist-single/
 pages.json
 pages.json.bak
+mocks/

@@ -1,15 +1,22 @@
 /**
  * 批量截图 + 自动热区导出
  *
- * 一次跑完 pages.json 里的所有页面：导航 → 等待 → 导出可点击元素坐标 → 全页截图；
+ * 一次跑完 pages.json 里的所有页面：导航 → 等数据回来 → 导出可点击元素坐标 → 全页截图；
  * 页面里配了 actions 的，再点一下元素补截「弹窗 / 抽屉 / 校验」等状态图。
  * 热区坐标按百分比存，截图尺寸变了也不跑位。
+ *
+ * 三个关键设计：
+ *   1. 等数据而非等时间 —— 注入 XHR/fetch 探针，等网络静默再截，避免截到空骨架
+ *   2. 参数页用真实值 —— url 里的 {{evtId}} 会先从列表页抠一个真实 id 填上
+ *   3. 数据可拦截 —— mock 会话能把空列表放大成满屏，测试环境没数据也能出图
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { listTargets, connect } from './cdp.mjs';
 import { pickTarget } from './browser.mjs';
+import { createMockSession } from './mock.mjs';
+import { grabIds as pageGrabIds } from './discover.mjs';
 
 /**
  * 默认采集哪些元素当热区候选。
@@ -22,6 +29,69 @@ const DEFAULT_SELECTORS = [
   '.el-breadcrumb__item', '.el-table__row', '.el-link', '.el-dropdown-menu__item',
   '[role="button"]', '[class*="btn"]', '[onclick]',
 ];
+
+/* ---------------- 页面内执行的脚本 ---------------- */
+
+/** 注入到每个新文档：统计在途的 XHR / fetch 请求 */
+function installNetProbe() {
+  if (window.__protoNet) return true;
+  const S = { active: 0, last: Date.now() };
+  window.__protoNet = S;
+  const X = window.XMLHttpRequest;
+  if (X && X.prototype) {
+    const open = X.prototype.open;
+    const send = X.prototype.send;
+    X.prototype.open = function () { S.last = Date.now(); return open.apply(this, arguments); };
+    X.prototype.send = function () {
+      S.active++;
+      S.last = Date.now();
+      const done = () => { S.active = Math.max(0, S.active - 1); S.last = Date.now(); };
+      try {
+        this.addEventListener('loadend', done, { once: true });
+        this.addEventListener('error', done, { once: true });
+        this.addEventListener('abort', done, { once: true });
+      } catch {}
+      return send.apply(this, arguments);
+    };
+  }
+  const F = window.fetch;
+  if (typeof F === 'function') {
+    window.fetch = function () {
+      S.active++;
+      S.last = Date.now();
+      const done = () => { S.active = Math.max(0, S.active - 1); S.last = Date.now(); };
+      try {
+        return F.apply(this, arguments).then((r) => { done(); return r; }, (e) => { done(); throw e; });
+      } catch (e) { done(); throw e; }
+    };
+  }
+  return true;
+}
+
+/** 页面内执行：网络是否已静默 */
+function netIdle(quiet) {
+  const S = window.__protoNet;
+  if (!S) return true;
+  return S.active <= 0 && (Date.now() - S.last) >= (quiet || 600);
+}
+
+/** 页面内执行：页面是否渲染到可截图的程度 */
+function checkReady(sel, text, minRows, rowSel) {
+  if (sel) {
+    try { if (!document.querySelector(sel)) return false; } catch { return false; }
+  }
+  if (text) {
+    const body = document.body ? (document.body.innerText || '') : '';
+    if (!body.includes(text)) return false;
+  }
+  if (minRows > 0) {
+    const sel2 = rowSel || '.el-table__row, tbody tr, .ant-table-row';
+    try {
+      if (document.querySelectorAll(sel2).length < minRows) return false;
+    } catch { return false; }
+  }
+  return true;
+}
 
 /** 页面内执行：收集所有可点击元素的文档坐标与文本 */
 function collectElements(selectors, minSize, maxCount) {
@@ -45,8 +115,14 @@ function collectElements(selectors, minSize, maxCount) {
     const x = r.left + sx;
     const y = r.top + sy;
     if (x < 0 || y < 0 || x > docW || y > docH) continue;
-    const text = (el.innerText || el.textContent || el.getAttribute('aria-label') || el.title || '')
-      .trim().replace(/\s+/g, ' ').slice(0, 40);
+    // 表格行改用首格文本，否则一整行的文本拼起来太长，热区标签没法看
+    let text = (el.innerText || el.textContent || '').trim().replace(/\s+/g, ' ');
+    if (el.classList && (el.classList.contains('el-table__row') || el.tagName === 'TR')) {
+      const first = el.querySelector('td, .el-table__cell');
+      if (first) text = (first.innerText || first.textContent || '').trim().replace(/\s+/g, ' ');
+    }
+    if (!text) text = el.getAttribute('aria-label') || el.title || '';
+    text = String(text).slice(0, 40);
     if (!text) continue;
     raw.push({
       el,
@@ -108,11 +184,6 @@ function clickElement(expr) {
   return { ok: true, msg: `已点击：${label}` };
 }
 
-/** 页面内执行：判断某个选择器是否已出现（用于等待渲染完成） */
-function hasSelector(sel) {
-  try { return !!document.querySelector(sel); } catch { return true; }
-}
-
 function absUrl(base, u) {
   try { return new URL(u, base).href; } catch { return ''; }
 }
@@ -125,7 +196,9 @@ function urlKey(base, href) {
   try {
     const u = new URL(full);
     if (u.hash && u.hash.startsWith('#/')) return u.hash;
-    return u.pathname + u.search;
+    let p = u.pathname.replace(/\/+$/, '');
+    if (!p) p = '/';
+    return p + u.search;
   } catch { return ''; }
 }
 
@@ -134,6 +207,8 @@ function pageKey(base, url) {
   if (url.startsWith('#/')) return url;
   return urlKey(base, url);
 }
+
+/* ---------------- 主流程 ---------------- */
 
 export async function capture(cfg, opts = {}) {
   const outDir = opts.outDir || cfg.out?.dir || 'work';
@@ -160,15 +235,77 @@ export async function capture(cfg, opts = {}) {
   await cdp.send('Page.enable');
   await cdp.send('Runtime.enable');
   await cdp.send('DOM.enable').catch(() => {});
+  // 每个新文档都装上网络探针，否则等数据只能靠猜
+  await cdp.send('Page.addScriptToEvaluateOnNewDocument', {
+    source: `try{(${installNetProbe.toString()})()}catch(e){}`,
+  }).catch(() => {});
 
+  const evaluate = async (fn, ...args) => {
+    const expression = `(${fn.toString()})(${args.map(a => JSON.stringify(a ?? null)).join(',')})`;
+    const { result: r, exceptionDetails } = await cdp.send('Runtime.evaluate', {
+      expression, returnByValue: true, awaitPromise: true,
+    }, 30000);
+    if (exceptionDetails) throw new Error(exceptionDetails.text || '页面内脚本执行失败');
+    return r?.value;
+  };
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  // 接口拦截：测试环境没数据时，靠它把空列表放大成满屏
+  const mock = await createMockSession(cdp, cfg.mock || {}, { rulesDir: path.resolve(process.cwd(), (cfg.mock || {}).dir || 'mocks') });
+
+  /* ---- 参数页的真实值：先从种子页面抠出来 ---- */
+  const varValues = {};
+  const fillVars = (s) => String(s ?? '').replace(/\{\{(\w+)\}\}/g, (m, n) => (varValues[n] != null ? varValues[n] : m));
+
+  for (const [name, def] of Object.entries(cfg.vars || {})) {
+    if (!def || typeof def !== 'object') continue;
+    if (def.value != null && def.value !== '') { varValues[name] = String(def.value); continue; }
+    if (!def.from || !baseUrl) continue;
+    try {
+      const seedUrl = /^https?:\/\//i.test(def.from) ? def.from : baseUrl + def.from;
+      await cdp.send('Page.navigate', { url: seedUrl });
+      await sleep(1800);
+      const ids = await evaluate(pageGrabIds);
+      let val = '';
+      if (def.pattern) {
+        const re = new RegExp(def.pattern);
+        const hrefs = await evaluate(() => Array.from(document.querySelectorAll('a[href]')).map(a => a.href).slice(0, 200));
+        for (const h of hrefs) { const m = String(h).match(re); if (m) { val = m[1] || m[0]; break; } }
+      }
+      if (!val) val = (ids.byHref || [])[0] || (ids.byAttr || [])[0] || '';
+      if (val) {
+        varValues[name] = String(val);
+        console.log(`变量 ${name} = ${val}（取自 ${def.from}）`);
+      } else {
+        console.log(`警告：没能从 ${def.from} 抠出 ${name} 的值，用到它的页面可能打不开。`);
+      }
+    } catch (err) {
+      console.log(`警告：解析变量 ${name} 失败：${err.message}`);
+    }
+  }
+
+  // 页面跳转表：key 必须用替换后的真实 URL，否则 {{auto1}} 这种占位符
+  // 和页面里真实的 href（/detail.html?id=EVT20260001）永远对不上，热区会全军覆没
   const urlToPage = new Map();
+  // 另建一张「归一化」跳转表：把 id=数值 换成占位符再比对，
+  // 这样列表里每一行的详情链接（id 各不相同）都能指向同一个详情页
+  const normForMatch = (u) => String(u).replace(/([?&](?:id|ID|[a-zA-Z]*[iI]d|no|No|NO|code|key)=)[^&/#]{3,}/g, '$1{{ID}}');
+  const urlToPageNorm = new Map();
+  // 标题跳转表：Element UI 的菜单项不是 <a>，跳转全靠 vue-router，
+  // DOM 上抓不到 href。但菜单文本通常就是页面标题，用文本对上即可自动接线
+  const titleToPage = new Map();
   for (const p of cfg.pages || []) {
     if (p.type === 'live' || !p.url) continue;
-    const k = pageKey(baseUrl, p.url);
-    if (k) urlToPage.set(k, p.id);
+    const real = fillVars(p.url);
+    const k = pageKey(baseUrl, real);
+    if (k && !urlToPage.has(k)) urlToPage.set(k, p.id);
+    const nk = pageKey(baseUrl, normForMatch(real));
+    if (nk && !urlToPageNorm.has(nk)) urlToPageNorm.set(nk, p.id);
+    if (p.title && !titleToPage.has(p.title)) titleToPage.set(p.title, p.id);
   }
 
   const pages = (cfg.pages || []).filter(p => !p.skip);
+  const skipped = (cfg.pages || []).filter(p => p.skip);
   const only = opts.only ? String(opts.only).split(',').map(s => s.trim()).filter(Boolean) : null;
   const errors = [];
   const result = [];
@@ -181,22 +318,30 @@ export async function capture(cfg, opts = {}) {
       deviceScaleFactor: scale, mobile: false,
     });
 
-  const evaluate = async (fn, ...args) => {
-    const expression = `(${fn.toString()})(${args.map(a => JSON.stringify(a)).join(',')})`;
-    const { result: r, exceptionDetails } = await cdp.send('Runtime.evaluate', {
-      expression, returnByValue: true, awaitPromise: true,
-    }, 30000);
-    if (exceptionDetails) throw new Error(exceptionDetails.text || '页面内脚本执行失败');
-    return r?.value;
-  };
-
-  const waitReady = async (sel, timeout) => {
-    if (!sel) return;
-    const started = Date.now();
-    while (Date.now() - started < timeout) {
-      const ok = await evaluate(hasSelector, sel).catch(() => true);
-      if (ok) return;
-      await new Promise(r => setTimeout(r, 300));
+  /** 等页面渲染到位：先看条件选择器/文本/行数，再看网络是否静默 */
+  const waitPageReady = async (page) => {
+    const sel = page.ready || '';
+    const text = page.readyText || '';
+    const minRows = page.minRows || 0;
+    const rowSel = page.rowSelector || '';
+    if (sel || text || minRows) {
+      const started = Date.now();
+      const limit = page.readyTimeout || 15000;
+      while (Date.now() - started < limit) {
+        const ok = await evaluate(checkReady, sel, text, minRows, rowSel).catch(() => true);
+        if (ok) break;
+        await sleep(300);
+      }
+    }
+    const quiet = page.networkIdle ?? 700;
+    if (quiet > 0) {
+      const started = Date.now();
+      const limit = page.networkIdleTimeout || 15000;
+      while (Date.now() - started < limit) {
+        const ok = await evaluate(netIdle, quiet).catch(() => true);
+        if (ok) break;
+        await sleep(250);
+      }
     }
   };
 
@@ -206,7 +351,7 @@ export async function capture(cfg, opts = {}) {
     const h = Math.min(16000, Math.max(1, Math.round(contentSize.height)));
     const scale = Math.min(1, maxWidth / w);
     await setViewport(w, h, scale);
-    await new Promise(r => setTimeout(r, 200));
+    await sleep(200);
     let buf = null;
     for (const q of qualityLevels) {
       const { data } = await cdp.send('Page.captureScreenshot', {
@@ -239,7 +384,8 @@ export async function capture(cfg, opts = {}) {
   };
 
   const grab = async (page, stateName, actions) => {
-    const currentUrl = target.url;
+    // 用页面里真实的 URL 做基准，targets 快照可能是过期的
+    const currentUrl = await evaluate(() => location.href).catch(() => target.url) || target.url;
     const collected = await evaluate(collectElements, selectors, minSize, maxCount);
     const { buf, cssWidth, cssHeight } = await shoot();
 
@@ -253,8 +399,13 @@ export async function capture(cfg, opts = {}) {
       const w = +(it.w / cssWidth * 100).toFixed(3);
       const h = +(it.h / cssHeight * 100).toFixed(3);
       if (x < -1 || y < -1 || x > 101 || y > 101) continue;
-      const key = urlKey(currentUrl || baseUrl, it.href);
-      const linked = key ? urlToPage.get(key) : null;
+      // href 里也可能带 {{var}}，一并替换后再比对
+      const key = urlKey(currentUrl || baseUrl, fillVars(it.href));
+      let linked = key ? urlToPage.get(key) : null;
+      // 精确匹配不上时，按归一化形式再试一次（同一详情页的不同 id）
+      if (!linked && key) linked = urlToPageNorm.get(normForMatch(key)) || null;
+      // 再按文本对页面标题试一次（菜单、面包屑没有 href，靠这个接线）
+      if (!linked && it.text && it.text.length <= 20) linked = titleToPage.get(it.text) || null;
       const actHit = matchAction(page, stateName, actions, it.text);
 
       if (linked && linked !== page.id) {
@@ -282,12 +433,16 @@ export async function capture(cfg, opts = {}) {
         continue;
       }
 
-      const url = /^https?:\/\//i.test(page.url || '') ? page.url : baseUrl + (page.url || '');
+      const rawUrl = fillVars(page.url);
+      if (/\{\{\w+\}\}/.test(rawUrl)) {
+        throw new Error(`url 里的 ${rawUrl.match(/\{\{\w+\}\}/)[0]} 没有取到值，请检查 vars 配置`);
+      }
+      const url = /^https?:\/\//i.test(rawUrl) ? rawUrl : baseUrl + rawUrl;
       await setViewport(vw, vh, 1);
       await cdp.send('Page.navigate', { url });
-      await new Promise(r => setTimeout(r, 300));
-      await waitReady(page.ready, page.readyTimeout || 8000);
-      await new Promise(r => setTimeout(r, page.wait ?? 1200));
+      await sleep(300);
+      await waitPageReady(page);
+      await sleep(page.wait ?? 800);
 
       const states = {};
       states.default = await grab(page, 'default', page.actions);
@@ -296,7 +451,7 @@ export async function capture(cfg, opts = {}) {
         if (!act.click || !act.state) continue;
         const r = await evaluate(clickElement, act.click);
         if (!r.ok) { errors.push(`${page.title}: ${r.msg}`); continue; }
-        await new Promise(res => setTimeout(res, act.wait ?? 700));
+        await sleep(act.wait ?? 700);
         states[act.state] = await grab(page, act.state, page.actions);
       }
 
@@ -308,14 +463,27 @@ export async function capture(cfg, opts = {}) {
       const n = Object.keys(states).length;
       const kb = Math.round(Object.values(states).reduce((s, v) => s + v.bytes, 0) / 1024);
       const spots = Object.values(states).reduce((s, v) => s + v.hotspots.length, 0);
-      console.log(`${prefix} · ${n} 个状态 · ${spots} 个热区 · ${kb}KB`);
+      let emptyWarn = '';
+      if (page.minRows) {
+        const rows = await evaluate((s) => document.querySelectorAll(s).length, page.rowSelector || '.el-table__row').catch(() => -1);
+        if (rows >= 0 && rows < page.minRows) emptyWarn = ` · 只有 ${rows} 行数据（期望 ${page.minRows} 行），考虑开 mock.amplify`;
+      }
+      console.log(`${prefix} · ${n} 个状态 · ${spots} 个热区 · ${kb}KB${emptyWarn}`);
     } catch (err) {
       errors.push(`${page.title || page.id}: ${err.message}`);
       console.log(`${prefix} · 失败：${err.message}`);
     }
   }
 
+  const mockReport = mock.report();
+  if (mockReport) console.log('\n' + mockReport);
+  await mock.close();
   cdp.close();
+
+  if (skipped.length) {
+    console.log(`\n跳过了 ${skipped.length} 个标记为 skip 的页面：`);
+    skipped.slice(0, 10).forEach(p => console.log(`  - ${p.title || p.id}  ${p.url}`));
+  }
 
   const site = {
     meta: {
@@ -330,5 +498,5 @@ export async function capture(cfg, opts = {}) {
   };
   fs.writeFileSync(path.join(outDir, 'site.json'), JSON.stringify(site, null, 2), 'utf8');
 
-  return { site, outDir, errors, count: result.length };
+  return { site, outDir, errors, count: result.length, skipped: skipped.length };
 }

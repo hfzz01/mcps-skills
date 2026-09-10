@@ -1,0 +1,99 @@
+{
+  "title": "城市事件管理平台原型",
+  "subtitle": "需求分析 · 可交互原型",
+  "baseUrl": "http://127.0.0.1:8932",
+  "browser": {
+    "host": "127.0.0.1",
+    "port": 9222,
+    "keyword": ""
+  },
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "shot": {
+    "maxWidth": 1568,
+    "maxBytes": 500000
+  },
+  "hotspots": {
+    "includeCandidates": false
+  },
+  "mock": {
+    "enabled": true,
+    "dir": "mocks",
+    "mode": "amplify",
+    "amplify": {
+      "factor": 5,
+      "max": 10,
+      "variants": true
+    },
+    "match": [
+      "/api/"
+    ],
+    "record": true,
+    "rules": []
+  },
+  "out": {
+    "dir": "work",
+    "dist": "dist"
+  },
+  "pages": [
+    {
+      "id": "事件列表",
+      "title": "事件列表",
+      "group": "事件管理",
+      "url": "/event/list",
+      "wait": 1500,
+      "actions": [],
+      "notes": []
+    },
+    {
+      "id": "事件详情",
+      "title": "事件详情",
+      "group": "event",
+      "url": "/event/detail/{{seed1}}",
+      "wait": 1500,
+      "actions": [],
+      "notes": []
+    },
+    {
+      "id": "事件审核",
+      "title": "事件审核",
+      "group": "事件管理",
+      "url": "/event/audit",
+      "wait": 1500,
+      "actions": [],
+      "notes": []
+    },
+    {
+      "id": "态势总览",
+      "title": "态势总览",
+      "group": "态势感知",
+      "url": "/overview",
+      "wait": 1500,
+      "actions": [],
+      "notes": []
+    },
+    {
+      "id": "detail-html-id-auto1",
+      "title": "/detail.html?id={{auto1}}",
+      "group": "detail.html",
+      "url": "/detail.html?id={{auto1}}",
+      "wait": 1500,
+      "actions": [],
+      "notes": []
+    }
+  ],
+  "vars": {
+    "seed1": {
+      "from": "/event/list",
+      "pattern": "",
+      "value": "EVT20260001"
+    },
+    "auto1": {
+      "from": "",
+      "pattern": "",
+      "value": "EVT20260002"
+    }
+  }
+}
