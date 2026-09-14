@@ -69,6 +69,15 @@ git -c credential.helper= -c credential.helper=wincred push origin main
 git ls-remote origin main
 ```
 
+- **同样不要相信本地的 `origin/main` 引用**：它可能一直停在 `Initial commit`，于是 `git ls-tree origin/main <目录>` 会**什么都列不出来**——那是引用陈旧，不是文件没推上去。要确认远端真的有文件，用 GitHub API 直接问（公开仓库免鉴权）：
+
+```bash
+curl -s --ssl-no-revoke "https://api.github.com/repos/hfzz01/mcps-skills/contents/<目录>" \
+  | python -c "import sys,json;[print(i['name'],i['size']) for i in json.load(sys.stdin)]"
+```
+
+- **推送前先 `unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY`**：WorkBuddy 注入的沙箱代理对 github.com 返回 502（CONNECT 隧道不放行），会把 git 的 push 打回来。unset 后直连即可，**不要去翻本机代理端口，那条路是死胡同**。
+
 ## 本机已知坑
 
 | 坑 | 处理 |
