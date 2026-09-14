@@ -6,7 +6,7 @@
 |---|---|
 | [`omp-browser-mcp/`](omp-browser-mcp/) | 浏览器自动化 MCP server：a11y 观察 + 数字 ref 定位 + CDP 接管已登录浏览器 |
 | [`prototype-studio/`](prototype-studio/) | 原型站生成器：批量截取真实系统 + 自动导出热区，产出可跳转可交互的原型站（零第三方依赖） |
-| [`multica-ioc-req-squad/`](multica-ioc-req-squad/) | Multica 需求小队设计：五个通用能力单元 + 配置驱动的流程控制，内网自托管可直接装配 |
+| [`multica-ioc-req-squad/`](multica-ioc-req-squad/) | Multica 需求小队设计：五个通用能力单元 + 配置驱动的流程控制，内网自托管可直接装配；另含 Multica 小队/触发/状态机制与失败原因码排障手册 |
 | [`opendesign-codeagent3-tutorial/`](opendesign-codeagent3-tutorial/) | Open Design 接入 codeagent3.0 的两条方案（伪装 codebuddy / 自定义适配器），含排坑清单 |
 
 ## 环境前提

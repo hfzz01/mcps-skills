@@ -11,9 +11,21 @@
 | `omp-browser-mcp/` | 浏览器自动化 MCP server（omp 风格改造版）：a11y 观察 + ref 数字定位 + CDP 接管已登录浏览器。纯 ESM JavaScript，依赖仅 `@modelcontextprotocol/sdk` + `puppeteer-core` |
 | `prototype-studio/` | 原型站生成器：批量截取真实系统 + 自动导出热区，产出可跳转可交互的原型站。零第三方依赖（Node 内置 fetch + WebSocket 直连 CDP），命令入口 `bin/proto.mjs`（init / discover / routes / launch / probe / capture / build）。`discover` 在已登录浏览器里运行时发现页面（动态菜单 + 参数页种子 id），`src/mock.mjs` 用 CDP Fetch 域拦截接口响应以放大或替换数据。`SKILL.md` 是给 codeagent3.0 + GLM-5.2 看的操作说明 |
 | `opendesign-codeagent3-tutorial/` | Open Design 接入 codeagent3.0 的教程文档（中文 Markdown） |
-| `multica-ioc-req-squad/` | Multica「需求小队」设计文档（纯 Markdown，无可执行代码）：五个通用能力提示词 + 小队流程控制文本 + 审查清单 + 事实清单模板，供装配到内网自托管 Multica 实例。**设计原则：智能体提示词内不含任何编排语言，流程只写在小队流程字段里** |
+| `multica-ioc-req-squad/` | Multica「需求小队」设计文档（纯 Markdown，无可执行代码）：五个通用能力提示词 + 小队流程控制文本 + 审查清单 + 事实清单模板，供装配到内网自托管 Multica 实例。**设计原则：智能体提示词内不含任何编排语言，流程只写在小队流程字段里**。另含 `09-平台机制与排障.md`（Multica 小队/触发/状态机制 + 失败原因码对照），改这套文档前**必须先读它** |
 | `README.md` / `LICENSE` | 仓库级说明与 MIT 许可证 |
 | `.workbuddy/` | WorkBuddy 本地工作区数据（记忆、日志）。**已被 .gitignore，不要提交、不要删除** |
+
+## Multica 平台机制（改 `multica-ioc-req-squad/` 前必读）
+
+这几条是 Multica 的硬机制，写反了会导致整个小队流程静默断掉（2026-09-14 实测翻车过一次）：
+
+- **小队派活靠 @提及，不是改负责人。** issue 分配给小队后，负责人**永远是小队**。leader 用 Squad Roster 里给的完整 mention markdown `[@Name](mention://<type>/<UUID>)` @ 目标成员来派活；普通 "@名字" 不触发任何人。改负责人 ⇒ 小队失去持有权 ⇒ 评论不再唤醒 leader。
+- **成员交回 leader = 发一条不带任何 @ 的评论**（平台按负责人回落到小队）。显式 @ 了别的目标就会关掉这个回落。
+- **需要人类介入时 @人类**，靠显式 @ 把路由指向人。
+- **`/note` 开头的评论不触发任何智能体**；`@all` 也不触发。
+- **状态只用平台内置值**（`todo`/`in_progress`/`in_review`/`done`/`blocked`）。自定义状态只继承四类生命周期，**不继承**失败回滚等具体行为。
+- **阶段与轮次写在 label 上**，不靠解析评论历史（leader 跨 run 无记忆）。
+- 细节与失败原因码见 `multica-ioc-req-squad/09-平台机制与排障.md`。
 
 ## 环境硬约束（改代码前必读）
 
