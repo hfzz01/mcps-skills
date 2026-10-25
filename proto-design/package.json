@@ -1,0 +1,18 @@
+{
+  "name": "proto-design",
+  "version": "0.1.0",
+  "description": "原型页面设计规范工具：从存量前端仓提取设计令牌（DESIGN.md），并对 AI 生成的原型页做确定性合规检查。零第三方依赖。",
+  "type": "module",
+  "bin": {
+    "proto-design": "bin/proto-design.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "tokens": "node bin/proto-design.mjs tokens",
+    "check": "node bin/proto-design.mjs check",
+    "test": "node test/run.mjs"
+  },
+  "license": "MIT"
+}

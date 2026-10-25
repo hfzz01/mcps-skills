@@ -1,0 +1,58 @@
+<!-- 骨架: list —— 合规样例：全部色值来自令牌表，间距合规 -->
+<div style="padding:16px 24px; background:#ffffff; min-height:100%">
+  <div class="el-form el-form--inline">
+    <div class="el-form-item">
+      <label class="el-form-item__label">事件名称</label>
+      <div class="el-form-item__content">
+        <div class="el-input"><input class="el-input__inner" placeholder="请输入事件名称" style="width:240px" /></div>
+      </div>
+    </div>
+    <div class="el-form-item">
+      <button type="button" class="el-button el-button--primary el-button--small">查询</button>
+      <button type="button" class="el-button el-button--small el-button--default">重置</button>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; margin:8px 0 16px">
+    <button type="button" class="el-button el-button--primary">+ 新增事件</button>
+    <button type="button" class="el-button el-button--default" data-go="evt-dashboard">返回看板</button>
+  </div>
+
+  <div class="el-table el-table--border el-table--enable-row-hover">
+    <div class="el-table__header-wrapper">
+      <table class="el-table__header">
+        <thead><tr>
+          <th class="el-table__cell" style="width:64px">序号</th>
+          <th class="el-table__cell">事件名称</th>
+          <th class="el-table__cell" style="width:120px">级别</th>
+          <th class="el-table__cell" style="width:160px">时间</th>
+          <th class="el-table__cell" style="width:120px">操作</th>
+        </tr></thead>
+      </table>
+    </div>
+    <div class="el-table__body-wrapper">
+      <table class="el-table__body">
+        <tbody>
+          <tr class="el-table__row">
+            <td class="el-table__cell" style="width:64px">1</td>
+            <td class="el-table__cell">化工厂烟感报警</td>
+            <td class="el-table__cell" style="width:120px"><span class="el-tag el-tag--danger el-tag--small">紧急</span></td>
+            <td class="el-table__cell" style="width:160px">2026-10-25 10:00</td>
+            <td class="el-table__cell" style="width:120px"><button type="button" class="el-button el-button--text el-button--small" data-go="evt-detail">详情</button></td>
+          </tr>
+          <tr class="el-table__row">
+            <td class="el-table__cell" style="width:64px">2</td>
+            <td class="el-table__cell">河边水位超限</td>
+            <td class="el-table__cell" style="width:120px"><span class="el-tag el-tag--warning el-tag--small">较急</span></td>
+            <td class="el-table__cell" style="width:160px">2026-10-25 09:30</td>
+            <td class="el-table__cell" style="width:120px"><button type="button" class="el-button el-button--text el-button--small" data-go="evt-detail">详情</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:flex-end; margin-top:16px">
+    <div class="el-pagination el-pagination--small is-background"><span class="el-pagination__total">共 2 条</span></div>
+  </div>
+</div>

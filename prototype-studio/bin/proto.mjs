@@ -261,7 +261,7 @@ async function cmdProbe() {
 async function cmdCapture() {
   const cfg = loadConfig();
   const only = flags.only ? String(flags.only) : null;
-  const r = await capture(cfg, { only });
+  const r = await capture(cfg, { only, spec: !!flags.spec });
   console.log('');
   console.log(`采集完成：${r.count} 个页面，数据已写入 ${path.join(r.outDir, 'site.json')}。`);
   if (r.errors.length) {

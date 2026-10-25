@@ -1,0 +1,72 @@
+<!--
+  骨架: form —— 表单页（卡片内两列表单 + 底部按钮组）
+  用法：复制本文件后往「替换区」填字段。必须保留上面的骨架标记。
+  规矩：一行两列（el-row 24 栏，每列 span:12）；长文本/上传独占整行（span:24）。
+-->
+<div style="padding:16px 24px; background:#ffffff; min-height:100%">
+
+  <!-- ① 页头：标题 + 说明（替换标题） -->
+  <div style="margin-bottom:16px">
+    <div style="font-size:16px; font-weight:500">新建XXX（替换）</div>
+    <div style="font-size:12px; margin-top:4px; color:#909399">带 * 为必填项</div>
+  </div>
+
+  <!-- ② 表单（替换区：字段按需求增删，保持两列节奏） -->
+  <div class="el-card">
+    <div class="el-card__body">
+      <form class="el-form el-form--label-right">
+        <div class="el-row" style="margin-left:0; margin-right:0">
+          <div class="el-col" style="width:50%; padding-right:16px">
+            <div class="el-form-item">
+              <label class="el-form-item__label" style="width:100px">名称 <span style="color:#F56C6C">*</span></label>
+              <div class="el-form-item__content" style="margin-left:100px">
+                <div class="el-input"><input class="el-input__inner" placeholder="请输入名称" /></div>
+              </div>
+            </div>
+          </div>
+          <div class="el-col" style="width:50%">
+            <div class="el-form-item">
+              <label class="el-form-item__label" style="width:100px">类型 <span style="color:#F56C6C">*</span></label>
+              <div class="el-form-item__content" style="margin-left:100px">
+                <div class="el-select" style="width:100%">
+                  <div class="el-input"><input class="el-input__inner" placeholder="请选择类型" readonly /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="el-row">
+          <div class="el-col" style="width:50%; padding-right:16px">
+            <div class="el-form-item">
+              <label class="el-form-item__label" style="width:100px">负责人</label>
+              <div class="el-form-item__content" style="margin-left:100px">
+                <div class="el-input"><input class="el-input__inner" placeholder="请输入负责人" /></div>
+              </div>
+            </div>
+          </div>
+          <div class="el-col" style="width:50%">
+            <div class="el-form-item">
+              <label class="el-form-item__label" style="width:100px">截止日期</label>
+              <div class="el-form-item__content" style="margin-left:100px">
+                <div class="el-input"><input class="el-input__inner" placeholder="请选择日期" readonly /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 独占整行的字段示例：textarea -->
+        <div class="el-form-item">
+          <label class="el-form-item__label" style="width:100px">备注</label>
+          <div class="el-form-item__content" style="margin-left:100px">
+            <textarea class="el-textarea__inner" rows="4" placeholder="请输入备注"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ③ 底部按钮组：固定右下，取消在左、主操作在右 -->
+  <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px">
+    <button type="button" class="el-button el-button--default">取 消</button>
+    <button type="button" class="el-button el-button--primary">保 存</button>
+  </div>
+</div>

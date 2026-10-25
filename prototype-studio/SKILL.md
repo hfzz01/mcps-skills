@@ -39,6 +39,7 @@ init → launch（人工登录）→ discover（自动发现页面）→ 人工�
 | `node bin/proto.mjs launch` | 开一个带调试端口的浏览器，供人工登录 |
 | `node bin/proto.mjs probe` | 检查能不能接管浏览器 |
 | `node bin/proto.mjs capture` | 批量截图并自动导出热区，产出 work/ |
+| `node bin/proto.mjs capture --spec` | 同上，并额外导出每页主要布局区域的坐标/尺寸到 work/spec/（给 proto-design 画同类新页当度量锚点） |
 | `node bin/proto.mjs build` | 生成原型站到 dist/ |
 | `node bin/proto.mjs build --single` | 生成单文件版到 dist-single/，可直接发给别人 |
 
@@ -152,8 +153,11 @@ pages 数组里每一条：
   - `back`：该状态下点哪个元素回到默认状态，例如弹窗的「取消」。可选。
 - `notes`：需求标注。`x`/`y` 是百分比坐标，填了才会在截图上显示气泡；不填只在右侧列表显示。
 
-**热区是自动生成的**：`a[href]` 与页面清单对上就变成跳转；菜单/面包屑等没有 href 的元素
+热区是自动生成的**：`a[href]` 与页面清单对上就变成跳转；菜单/面包屑等没有 href 的元素
 按文本对页面标题匹配；列表里指向同一详情页的不同 id 链接会归到同一个详情页。
+
+`--spec` 导出的 `work/spec/<页面id>.json` 记录了筛选区/表格区/分页/弹窗等区域的真实坐标和尺寸。
+用 `proto-design` 画同类新页前先读它，照着这个度量排版，位置就不会跑偏。
 
 ## 新需求页（live 类型）
 

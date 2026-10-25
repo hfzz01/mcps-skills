@@ -1,0 +1,69 @@
+<!--
+  骨架: detail —— 详情页（操作栏 + 描述表 + 关联信息卡片）
+  用法：复制本文件后往各「替换区」填内容。必须保留上面的骨架标记。
+-->
+<div style="padding:16px 24px; background:#ffffff; min-height:100%">
+
+  <!-- ① 操作栏：返回在左，页内操作在右 -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
+    <div style="display:flex; align-items:center; gap:12px">
+      <button type="button" class="el-button el-button--default el-button--small">返 回</button>
+      <span style="font-size:16px; font-weight:500">详情标题（替换）</span>
+    </div>
+    <div>
+      <button type="button" class="el-button el-button--primary el-button--small">编 辑</button>
+      <button type="button" class="el-button el-button--danger el-button--small">删 除</button>
+    </div>
+  </div>
+
+  <!-- ② 基础信息（替换区：label-value 成对增删，一行最多 3 对） -->
+  <div class="el-card" style="margin-bottom:16px">
+    <div class="el-card__body">
+      <div class="el-descriptions">
+        <div class="el-descriptions__body">
+          <table class="el-descriptions__table" style="width:100%">
+            <tbody>
+              <tr>
+                <td class="el-descriptions__cell el-descriptions-item__label" style="width:120px">名称</td>
+                <td class="el-descriptions__cell el-descriptions-item__content">示例数据一</td>
+                <td class="el-descriptions__cell el-descriptions-item__label" style="width:120px">状态</td>
+                <td class="el-descriptions__cell el-descriptions-item__content"><span class="el-tag el-tag--success el-tag--small">启用</span></td>
+                <td class="el-descriptions__cell el-descriptions-item__label" style="width:120px">创建时间</td>
+                <td class="el-descriptions__cell el-descriptions-item__content">2026-10-25 10:00</td>
+              </tr>
+              <tr>
+                <td class="el-descriptions__cell el-descriptions-item__label">负责人</td>
+                <td class="el-descriptions__cell el-descriptions-item__content">张三</td>
+                <td class="el-descriptions__cell el-descriptions-item__label">优先级</td>
+                <td class="el-descriptions__cell el-descriptions-item__content"><span class="el-tag el-tag--warning el-tag--small">高</span></td>
+                <td class="el-descriptions__cell el-descriptions-item__label">编号</td>
+                <td class="el-descriptions__cell el-descriptions-item__content">NO-20261025-001</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 关联信息（替换区：如「处理记录」「附件」等分块；块内可放表格或时间线） -->
+  <div class="el-card">
+    <div class="el-card__body">
+      <div style="font-size:16px; font-weight:500; margin-bottom:12px">处理记录（替换）</div>
+      <table class="el-table__body" style="width:100%">
+        <tbody>
+          <tr class="el-table__row">
+            <td class="el-table__cell">2026-10-25 10:00</td>
+            <td class="el-table__cell">张三</td>
+            <td class="el-table__cell">提交申请</td>
+          </tr>
+          <tr class="el-table__row">
+            <td class="el-table__cell">2026-10-25 11:00</td>
+            <td class="el-table__cell">李四</td>
+            <td class="el-table__cell">审核通过</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

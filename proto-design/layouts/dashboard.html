@@ -1,0 +1,86 @@
+<!--
+  骨架: dashboard —— 看板页（统计卡栅格 + 图表占位 + 明细表格）
+  用法：复制本文件后往「替换区」填内容。必须保留上面的骨架标记。
+  规矩：统计卡一行 4 个（每卡 span:6）；图表区高度统一 320px。
+-->
+<div style="padding:16px 24px; background:#F0F2F5; min-height:100%">
+
+  <!-- ① 统计卡（替换区：每张卡改指标名和数值；卡片背景必须写 #ffffff，属于基础色） -->
+  <div class="el-row" style="margin:0 0 16px">
+    <div class="el-col" style="width:25%; padding-right:16px">
+      <div class="el-card"><div class="el-card__body" style="padding:20px">
+        <div style="font-size:12px; color:#909399">事件总数（替换）</div>
+        <div style="font-size:24px; font-weight:500; margin-top:8px">1,286</div>
+      </div></div>
+    </div>
+    <div class="el-col" style="width:25%; padding-right:16px">
+      <div class="el-card"><div class="el-card__body" style="padding:20px">
+        <div style="font-size:12px; color:#909399">今日新增</div>
+        <div style="font-size:24px; font-weight:500; margin-top:8px">32</div>
+      </div></div>
+    </div>
+    <div class="el-col" style="width:25%; padding-right:16px">
+      <div class="el-card"><div class="el-card__body" style="padding:20px">
+        <div style="font-size:12px; color:#909399">待处理</div>
+        <div style="font-size:24px; font-weight:500; margin-top:8px">17</div>
+      </div></div>
+    </div>
+    <div class="el-col" style="width:25%">
+      <div class="el-card"><div class="el-card__body" style="padding:20px">
+        <div style="font-size:12px; color:#909399">处理率</div>
+        <div style="font-size:24px; font-weight:500; margin-top:8px">98.6%</div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ② 图表区（替换区：两块图并排，高度统一 320px；原型阶段放占位框即可） -->
+  <div class="el-row" style="margin:0 0 16px">
+    <div class="el-col" style="width:50%; padding-right:16px">
+      <div class="el-card"><div class="el-card__body">
+        <div style="font-size:16px; font-weight:500; margin-bottom:12px">事件趋势（替换）</div>
+        <div style="height:320px; background:#F5F7FA; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C0C4CC">图表占位（原型阶段）</div>
+      </div></div>
+    </div>
+    <div class="el-col" style="width:50%">
+      <div class="el-card"><div class="el-card__body">
+        <div style="font-size:16px; font-weight:500; margin-bottom:12px">类型分布（替换）</div>
+        <div style="height:320px; background:#F5F7FA; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C0C4CC">图表占位（原型阶段）</div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ③ 明细表（替换区：列按需求改） -->
+  <div class="el-card"><div class="el-card__body">
+    <div style="font-size:16px; font-weight:500; margin-bottom:12px">最新事件（替换）</div>
+    <div class="el-table el-table--border el-table--enable-row-hover">
+      <div class="el-table__header-wrapper">
+        <table class="el-table__header">
+          <thead><tr>
+            <th class="el-table__cell" style="width:64px">序号</th>
+            <th class="el-table__cell">事件名称</th>
+            <th class="el-table__cell" style="width:120px">级别</th>
+            <th class="el-table__cell" style="width:160px">时间</th>
+          </tr></thead>
+        </table>
+      </div>
+      <div class="el-table__body-wrapper">
+        <table class="el-table__body">
+          <tbody>
+            <tr class="el-table__row">
+              <td class="el-table__cell" style="width:64px">1</td>
+              <td class="el-table__cell">示例事件一</td>
+              <td class="el-table__cell" style="width:120px"><span class="el-tag el-tag--danger el-tag--small">紧急</span></td>
+              <td class="el-table__cell" style="width:160px">2026-10-25 10:00</td>
+            </tr>
+            <tr class="el-table__row">
+              <td class="el-table__cell" style="width:64px">2</td>
+              <td class="el-table__cell">示例事件二</td>
+              <td class="el-table__cell" style="width:120px"><span class="el-tag el-tag--warning el-tag--small">较急</span></td>
+              <td class="el-table__cell" style="width:160px">2026-10-25 09:30</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div></div>
+</div>

@@ -9,9 +9,11 @@
 | 路径 | 内容 |
 |---|---|
 | `omp-browser-mcp/` | 浏览器自动化 MCP server（omp 风格改造版）：a11y 观察 + ref 数字定位 + CDP 接管已登录浏览器。纯 ESM JavaScript，依赖仅 `@modelcontextprotocol/sdk` + `puppeteer-core` |
-| `prototype-studio/` | 原型站生成器：批量截取真实系统 + 自动导出热区，产出可跳转可交互的原型站。零第三方依赖（Node 内置 fetch + WebSocket 直连 CDP），命令入口 `bin/proto.mjs`（init / discover / routes / launch / probe / capture / build）。`discover` 在已登录浏览器里运行时发现页面（动态菜单 + 参数页种子 id），`src/mock.mjs` 用 CDP Fetch 域拦截接口响应以放大或替换数据。`SKILL.md` 是给 codeagent3.0 + GLM-5.2 看的操作说明 |
+| `prototype-studio/` | 原型站生成器：批量截取真实系统 + 自动导出热区，产出可跳转可交互的原型站。零第三方依赖（Node 内置 fetch + WebSocket 直连 CDP），命令入口 `bin/proto.mjs`（init / discover / routes / launch / probe / capture / build）。`discover` 在已登录浏览器里运行时发现页面（动态菜单 + 参数页种子 id），`src/mock.mjs` 用 CDP Fetch 域拦截接口响应以放大或替换数据，`capture --spec` 额外导出每页布局区域度量（work/spec/）。`SKILL.md` 是给 codeagent3.0 + GLM-5.2 看的操作说明 |
+| `proto-design/` | 原型页设计规范工具（零第三方依赖）：`tokens` 从存量前端仓提取设计令牌产出 DESIGN.md（无定制主题时兜底 Element 默认值并标注），`layouts/` 提供四种按 Element 真实 DOM 结构写的页面骨架（list/detail/form/dashboard），`check` 对 AI 生成的原型页做确定性合规检查（表外色值/间距越阶/字号越阶/缺骨架标记，error 清零才退出码 0）。解决"agent 画原型位置不对、样式不按设计令牌"。`SKILL.md` 是给 GLM-5.2 的铁律。产出页放进 prototype-studio 的 `live/` 目录进原型站 |
 | `opendesign-codeagent3-tutorial/` | Open Design 接入 codeagent3.0 的教程文档（中文 Markdown） |
 | `multica-ioc-req-squad/` | Multica「需求小队」设计文档（纯 Markdown，无可执行代码）：五个通用能力提示词 + 小队流程控制文本 + 审查清单 + 事实清单模板，供装配到内网自托管 Multica 实例。**设计原则：智能体提示词内不含任何编排语言，流程只写在小队流程字段里**。另含 `09-平台机制与排障.md`（Multica 小队/触发/状态机制 + 失败原因码对照），改这套文档前**必须先读它** |
+| `agent-space/` | 常驻个人 agent 的独立空间（零第三方依赖，`dependencies: {}`）：把消息流、代码仓、文档知识库统一进**同一个**倒排索引（中文 2-gram + BM25），检索后由 `src/assemble.mjs` 的**确定性置信度门**决定输出级别（`auto`/`draft`/`notify`），再用行为副作用（改了多少、发没发）做反馈统计与规则蒸馏。**明确不与 Multica 联动**；`config/sources.json` 与 `config/rules.md` 含内网路径和个人习惯，已 gitignore。改之前先读它的 `README.md` 末尾「取向差异」一节 |
 | `README.md` / `LICENSE` | 仓库级说明与 MIT 许可证 |
 | `.workbuddy/` | WorkBuddy 本地工作区数据（记忆、日志）。**已被 .gitignore，不要提交、不要删除** |
 

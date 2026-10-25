@@ -1,0 +1,94 @@
+<!--
+  骨架: list —— 列表页（筛选栏 + 操作栏 + 表格 + 分页）
+  用法：复制本文件后往各「替换区」填内容。必须保留上面的骨架标记，check 要用。
+  铁律：不写裸色值（颜色一律走 el-* 组件类）；间距只用阶梯值；布局不用 position:absolute。
+  纯 HTML 结构：Element 样式挂在 class 上，不要写 <el-table> 这类 Vue 组件标签。
+-->
+<div style="padding:16px 24px; background:#ffffff; min-height:100%">
+
+  <!-- ① 筛选区（替换区：按需求增删筛选项） -->
+  <div class="el-form el-form--inline">
+    <div class="el-form-item">
+      <label class="el-form-item__label">关键字</label>
+      <div class="el-form-item__content">
+        <div class="el-input"><input class="el-input__inner" placeholder="请输入关键字" style="width:240px" /></div>
+      </div>
+    </div>
+    <div class="el-form-item">
+      <label class="el-form-item__label">状态</label>
+      <div class="el-form-item__content">
+        <div class="el-select" style="width:160px">
+          <div class="el-input"><input class="el-input__inner" placeholder="请选择" readonly /></div>
+        </div>
+      </div>
+    </div>
+    <div class="el-form-item">
+      <button type="button" class="el-button el-button--primary el-button--small">查询</button>
+      <button type="button" class="el-button el-button--small el-button--default">重置</button>
+    </div>
+  </div>
+
+  <!-- ② 操作栏（替换区：页面级按钮，主操作在左，次操作在右） -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 16px">
+    <div>
+      <button type="button" class="el-button el-button--primary">+ 新增</button>
+    </div>
+    <div>
+      <button type="button" class="el-button el-button--default">导出</button>
+    </div>
+  </div>
+
+  <!-- ③ 表格区（替换区：按需求改列；操作列固定右侧宽 160） -->
+  <div class="el-table el-table--border el-table--enable-row-hover">
+    <div class="el-table__header-wrapper">
+      <table class="el-table__header">
+        <thead>
+          <tr>
+            <th class="el-table__cell" style="width:64px">序号</th>
+            <th class="el-table__cell">名称</th>
+            <th class="el-table__cell" style="width:120px">状态</th>
+            <th class="el-table__cell" style="width:160px">更新时间</th>
+            <th class="el-table__cell" style="width:160px">操作</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="el-table__body-wrapper">
+      <table class="el-table__body">
+        <tbody>
+          <tr class="el-table__row">
+            <td class="el-table__cell" style="width:64px">1</td>
+            <td class="el-table__cell">示例数据一</td>
+            <td class="el-table__cell" style="width:120px"><span class="el-tag el-tag--success el-tag--small">启用</span></td>
+            <td class="el-table__cell" style="width:160px">2026-10-25 10:00</td>
+            <td class="el-table__cell" style="width:160px">
+              <button type="button" class="el-button el-button--text el-button--small">详情</button>
+              <button type="button" class="el-button el-button--text el-button--small">编辑</button>
+            </td>
+          </tr>
+          <tr class="el-table__row">
+            <td class="el-table__cell" style="width:64px">2</td>
+            <td class="el-table__cell">示例数据二</td>
+            <td class="el-table__cell" style="width:120px"><span class="el-tag el-tag--info el-tag--small">停用</span></td>
+            <td class="el-table__cell" style="width:160px">2026-10-25 10:00</td>
+            <td class="el-table__cell" style="width:160px">
+              <button type="button" class="el-button el-button--text el-button--small">详情</button>
+              <button type="button" class="el-button el-button--text el-button--small">编辑</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ④ 分页：固定右对齐 -->
+  <div style="display:flex; justify-content:flex-end; margin-top:16px">
+    <div class="el-pagination el-pagination--small is-background">
+      <span class="el-pagination__total">共 2 条</span>
+      <span class="el-pagination__sizes">10条/页</span>
+      <button type="button" class="btn-prev"></button>
+      <ul class="el-pager"><li class="number active">1</li></ul>
+      <button type="button" class="btn-next"></button>
+    </div>
+  </div>
+</div>

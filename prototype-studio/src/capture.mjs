@@ -213,6 +213,8 @@ function pageKey(base, url) {
 export async function capture(cfg, opts = {}) {
   const outDir = opts.outDir || cfg.out?.dir || 'work';
   const shotsDir = path.join(outDir, 'shots');
+  const wantSpec = !!(opts.spec || cfg.spec);
+  const specDir = path.join(outDir, 'spec');
   fs.mkdirSync(shotsDir, { recursive: true });
 
   const host = cfg.browser?.host || '127.0.0.1';
@@ -365,8 +367,32 @@ export async function capture(cfg, opts = {}) {
     return { buf, cssWidth: w, cssHeight: h };
   };
 
-  /**
-   * 判断一个元素是否命中了某个状态动作：
+/** 页面内执行：导出主要布局区域的坐标与尺寸，给 agent 画同类新页当度量锚点（--spec） */
+function collectLayout() {
+  const SELS = [
+    ['.el-form--inline', '筛选区'], ['form', '表单'], ['.el-descriptions', '描述表'],
+    ['.el-table', '表格区'], ['.el-pagination', '分页'], ['.el-tabs', '选项卡'],
+    ['.el-dialog', '弹窗'], ['.el-drawer', '抽屉'], ['.el-card', '卡片'],
+    ['aside', '侧边菜单'], ['.el-menu', '菜单'], ['header,.navbar', '顶栏'],
+  ];
+  const regions = [];
+  for (const [sel, kind] of SELS) {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      if (regions.length >= 40) return;
+      const r = el.getBoundingClientRect();
+      if (r.width < 4 || r.height < 4) return;
+      regions.push({
+        kind: kind + (i ? '#' + (i + 1) : ''),
+        x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height),
+        text: (el.innerText || '').trim().replace(/\s+/g, ' ').slice(0, 60),
+      });
+    });
+  }
+  return { url: location.href, viewport: { w: innerWidth, h: innerHeight }, regions };
+}
+
+/**
+ * 判断一个元素是否命中了某个状态动作：
    * - 在默认态里命中 action.click 的元素，点击后进入该状态
    * - 在某个状态里命中 action.back 的元素，点击后回到默认态
    */
@@ -446,6 +472,18 @@ export async function capture(cfg, opts = {}) {
 
       const states = {};
       states.default = await grab(page, 'default', page.actions);
+
+      // --spec：导出该页主要布局区域的坐标/尺寸，供 agent 画同类新页时当度量锚点
+      if (wantSpec) {
+        try {
+          const spec = await evaluate(collectLayout);
+          if (spec && spec.regions.length) {
+            fs.mkdirSync(specDir, { recursive: true });
+            fs.writeFileSync(path.join(specDir, `${page.id}.json`), JSON.stringify(spec, null, 2), 'utf8');
+            console.log(`${prefix} · 布局规格：${spec.regions.length} 个区域 → work/spec/${page.id}.json`);
+          }
+        } catch { /* spec 失败不影响采集 */ }
+      }
 
       for (const act of page.actions || []) {
         if (!act.click || !act.state) continue;
