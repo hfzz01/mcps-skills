@@ -1,0 +1,127 @@
+{
+  "id": "asset-detail",
+  "title": "资产详情",
+  "group": "资产管理",
+  "scenario": "existing-optimization",
+  "order": 20,
+  "generator": { "model": "GLM5.2", "stage": "存量详情页探索 → 详情蓝图补齐" },
+  "nav": true,
+  "breadcrumb": ["资产管理", "资产台账", "资产详情"],
+  "summary": "存量详情页：补充标签页分组与转派抽屉，编辑态保留原页面字段与组件形态。",
+  "source": {
+    "requirement": "examples/需求-存量优化.md",
+    "baseline": "受控浏览器探索存量详情页 computedStyle",
+    "componentLib": "examples/组件库映射.md"
+  },
+  "defaultScene": "default",
+  "scenes": {
+    "default": {
+      "label": "详情查看",
+      "blocks": [
+        { "component": "pageHead", "props": {
+          "title": "资产详情 · ZC-2026-001",
+          "desc": "1号主变在线监测主机；页面区块与台账页共用同一组件契约。",
+          "badges": [ { "text": "在运", "tone": "ok" }, { "text": "存量页面", "tone": "info" } ],
+          "actions": [
+            { "label": "返回台账", "act": ["navigate:asset-ledger"] },
+            { "label": "编辑资产", "tone": "primary", "act": ["scene:edit"] },
+            { "label": "转派班组", "act": ["drawer:transfer"] }
+          ]
+        } },
+        { "component": "panel", "props": { "title": "基本信息", "body": [
+          { "component": "descList", "props": { "items": [
+            { "label": "资产编号", "value": "ZC-2026-001" },
+            { "label": "资产名称", "value": "1号主变在线监测主机" },
+            { "label": "资产类型", "value": "主机设备" },
+            { "label": "运行状态", "value": "在运" },
+            { "label": "所属班组", "value": "运行一班" },
+            { "label": "安装位置", "value": "站点 A / 机柜 03" },
+            { "label": "投运日期", "value": "2024-03-18" },
+            { "label": "最近更新", "value": "2026-10-28" }
+          ] } }
+        ] } },
+        { "component": "panel", "changed": true, "changeLabel": "标签页分组", "changeNote": "把原先纵向堆叠的三块信息收进标签页，减少首屏高度。", "props": { "padded": false, "body": [
+          { "component": "tabs", "props": { "id": "assetDetail", "panes": [
+            { "id": "spec", "title": "技术参数", "body": [
+              { "component": "descList", "props": { "items": [
+                { "label": "额定容量", "value": "180 MVA" }, { "label": "电压等级", "value": "110 kV" },
+                { "label": "采样频率", "value": "1 Hz" }, { "label": "通讯协议", "value": "IEC 61850" }
+              ] } }
+            ] },
+            { "id": "inspection", "title": "关联巡检", "body": [
+              { "component": "dataTable", "props": { "columns": [
+                { "key": "code", "title": "巡检单号" }, { "key": "plan", "title": "巡检计划" },
+                { "key": "date", "title": "执行日期" }, { "key": "result", "title": "结论" }
+              ], "rows": [
+                { "code": "XJ-2026-0081", "plan": "主变周巡检", "date": "2026-10-26", "result": { "tag": "正常", "tone": "ok" } },
+                { "code": "XJ-2026-0075", "plan": "局放专项", "date": "2026-10-19", "result": { "tag": "异常", "tone": "warn" } },
+                { "code": "XJ-2026-0062", "plan": "主变周巡检", "date": "2026-10-12", "result": { "tag": "正常", "tone": "ok" } }
+              ], "selectable": false, "pager": false, "rowActs": [ { "label": "查看结果", "act": ["navigate:inspection-result"] } ], "opsTitle": "操作" } }
+            ] },
+            { "id": "history", "title": "变更记录", "body": [
+              { "component": "timeline", "props": { "items": [
+                { "time": "2026-10-28", "title": "状态变更", "desc": "由「检修」变更为「在运」", "tone": "ok" },
+                { "time": "2026-10-14", "title": "班组调整", "desc": "由「检修班」转派至「运行一班」", "tone": "info" },
+                { "time": "2026-09-30", "title": "参数更新", "desc": "采样频率由 0.5 Hz 调整为 1 Hz", "tone": "info" }
+              ] } }
+            ] }
+          ] } }
+        ] } }
+      ]
+    },
+    "edit": {
+      "label": "编辑态",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "编辑资产", "desc": "必填项留空点保存会显示校验错误态。", "actions": [ { "label": "取消", "act": ["scene:default"] } ] } },
+        { "component": "panel", "props": { "body": [
+          { "component": "form", "props": { "id": "assetEdit", "sections": [
+            { "title": "基本信息", "fields": [
+              { "label": "资产名称", "name": "name", "type": "input", "required": true, "value": "1号主变在线监测主机", "error": "资产名称不能为空" },
+              { "label": "资产类型", "name": "type", "type": "select", "required": true, "value": "主机设备", "options": ["主机设备", "传感设备", "网络设备", "控制柜"] },
+              { "label": "安装位置", "name": "place", "type": "input", "value": "站点 A / 机柜 03" },
+              { "label": "联系电话", "name": "phone", "type": "input", "rule": "phone", "placeholder": "选填，11 位手机号", "error": "手机号格式不正确" }
+            ] }
+          ], "foot": [
+            { "label": "返回查看", "act": ["scene:default"] },
+            { "label": "保存", "tone": "primary", "act": ["form:validate:assetEdit", "scene:loading", "wait:600", "scene:default", "toast:资产信息已保存"] }
+          ] } }
+        ] } }
+      ]
+    },
+    "loading": {
+      "label": "加载中",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "资产详情", "desc": "正在保存…" } },
+        { "component": "panel", "props": { "body": [ { "component": "loadingState", "props": { "rows": 5, "text": "正在提交变更…" } } ] } }
+      ]
+    },
+    "error": {
+      "label": "加载失败",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "risk", "title": "加载失败", "text": "资产详情接口不可用。" } },
+        { "component": "panel", "props": { "body": [ { "component": "emptyState", "props": { "title": "无法读取资产", "desc": "可返回台账页重新进入。", "actions": [ { "label": "返回台账", "tone": "primary", "act": ["navigate:asset-ledger"] } ] } } ] } }
+      ]
+    }
+  },
+  "overlays": [
+    {
+      "id": "transfer",
+      "kind": "drawer",
+      "title": "转派班组",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "info", "title": "说明", "text": "转派后该资产的巡检任务会同步到新班组。" } },
+        { "component": "form", "props": { "id": "transfer", "sections": [
+          { "title": "转派信息", "fields": [
+            { "label": "目标班组", "name": "target", "type": "select", "required": true, "placeholder": "请选择", "options": ["运行一班", "运行二班", "检修班", "自动化组"], "error": "请选择目标班组" },
+            { "label": "生效日期", "name": "date", "type": "date", "required": true, "placeholder": "选择日期", "error": "请选择生效日期" },
+            { "label": "转派原因", "name": "reason", "type": "textarea", "placeholder": "选填" }
+          ] }
+        ], "foot": [] } }
+      ],
+      "foot": [
+        { "label": "取消", "act": ["overlay:close"] },
+        { "label": "确认转派", "tone": "primary", "act": ["form:validate:transfer", "overlay:close", "toast:转派已提交"] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "id": "$from:id",
+  "title": "{{title}}",
+  "group": "$from:group",
+  "scenario": "$from:scenario",
+  "batchGroup": "$from:batchGroup",
+  "order": 100,
+  "generator": { "model": "MiniMax-M3", "stage": "需求矩阵 → 批量蓝图展开" },
+  "nav": true,
+  "breadcrumb": ["专项台账", "{{title}}"],
+  "summary": "由 examples/需求-批量新增.md 的需求矩阵批量展开；结构指纹与同组其它 {{title}} 页面完全一致。",
+  "source": {
+    "requirement": "examples/需求-批量新增.md",
+    "baseline": "样式宪章 + 组件契约 + 统一页面模板 blueprints/batch/_template.json",
+    "componentLib": "examples/组件库映射.md"
+  },
+  "defaultScene": "default",
+  "scenes": {
+    "default": {
+      "label": "常规列表",
+      "blocks": [
+        { "component": "pageHead", "props": {
+          "title": "{{title}}",
+          "desc": "台账编号前缀 {{code}}；归口班组 {{owner}}。本页由批量模板统一铸造，布局、配色、字号、间距、组件形态与同组其它页面完全一致。",
+          "badges": [ { "text": "批量生成", "tone": "brand" }, { "text": "{{code}}", "tone": "info" } ],
+          "actions": [
+            { "label": "新增台账项", "tone": "primary", "act": ["dialog:import"] },
+            { "label": "返回总台账", "act": ["navigate:asset-ledger"] },
+            { "label": "返回门户", "act": ["navigate:../index"] }
+          ]
+        } },
+        { "component": "notice", "props": {
+          "tone": "info", "title": "交互提示",
+          "text": "本页与同组 12 个台账页结构相同、数据不同。可切换加载 / 空数据 / 异常状态，也可在弹窗里试必填校验。"
+        } },
+        { "component": "filterBar", "props": {
+          "fields": [
+            { "label": "台账项名称", "name": "kw", "type": "input", "placeholder": "输入名称或编号" },
+            { "label": "运行状态", "name": "status", "type": "select", "placeholder": "全部状态", "options": ["在运", "停用", "检修", "待验收"] },
+            { "label": "归口班组", "name": "owner", "type": "select", "placeholder": "全部班组", "options": ["运行一班", "运行二班", "检修班", "自动化组", "外包运维"] }
+          ],
+          "actions": [
+            { "label": "查询", "tone": "primary", "act": ["scene:loading", "wait:500", "scene:default", "toast:查询完成"] },
+            { "label": "重置", "act": ["toast:筛选条件已重置"] }
+          ],
+          "note": "输入条件后点查询，会经过加载状态再回到列表。"
+        } },
+        { "component": "panel", "props": { "body": [
+          { "component": "toolbar", "props": {
+            "count": "共 {{total}} 条台账项",
+            "left": [
+              { "label": "批量导出", "size": "sm", "act": ["toast:导出任务已创建"] },
+              { "label": "全选", "size": "sm", "act": ["select:all"] },
+              { "label": "取消全选", "size": "sm", "act": ["select:none"] }
+            ],
+            "right": [ { "label": "刷新", "size": "sm", "act": ["scene:loading", "wait:500", "scene:default"] } ]
+          } },
+          { "component": "dataTable", "props": {
+            "columns": "$from:columns",
+            "rows": "$from:rows",
+            "selectable": true,
+            "pager": { "total": "{{total}}", "page": 1, "size": 10 },
+            "rowActs": [
+              { "label": "查看详情", "act": ["navigate:{{linkTo}}"] },
+              { "label": "导出", "act": ["toast:已导出该台账项"] }
+            ],
+            "opsTitle": "操作"
+          } }
+        ] } }
+      ]
+    },
+    "empty": {
+      "label": "空数据",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "{{title}}", "desc": "当前筛选条件下没有台账项。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "emptyState", "props": { "title": "没有符合条件的台账项", "desc": "放宽筛选条件或新增一条台账记录。", "actions": [
+            { "label": "新增台账项", "tone": "primary", "act": ["dialog:import"] },
+            { "label": "返回常规列表", "act": ["scene:default"] }
+          ] } }
+        ] } }
+      ]
+    },
+    "loading": {
+      "label": "加载中",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "{{title}}", "desc": "正在读取台账数据…" } },
+        { "component": "panel", "props": { "body": [ { "component": "loadingState", "props": { "rows": 6, "text": "正在加载{{title}}…" } } ] } }
+      ]
+    },
+    "error": {
+      "label": "接口异常",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "risk", "title": "服务异常", "text": "台账接口返回 500，请稍后重试。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "emptyState", "props": { "title": "数据加载失败", "desc": "可重试或返回总台账。", "actions": [
+            { "label": "重新加载", "tone": "primary", "act": ["scene:loading", "wait:500", "scene:default"] },
+            { "label": "返回总台账", "act": ["navigate:asset-ledger"] }
+          ] } }
+        ] } }
+      ]
+    }
+  },
+  "overlays": [
+    {
+      "id": "import",
+      "kind": "dialog",
+      "title": "新增台账项",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "info", "title": "填写说明", "text": "带 * 为必填，编号需至少 4 个字符。" } },
+        { "component": "form", "props": { "id": "import", "sections": [
+          { "title": "台账项信息", "fields": [
+            { "label": "台账项名称", "name": "itemName", "type": "input", "required": true, "placeholder": "请输入名称", "error": "台账项名称不能为空" },
+            { "label": "台账项编号", "name": "itemCode", "type": "input", "required": true, "rule": "min:4", "placeholder": "例如 {{code}}-001", "error": "编号至少 4 个字符" },
+            { "label": "运行状态", "name": "itemStatus", "type": "select", "required": true, "placeholder": "请选择", "options": ["在运", "停用", "检修", "待验收"], "error": "请选择运行状态" },
+            { "label": "归口班组", "name": "itemOwner", "type": "select", "placeholder": "请选择", "options": ["运行一班", "运行二班", "检修班", "自动化组", "外包运维"] },
+            { "label": "备注", "name": "memo", "type": "textarea", "placeholder": "选填" }
+          ] }
+        ], "foot": [] } }
+      ],
+      "foot": [
+        { "label": "取消", "act": ["overlay:close"] },
+        { "label": "提交", "tone": "primary", "act": ["form:validate:import", "overlay:close", "toast:台账项已提交", "scene:loading", "wait:500", "scene:default"] }
+      ]
+    }
+  ]
+}

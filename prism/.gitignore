@@ -1,0 +1,12 @@
+# 提取器草案是生成物，人工确认后合并进 charter.css
+foundry/*.draft.css
+
+# 本地依赖（本方案零依赖，正常不会出现）
+node_modules/
+package-lock.json
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+
+# 注意：dist/ 是交付物，必须保留并提交，不要忽略。

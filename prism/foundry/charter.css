@@ -1,0 +1,97 @@
+/* ============================================================
+ * 样式宪章 / Style Charter —— Prism 单一事实源
+ * ------------------------------------------------------------
+ * 铁律：
+ *   1. 整套原型中，只有本文件允许出现颜色字面量、字号数值、
+ *      间距数值、圆角与阴影定义。
+ *   2. 组件样式（components.css）只能引用本文件的变量，
+ *      禁止出现任何 #hex / rgb() / 固定 px 字号。
+ *   3. 页面蓝图（JSON）与模型输出中不允许出现任何样式描述。
+ *   4. 编译器在铸造时会把本文件原样分发到 dist/assets/，
+ *      并把它的内容哈希写进一致性报告；所有页面共享同一份。
+ *
+ * 来源：由 engine/extract-repo.mjs / extract-dom.mjs /
+ *       extract-image.mjs 从存量系统提取草案后人工确认。
+ * ============================================================ */
+
+:root {
+  /* ---- 墨色阶梯（文字） ---- */
+  --ink-900: #16202e;
+  --ink-700: #3b4a5f;
+  --ink-500: #6b7a90;
+  --ink-300: #9aa8ba;
+  --ink-100: #c7d0dc;
+
+  /* ---- 面与线 ---- */
+  --canvas: #f3f6fa;
+  --surface: #ffffff;
+  --surface-alt: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+
+  /* ---- 品牌主色 ---- */
+  --brand: #1f6feb;
+  --brand-hover: #165bc4;
+  --brand-active: #0f4ba8;
+  --brand-soft: #e8f1ff;
+  --brand-line: #b8d3ff;
+
+  /* ---- 语义色 ---- */
+  --ok: #18a058;
+  --ok-soft: #e7f7ee;
+  --ok-line: #b7e4c9;
+  --warn: #d98b16;
+  --warn-soft: #fdf3e2;
+  --warn-line: #f2d6a2;
+  --risk: #d9483b;
+  --risk-soft: #fdeceb;
+  --risk-line: #f3b9b3;
+  --info: #5b7089;
+  --info-soft: #eef2f7;
+  --info-line: #ccd7e3;
+
+  /* ---- 字号阶梯（组件只能用这里的档位） ---- */
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-base: 14px;
+  --fs-md: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 22px;
+  --fs-2xl: 28px;
+
+  /* ---- 间距阶梯 ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+
+  /* ---- 形态 ---- */
+  --r-sm: 3px;
+  --r-md: 6px;
+  --r-lg: 10px;
+  --r-pill: 999px;
+  --shadow-1: 0 1px 2px rgba(22, 32, 46, .06);
+  --shadow-2: 0 6px 20px rgba(22, 32, 46, .12);
+  --shadow-3: 0 16px 48px rgba(22, 32, 46, .18);
+
+  /* ---- 尺寸不变量 ---- */
+  --h-control: 32px;
+  --h-control-lg: 40px;
+  --h-row: 44px;
+  --header-h: 56px;
+  --sidebar-w: 212px;
+  --filter-h: 72px;
+  --pager-h: 52px;
+  --content-pad: 24px;
+  --grid-gap: 16px;
+  --col-label-w: 108px;
+  --field-w: 216px;
+  --drawer-w: 420px;
+  --dialog-w: 560px;
+  --transition: 160ms ease;
+}

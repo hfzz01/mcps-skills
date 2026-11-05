@@ -1,0 +1,21 @@
+{
+  "name": "prism-prototype-foundry",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "规格驱动的内网可交互 HTML 原型铸造台：零依赖、零 API key、零网络请求",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "help": "node engine/prism.mjs help",
+    "expand": "node engine/prism.mjs expand",
+    "lint": "node engine/prism.mjs lint",
+    "compile": "node engine/prism.mjs compile",
+    "selftest": "node engine/prism.mjs selftest",
+    "verify-browser": "node engine/prism.mjs verify-browser"
+  },
+  "notes": "不要执行 npm install：本目录没有任何依赖，所有能力由 Node 内置模块实现。"
+}

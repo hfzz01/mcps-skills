@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prism · 内网可交互原型集合 · 可交互原型</title>
+<link rel="stylesheet" href="assets/charter.css">
+<link rel="stylesheet" href="assets/components.css">
+</head>
+<body data-base="pages/" data-default-scene="default"
+  data-charter-hash="27becad3059bfb20" data-page-id="portal" data-scenario="portal">
+<div class="portal">
+  <div class="portal__hero">
+    <h1 class="portal__title">Prism · 内网可交互原型集合</h1>
+    <p class="portal__lead">同一份样式宪章 + 同一套组件契约铸造出的多页面原型。模型只写声明式蓝图，不写 HTML/CSS；配色、字号、间距、组件形态、交互状态全部由编译器统一决定，因此新增页、改造页、批量页必然同源。</p>
+    <div class="portal__meta"><span class="tag tag--brand">零依赖</span><span class="tag tag--brand">无网络请求</span><span class="tag tag--brand">file:// 可直接打开</span><span class="tag tag--brand">编译期一致性</span><span class="tag tag--brand">三类需求场景</span></div>
+  </div>
+  <div class="portal__section">
+    <h2 class="portal__section-title">三类需求场景</h2>
+    <p class="portal__section-desc">每类场景都有真实可操作的页面：点击、输入、状态切换、页面跳转全部可用。点卡片进入对应原型。</p>
+    <div class="card-grid"><div class="pcard" data-act="navigate:asset-ledger">
+      <div class="pcard__tag">场景 A · 存量页面功能优化</div>
+      <div class="pcard__title">资产台账优化 + 资产详情</div>
+      <div class="pcard__desc">以存量页面为基线，按需求文档增加批量操作、筛选增强与状态标签改造。橙色虚线框标出变更区域，「新旧对照」场景并排比较改版前后，可切加载 / 空数据 / 异常 / 批量选中状态。</div>
+      <div class="pcard__foot">2 页 · 变更标记 · 新旧对照 · 6 个状态　→ 点击进入</div>
+    </div>
+<div class="pcard" data-act="navigate:inspection-plan">
+      <div class="pcard__tag">场景 B · 新增功能</div>
+      <div class="pcard__title">智能巡检编排 + 结果看板</div>
+      <div class="pcard__desc">全新页面，但所有区块仍从同一组件契约取用。三步表单支持真实输入与必填校验、下拉 / 日期 / 开关、规则弹窗、提交加载态与成功态，再跳结果看板。</div>
+      <div class="pcard__foot">2 页 · 输入校验 · 步骤切换 · 状态剧本　→ 点击进入</div>
+    </div>
+<div class="pcard" data-act="navigate:ledger-station">
+      <div class="pcard__tag">场景 C · 批量新增大量页面</div>
+      <div class="pcard__title">12 个专项台账页</div>
+      <div class="pcard__desc">一份需求矩阵展开成 12 份蓝图，结构指纹完全相同、只有数据不同。侧栏统一导航、状态面板一致、组件形态一致，可逐个点开核对。</div>
+      <div class="pcard__foot">12 页 · 同一结构指纹 · 一次编译　→ 点击进入</div>
+    </div></div>
+  </div>
+  <div class="portal__section">
+    <h2 class="portal__section-title">全部页面（16）</h2>
+    <p class="portal__section-desc">批量生成的页面共用同一套结构指纹，仅数据不同；视觉与交互完全一致。</p>
+    <div class="page-list"><div class="page-link" data-act="navigate:asset-ledger"><span>资产台账</span><span>6 态</span></div>
+<div class="page-link" data-act="navigate:asset-detail"><span>资产详情</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:inspection-plan"><span>智能巡检编排</span><span>6 态</span></div>
+<div class="page-link" data-act="navigate:inspection-result"><span>巡检结果看板</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-station"><span>站点资产台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-transformer"><span>主变设备台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-sensor"><span>传感设备台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-network"><span>网络设备台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-cabinet"><span>控制柜台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-power"><span>电源设备台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-line"><span>输电线路台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-meter"><span>计量装置台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-protect"><span>保护装置台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-comm"><span>通信设备台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-spare"><span>备品备件台账</span><span>4 态</span></div>
+<div class="page-link" data-act="navigate:ledger-tool"><span>工器具台账</span><span>4 态</span></div></div>
+  </div>
+  <div class="portal__section">
+    <h2 class="portal__section-title">方案要点</h2>
+    <div class="panel"><div class="panel__body">
+      <div class="change-note">1. <b>一致性是编译期不变量</b>　模型输出中不含任何样式字段；页面引用同一份 charter.css，链接器强制 components.css 不得出现色值字面量。</div><div class="change-note">2. <b>交互全部数据驱动</b>　点击、输入、状态切换、页面跳转都来自蓝图的动作串，运行时统一解释，页面里没有一行手写脚本。</div><div class="change-note">3. <b>截图不让模型看图</b>　清单内无视觉模型，截图只做确定性像素量化；存量页面优先用受控浏览器读 computedStyle。</div><div class="change-note">4. <b>模型只在内网产出蓝图</b>　工具本身零 API、零 key、零网络；五个清单内模型由内网 codeagent 调度，只生成 JSON 规格。</div>
+    </div></div>
+  </div>
+  <div class="footnote">
+    样式宪章 <code>27becad3059bfb20</code> · 组件契约 <code>4179855a9ef0c1d7</code> · 契约组件 19 个<br>
+    本目录为纯静态文件，无网络请求、无后端、无外部依赖，可直接双击打开或整目录拷贝分发。
+  </div>
+</div>
+<div class="toast" data-toast></div>
+<script src="assets/runtime.js"></script>
+</body>
+</html>

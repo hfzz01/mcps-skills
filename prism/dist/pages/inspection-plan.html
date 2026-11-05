@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智能巡检编排 · 可交互原型</title>
+<link rel="stylesheet" href="../assets/charter.css">
+<link rel="stylesheet" href="../assets/components.css">
+</head>
+<body data-base="" data-default-scene="step1"
+  data-charter-hash="27becad3059bfb20" data-page-id="inspection-plan" data-scenario="new-feature">
+<div class="app">
+<header class="app-header">
+    <div class="brand" data-act="navigate:../index" style="cursor:pointer">
+      <div class="brand__mark">P</div>
+      <div><span class="brand__text">PRISM</span><span class="brand__sub">可交互原型</span></div>
+    </div>
+    <div class="header-path">智能巡检 / 智能巡检编排</div>
+    <div class="header-right">
+      <span class="header-chip">新增功能</span>
+      <span>内网原型 · 非生产系统</span><span class="avatar">需</span>
+    </div>
+  </header>
+<div class="app-body">
+<nav class="sidebar"><div class="nav-group"><div class="nav-group__title">资产管理</div><div class="nav-item" data-act="navigate:asset-ledger">资产台账</div><div class="nav-item" data-act="navigate:asset-detail">资产详情</div></div><div class="nav-group"><div class="nav-group__title">智能巡检</div><div class="nav-item is-active" data-act="navigate:inspection-plan">智能巡检编排<span class="nav-item__dot"></span></div><div class="nav-item" data-act="navigate:inspection-result">巡检结果看板<span class="nav-item__dot"></span></div></div><div class="nav-group"><div class="nav-group__title">专项台账</div><div class="nav-item" data-act="navigate:ledger-station">站点资产台账</div><div class="nav-item" data-act="navigate:ledger-transformer">主变设备台账</div><div class="nav-item" data-act="navigate:ledger-sensor">传感设备台账</div><div class="nav-item" data-act="navigate:ledger-network">网络设备台账</div><div class="nav-item" data-act="navigate:ledger-cabinet">控制柜台账</div><div class="nav-item" data-act="navigate:ledger-power">电源设备台账</div><div class="nav-item" data-act="navigate:ledger-line">输电线路台账</div><div class="nav-item" data-act="navigate:ledger-meter">计量装置台账</div><div class="nav-item" data-act="navigate:ledger-protect">保护装置台账</div><div class="nav-item" data-act="navigate:ledger-comm">通信设备台账</div><div class="nav-item" data-act="navigate:ledger-spare">备品备件台账</div><div class="nav-item" data-act="navigate:ledger-tool">工器具台账</div></div></nav>
+<main class="main"><div class="page">
+<div class="breadcrumb"><span>智能巡检</span><b>智能巡检编排</b></div>
+
+<div class="scene-bar"><span class="scene-bar__label">交互状态（点击切换）</span><button type="button" class="scene-btn is-active" data-scene-btn="step1" data-act="scene:step1">① 基础信息</button><button type="button" class="scene-btn" data-scene-btn="step2" data-act="scene:step2">② 规则配置</button><button type="button" class="scene-btn" data-scene-btn="step3" data-act="scene:step3">③ 确认提交</button><button type="button" class="scene-btn" data-scene-btn="loading" data-act="scene:loading">提交中</button><button type="button" class="scene-btn" data-scene-btn="success" data-act="scene:success">提交成功</button><button type="button" class="scene-btn" data-scene-btn="draft" data-act="scene:draft">草稿态</button></div>
+<div class="scene is-active" data-scene="step1">
+<div class="page-head">
+      <div><h1 class="page-head__title">智能巡检编排</h1>
+        <p class="page-head__desc">按资产类型与运行态自动编排巡检任务；本页为新增功能，所有区块仍取自同一组件契约。</p>
+        <div class="page-head__badges"><span class="tag tag--brand"><span class="tag__dot"></span>新增功能</span><span class="tag tag--info"><span class="tag__dot"></span>三步编排</span></div>
+      </div>
+      <div class="page-head__actions"><button type="button" class="btn" data-act="navigate:asset-ledger">返回台账</button><button type="button" class="btn" data-act="navigate:inspection-result">查看编排结果</button></div>
+    </div>
+<div class="steps" data-steps="plan"><div class="step is-active" data-step-no="1"><span class="step__no">1</span><span>基础信息</span></div><span class="step__line"></span><div class="step " data-step-no="2"><span class="step__no">2</span><span>规则配置</span></div><span class="step__line"></span><div class="step " data-step-no="3"><span class="step__no">3</span><span>确认提交</span></div></div>
+<div class="alert alert--info"><div><b>交互提示</b>　带 * 为必填；留空点「下一步」会显示错误态；「联系电话」填错格式也会拦下。校验通过后自动进入第 ② 步。</div></div>
+<div class="panel">
+      
+      <div class="panel__body"><form class="form" data-form="plan" onsubmit="return false">
+      <div class="form__section">计划信息</div>
+        <div class="form__row" data-form-row="planName"><label class="form__label"><i>*</i>计划名称</label><div class="form__control"><input class="input" type="text" name="planName" data-field="planName" data-required="1" data-error="计划名称不能为空" placeholder="例如 主变季度专项巡检" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="planCode"><label class="form__label"><i>*</i>计划编号</label><div class="form__control"><input class="input" type="text" name="planCode" data-field="planCode" data-required="1" data-rule="min:4" data-error="计划编号至少 4 个字符" placeholder="例如 XJ-2026-0090" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="planType"><label class="form__label"><i>*</i>巡检类型</label><div class="form__control"><select class="select" name="planType" data-field="planType" data-required="1" data-error="请选择巡检类型" placeholder="请选择"><option value="">请选择</option><option value="例行巡检">例行巡检</option><option value="专项巡检">专项巡检</option><option value="故障排查">故障排查</option><option value="验收巡检">验收巡检</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="startDate"><label class="form__label"><i>*</i>开始日期</label><div class="form__control"><input class="date" type="text" name="startDate" data-field="startDate" data-required="1" data-error="请选择开始日期" placeholder="选择日期" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="owner"><label class="form__label">责任班组</label><div class="form__control"><select class="select" name="owner" data-field="owner" placeholder="请选择"><option value="">请选择</option><option value="运行一班">运行一班</option><option value="运行二班">运行二班</option><option value="检修班">检修班</option><option value="自动化组">自动化组</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="phone"><label class="form__label">联系人电话</label><div class="form__control"><input class="input" type="text" name="phone" data-field="phone" data-rule="phone" data-error="手机号格式不正确" placeholder="选填，11 位手机号" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="autoDispatch"><label class="form__label">启用自动派发</label><div class="form__control"><label class="switch"><input type="checkbox" name="autoDispatch" checked>启用后按规则自动生成巡检单</label><div class="form__hint">启用后按规则自动生成巡检单</div><div class="form__error"></div></div></div><div class="form__row" data-form-row="memo"><label class="form__label">备注</label><div class="form__control"><textarea class="textarea" name="memo" data-field="memo" placeholder="选填，说明编排目标与边界"></textarea><div class="form__error"></div></div></div>
+      <div class="form__foot"><button type="button" class="btn" data-act="scene:draft|toast:草稿已保存">存为草稿</button><button type="button" class="btn btn--primary" data-act="form:validate:plan|step:2|scene:step2">下一步：规则配置</button></div>
+    </form></div></div>
+</div>
+<div class="scene" data-scene="step2">
+<div class="page-head">
+      <div><h1 class="page-head__title">智能巡检编排 · 规则配置</h1>
+        <p class="page-head__desc">配置触发条件与阈值；新增规则在弹窗中完成输入与校验。</p>
+        
+      </div>
+      <div class="page-head__actions"><button type="button" class="btn" data-act="navigate:asset-ledger">返回台账</button></div>
+    </div>
+<div class="steps" data-steps="plan"><div class="step is-done" data-step-no="1"><span class="step__no">✓</span><span>基础信息</span></div><span class="step__line"></span><div class="step is-active" data-step-no="2"><span class="step__no">2</span><span>规则配置</span></div><span class="step__line"></span><div class="step " data-step-no="3"><span class="step__no">3</span><span>确认提交</span></div></div>
+<div class="panel">
+      <div class="panel__head"><span>已配置规则</span><div class="toolbar__right"><button type="button" class="btn btn--primary btn--sm" data-act="dialog:addRule">新增规则</button></div></div>
+      <div class="panel__body"><div class="table-wrap"><table class="table"><thead><tr><th>规则编号</th><th>规则名称</th><th>适用范围</th><th>阈值</th><th>状态</th><th>操作</th></tr></thead><tbody><tr>
+        
+        <td>R-001</td><td>主变温度越限</td><td>主机设备</td><td>≥ 85 ℃</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="dialog:addRule">编辑</span><span class="table__link" data-act="toast:规则已停用">停用</span></div></td>
+      </tr><tr>
+        
+        <td>R-002</td><td>局放值突增</td><td>传感设备</td><td>≥ 300 pC</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="dialog:addRule">编辑</span><span class="table__link" data-act="toast:规则已停用">停用</span></div></td>
+      </tr><tr>
+        
+        <td>R-003</td><td>链路中断</td><td>网络设备</td><td>连续 3 次</td><td><span class="tag tag--info"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="dialog:addRule">编辑</span><span class="table__link" data-act="toast:规则已停用">停用</span></div></td>
+      </tr></tbody></table></div></div></div>
+<div class="alert alert--warn"><div><b>编排约束</b>　至少保留 1 条启用规则才可提交；本原型已预置 2 条启用规则。</div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="toolbar">
+      <div class="toolbar__left"><span class="toolbar__count">规则校验通过</span><button type="button" class="btn btn--sm" data-act="step:1|scene:step1">上一步</button><button type="button" class="btn btn--primary btn--sm" data-act="step:3|scene:step3">下一步：确认提交</button></div>
+      <div class="toolbar__right"><button type="button" class="btn btn--sm" data-act="dialog:addRule">新增规则</button></div>
+    </div></div></div>
+</div>
+<div class="scene" data-scene="step3">
+<div class="page-head">
+      <div><h1 class="page-head__title">智能巡检编排 · 确认提交</h1>
+        <p class="page-head__desc">核对编排信息后提交；提交过程会经过加载状态再到成功状态。</p>
+        
+      </div>
+      
+    </div>
+<div class="steps" data-steps="plan"><div class="step is-done" data-step-no="1"><span class="step__no">✓</span><span>基础信息</span></div><span class="step__line"></span><div class="step is-done" data-step-no="2"><span class="step__no">✓</span><span>规则配置</span></div><span class="step__line"></span><div class="step is-active" data-step-no="3"><span class="step__no">3</span><span>确认提交</span></div></div>
+<div class="panel">
+      <div class="panel__head"><span>编排摘要</span><div class="toolbar__right"></div></div>
+      <div class="panel__body"><div class="desc-list"><div class="desc-item">
+      <div class="desc-item__label">计划名称</div><div class="desc-item__value">主变季度专项巡检</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">计划编号</div><div class="desc-item__value">XJ-2026-0090</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">巡检类型</div><div class="desc-item__value">专项巡检</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">责任班组</div><div class="desc-item__value">运行一班</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">启用规则</div><div class="desc-item__value">2 条（R-001 / R-002）</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">自动派发</div><div class="desc-item__value">启用</div>
+    </div></div></div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="toolbar">
+      <div class="toolbar__left"><span class="toolbar__count">提交后将生成 12 张巡检单</span><button type="button" class="btn btn--sm" data-act="step:2|scene:step2">上一步</button><button type="button" class="btn btn--primary btn--sm" data-act="scene:loading|wait:800|scene:success|toast:编排已提交">确认提交</button></div>
+      <div class="toolbar__right"><button type="button" class="btn btn--sm" data-act="navigate:asset-ledger">返回台账</button></div>
+    </div></div></div>
+</div>
+<div class="scene" data-scene="loading">
+<div class="page-head">
+      <div><h1 class="page-head__title">智能巡检编排</h1>
+        <p class="page-head__desc">正在生成巡检单…</p>
+        
+      </div>
+      
+    </div>
+<div class="panel">
+      
+      <div class="panel__body"><div style="padding:var(--sp-6)"><div class="toolbar__left" style="margin-bottom:var(--sp-4)"><span class="spinner"></span><span>正在按 2 条启用规则生成 12 张巡检单…</span></div>
+      <div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:88%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:76%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:88%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:76%"></div></div></div></div>
+</div>
+<div class="scene" data-scene="success">
+<div class="steps" data-steps="plan"><div class="step is-done" data-step-no="1"><span class="step__no">✓</span><span>基础信息</span></div><span class="step__line"></span><div class="step is-done" data-step-no="2"><span class="step__no">✓</span><span>规则配置</span></div><span class="step__line"></span><div class="step is-active" data-step-no="3"><span class="step__no">3</span><span>确认提交</span></div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="empty"><div class="empty__icon" style="background:var(--ok-soft);color:var(--ok)">✓</div>
+      <div class="empty__title">编排提交成功</div>
+      <div class="empty__desc">已按启用规则生成 12 张巡检单，可在结果看板查看分布与趋势。</div>
+      <div class="toolbar__left"><button type="button" class="btn btn--primary" data-act="navigate:inspection-result">查看编排结果</button><button type="button" class="btn" data-act="step:1|scene:step1">再建一版</button><button type="button" class="btn" data-act="navigate:asset-ledger">返回台账</button></div></div></div></div>
+</div>
+<div class="scene" data-scene="draft">
+<div class="alert alert--info"><div><b>草稿已保存</b>　草稿不会触发巡检单生成，可随时继续编辑。</div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="empty"><div class="empty__icon">□</div>
+      <div class="empty__title">当前没有提交中的编排</div>
+      <div class="empty__desc">继续填写基础信息或返回台账。</div>
+      <div class="toolbar__left"><button type="button" class="btn btn--primary" data-act="scene:step1">继续编辑</button><button type="button" class="btn" data-act="navigate:asset-ledger">返回台账</button></div></div></div></div>
+</div>
+<div class="footnote">
+    页面 <b>inspection-plan</b> · 新增功能 ·
+    状态 6 个 · 样式宪章 <code>27becad3059bfb20</code><br>
+    需求来源：examples/需求-新增功能.md ｜ 一致性基线：样式宪章 + 组件契约（无存量页面可比，一致性由编译期保证）<br>
+    全新功能页：三步编排（基础信息 → 规则配置 → 确认提交），含真实输入、必填与格式校验、弹窗新增规则、加载态与成功态，再跳结果看板。
+  </div>
+</div></main>
+</div>
+</div>
+<div class="overlay" data-overlay="addRule"><div class="overlay__mask"></div><div class="dialog"><div class="dialog__head"><span>新增触发规则</span><span class="dialog__close" data-overlay-close>×</span></div>
+          <div class="dialog__body"><div class="alert alert--info"><div><b>填写说明</b>　规则名称必填；阈值需为数字，填字母会被校验拦下。</div></div>
+<form class="form" data-form="rule" onsubmit="return false">
+      <div class="form__section">规则定义</div>
+        <div class="form__row" data-form-row="ruleName"><label class="form__label"><i>*</i>规则名称</label><div class="form__control"><input class="input" type="text" name="ruleName" data-field="ruleName" data-required="1" data-error="规则名称不能为空" placeholder="例如 主变温度越限" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="metric"><label class="form__label"><i>*</i>监测指标</label><div class="form__control"><select class="select" name="metric" data-field="metric" data-required="1" data-error="请选择监测指标" placeholder="请选择"><option value="">请选择</option><option value="温度">温度</option><option value="局放值">局放值</option><option value="电流">电流</option><option value="链路时延">链路时延</option><option value="湿度">湿度</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="threshold"><label class="form__label"><i>*</i>阈值</label><div class="form__control"><input class="input" type="text" name="threshold" data-field="threshold" data-required="1" data-rule="number" data-error="阈值必须是数字" placeholder="仅数字" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="scope"><label class="form__label">适用资产类型</label><div class="form__control"><div class="toolbar__left" name="scope" data-field="scope"><label class="checkbox"><input type="checkbox" name="scope" value="主机设备">主机设备</label><label class="checkbox"><input type="checkbox" name="scope" value="传感设备">传感设备</label><label class="checkbox"><input type="checkbox" name="scope" value="网络设备">网络设备</label><label class="checkbox"><input type="checkbox" name="scope" value="控制柜">控制柜</label></div><div class="form__error"></div></div></div><div class="form__row" data-form-row="enabled"><label class="form__label">立即启用</label><div class="form__control"><label class="switch"><input type="checkbox" name="enabled" checked>启用后参与编排</label><div class="form__hint">启用后参与编排</div><div class="form__error"></div></div></div>
+      <div class="form__foot"></div>
+    </form></div>
+          <div class="dialog__foot"><button type="button" class="btn" data-act="overlay:close">取消</button><button type="button" class="btn btn--primary" data-act="form:validate:rule|overlay:close|toast:规则已添加">保存规则</button></div></div></div>
+<div class="toast" data-toast></div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

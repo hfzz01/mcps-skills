@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资产台账 · 可交互原型</title>
+<link rel="stylesheet" href="../assets/charter.css">
+<link rel="stylesheet" href="../assets/components.css">
+</head>
+<body data-base="" data-default-scene="default"
+  data-charter-hash="27becad3059bfb20" data-page-id="asset-ledger" data-scenario="existing-optimization">
+<div class="app">
+<header class="app-header">
+    <div class="brand" data-act="navigate:../index" style="cursor:pointer">
+      <div class="brand__mark">P</div>
+      <div><span class="brand__text">PRISM</span><span class="brand__sub">可交互原型</span></div>
+    </div>
+    <div class="header-path">资产管理 / 资产台账</div>
+    <div class="header-right">
+      <span class="header-chip">存量页面功能优化</span>
+      <span>内网原型 · 非生产系统</span><span class="avatar">需</span>
+    </div>
+  </header>
+<div class="app-body">
+<nav class="sidebar"><div class="nav-group"><div class="nav-group__title">资产管理</div><div class="nav-item is-active" data-act="navigate:asset-ledger">资产台账</div><div class="nav-item" data-act="navigate:asset-detail">资产详情</div></div><div class="nav-group"><div class="nav-group__title">智能巡检</div><div class="nav-item" data-act="navigate:inspection-plan">智能巡检编排<span class="nav-item__dot"></span></div><div class="nav-item" data-act="navigate:inspection-result">巡检结果看板<span class="nav-item__dot"></span></div></div><div class="nav-group"><div class="nav-group__title">专项台账</div><div class="nav-item" data-act="navigate:ledger-station">站点资产台账</div><div class="nav-item" data-act="navigate:ledger-transformer">主变设备台账</div><div class="nav-item" data-act="navigate:ledger-sensor">传感设备台账</div><div class="nav-item" data-act="navigate:ledger-network">网络设备台账</div><div class="nav-item" data-act="navigate:ledger-cabinet">控制柜台账</div><div class="nav-item" data-act="navigate:ledger-power">电源设备台账</div><div class="nav-item" data-act="navigate:ledger-line">输电线路台账</div><div class="nav-item" data-act="navigate:ledger-meter">计量装置台账</div><div class="nav-item" data-act="navigate:ledger-protect">保护装置台账</div><div class="nav-item" data-act="navigate:ledger-comm">通信设备台账</div><div class="nav-item" data-act="navigate:ledger-spare">备品备件台账</div><div class="nav-item" data-act="navigate:ledger-tool">工器具台账</div></div></nav>
+<main class="main"><div class="page">
+<div class="breadcrumb"><span>资产管理</span><b>资产台账</b></div>
+<div class="toolbar" style="border:1px solid var(--line);border-radius:var(--r-md);margin-bottom:var(--sp-4)">
+    <div class="toolbar__left">
+      <span class="tag tag--warn">存量页面优化</span>
+      <span class="toolbar__count">橙色虚线框标出本次变更区域；「新旧对照」场景可并排比较改版前后</span>
+    </div>
+    <div class="toolbar__right">
+      <button type="button" class="btn btn--sm" data-act="diff:on">显示变更标记</button>
+      <button type="button" class="btn btn--sm" data-act="diff:off">隐藏变更标记</button>
+    </div>
+  </div>
+<div class="scene-bar"><span class="scene-bar__label">交互状态（点击切换）</span><button type="button" class="scene-btn is-active" data-scene-btn="default" data-act="scene:default">常规列表</button><button type="button" class="scene-btn" data-scene-btn="loading" data-act="scene:loading">加载中</button><button type="button" class="scene-btn" data-scene-btn="empty" data-act="scene:empty">空数据</button><button type="button" class="scene-btn" data-scene-btn="selected" data-act="scene:selected">批量选中</button><button type="button" class="scene-btn" data-scene-btn="compare" data-act="scene:compare">新旧对照</button><button type="button" class="scene-btn" data-scene-btn="error" data-act="scene:error">接口异常</button></div>
+<div class="scene is-active" data-scene="default">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产台账</h1>
+        <p class="page-head__desc">管理全量设备资产，支持按类型、状态、班组筛选；本次优化增加批量操作与状态语义化展示。</p>
+        <div class="page-head__badges"><span class="tag tag--warn"><span class="tag__dot"></span>存量页面优化</span><span class="tag tag--info"><span class="tag__dot"></span>基线：线上 v2.4</span></div>
+      </div>
+      <div class="page-head__actions"><button type="button" class="btn btn--primary" data-act="dialog:create">新增资产</button><button type="button" class="btn" data-act="navigate:inspection-plan">发起巡检</button><button type="button" class="btn" data-act="toast:导出任务已创建">导出台账</button></div>
+    </div>
+<div class="alert alert--info"><div><b>交互提示</b>　点「显示变更标记」看本次改了哪里；点顶部状态按钮切加载 / 空数据 / 异常 / 批量选中；表格行可跳转详情页；点「新增资产」在弹窗里试必填校验。</div></div>
+<div class="is-changed"><span class="diff-badge">筛选增强</span><div class="filter">
+      <div class="field" data-field-wrap="kw"><label class="field__label">资产名称</label><input class="input" type="text" name="kw" data-field="kw" placeholder="输入名称或编号" value=""><div class="field__error"></div></div><div class="field" data-field-wrap="type"><label class="field__label">资产类型</label><select class="select" name="type" data-field="type" placeholder="全部类型"><option value="">全部类型</option><option value="主机设备">主机设备</option><option value="传感设备">传感设备</option><option value="网络设备">网络设备</option><option value="控制柜">控制柜</option></select><div class="field__error"></div></div><div class="field" data-field-wrap="status"><label class="field__label">运行状态</label><select class="select" name="status" data-field="status" placeholder="全部状态"><option value="">全部状态</option><option value="在运">在运</option><option value="停用">停用</option><option value="检修">检修</option><option value="待验收">待验收</option></select><div class="field__error"></div></div><div class="field" data-field-wrap="owner"><label class="field__label">所属班组</label><select class="select" name="owner" data-field="owner" placeholder="全部班组"><option value="">全部班组</option><option value="运行一班">运行一班</option><option value="运行二班">运行二班</option><option value="检修班">检修班</option><option value="自动化组">自动化组</option></select><div class="field__error"></div></div><div class="field" data-field-wrap="date"><label class="field__label">更新日期</label><input class="date" type="text" name="date" data-field="date" placeholder="选择日期" value=""><div class="field__error"></div></div>
+      <div class="toolbar__left"><button type="button" class="btn btn--primary" data-act="scene:loading|wait:600|scene:default|toast:查询完成">查询</button><button type="button" class="btn" data-act="toast:筛选条件已重置">重置</button></div>
+      <div class="change-note">输入任意条件后点查询，会真实经过加载状态再回到列表。</div>
+    </div>
+    <div class="change-note">新增「所属班组」「更新日期」两个筛选条件，并把「查询」接到加载状态剧本。</div></div>
+<div class="is-changed"><span class="diff-badge">批量操作</span><div class="panel">
+      
+      <div class="panel__body"><div class="toolbar">
+      <div class="toolbar__left"><span class="toolbar__count">共 128 条资产</span><button type="button" class="btn btn--sm" data-act="scene:selected">批量停用</button><button type="button" class="btn btn--sm" data-act="toast:已导出选中项">批量导出</button><button type="button" class="btn btn--sm" data-act="select:all">全选</button><button type="button" class="btn btn--sm" data-act="select:none">取消全选</button></div>
+      <div class="toolbar__right"><button type="button" class="btn btn--sm" data-act="toast:列设置面板">列设置</button><button type="button" class="btn btn--sm" data-act="scene:loading|wait:600|scene:default">刷新</button></div>
+    </div>
+<div class="table-wrap"><table class="table"><thead><tr><th style="width:36px"><input type="checkbox" data-select-all></th><th>资产编号</th><th>资产名称</th><th>类型</th><th>运行状态</th><th>所属班组</th><th>更新日期</th><th>操作</th></tr></thead><tbody><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-001</td><td>1号主变在线监测主机<span class="table__sub">站点 A / 机柜 03</span></td><td>主机设备</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td><td>运行一班</td><td>2026-10-28</td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">查看详情</span><span class="table__link" data-act="navigate:inspection-plan">发起巡检</span></div></td>
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-002</td><td>2号母线温度传感器<span class="table__sub">站点 A / 母线室</span></td><td>传感设备</td><td><span class="tag tag--warn"><span class="tag__dot"></span></span></td><td>检修班</td><td>2026-10-27</td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">查看详情</span><span class="table__link" data-act="navigate:inspection-plan">发起巡检</span></div></td>
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-003</td><td>汇聚交换机 SW-01<span class="table__sub">站点 B / 通信柜</span></td><td>网络设备</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td><td>自动化组</td><td>2026-10-26</td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">查看详情</span><span class="table__link" data-act="navigate:inspection-plan">发起巡检</span></div></td>
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-004</td><td>直流屏控制柜<span class="table__sub">站点 B / 直流室</span></td><td>控制柜</td><td><span class="tag tag--info"><span class="tag__dot"></span></span></td><td>运行二班</td><td>2026-10-24</td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">查看详情</span><span class="table__link" data-act="navigate:inspection-plan">发起巡检</span></div></td>
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-005</td><td>局放监测网关<span class="table__sub">站点 C / 高压室</span></td><td>网络设备</td><td><span class="tag tag--brand"><span class="tag__dot"></span></span></td><td>自动化组</td><td>2026-10-22</td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">查看详情</span><span class="table__link" data-act="navigate:inspection-plan">发起巡检</span></div></td>
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-006</td><td>环境温湿度传感器<span class="table__sub">站点 C / 主控室</span></td><td>传感设备</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td><td>运行一班</td><td>2026-10-20</td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">查看详情</span><span class="table__link" data-act="navigate:inspection-plan">发起巡检</span></div></td>
+      </tr></tbody></table></div><div class="pager">
+        <span class="pager__info">共 128 条　每页 10 条</span>
+        <button class="pager__btn">上一页</button>
+        <button class="pager__btn is-active">1</button>
+        <button class="pager__btn">2</button>
+        <button class="pager__btn">下一页</button>
+      </div></div></div>
+    <div class="change-note">表格增加多选列，工具条增加批量停用 / 批量导出，选中行后状态可用。</div></div>
+</div>
+<div class="scene" data-scene="loading">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产台账</h1>
+        <p class="page-head__desc">正在读取资产数据…</p>
+        
+      </div>
+      
+    </div>
+<div class="panel">
+      
+      <div class="panel__body"><div style="padding:var(--sp-6)"><div class="toolbar__left" style="margin-bottom:var(--sp-4)"><span class="spinner"></span><span>正在加载资产台账数据…</span></div>
+      <div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:88%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:76%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:88%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:76%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div></div></div></div><div class="change-note">此状态由「查询」「刷新」「提交」等动作自动经过，也可在上方状态条直接切换。</div>
+</div>
+<div class="scene" data-scene="empty">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产台账</h1>
+        <p class="page-head__desc">当前筛选条件下没有资产。</p>
+        
+      </div>
+      
+    </div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="empty"><div class="empty__icon">□</div>
+      <div class="empty__title">没有符合条件的资产</div>
+      <div class="empty__desc">试试放宽筛选条件，或新增一条资产记录。</div>
+      <div class="toolbar__left"><button type="button" class="btn btn--primary" data-act="dialog:create">新增资产</button><button type="button" class="btn" data-act="scene:default|toast:已回到全量列表">清除筛选</button></div></div></div></div>
+</div>
+<div class="scene" data-scene="selected">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产台账</h1>
+        <p class="page-head__desc">已选中 3 条资产，可执行批量操作。</p>
+        <div class="page-head__badges"><span class="tag tag--brand"><span class="tag__dot"></span>已选 3 项</span></div>
+      </div>
+      
+    </div>
+<div class="alert alert--warn"><div><b>批量操作确认</b>　停用操作会写入变更记录，执行前请在弹窗中确认影响范围。</div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="toolbar">
+      <div class="toolbar__left"><span class="toolbar__count">已选 3 条 / 共 128 条</span><button type="button" class="btn btn--danger btn--sm" data-act="dialog:batch">批量停用</button><button type="button" class="btn btn--sm" data-act="toast:已导出 3 条资产">批量导出</button><button type="button" class="btn btn--sm" data-act="select:none|scene:default">取消选择</button></div>
+      <div class="toolbar__right"><button type="button" class="btn btn--sm" data-act="scene:default">返回列表</button></div>
+    </div>
+<div class="table-wrap"><table class="table"><thead><tr><th style="width:36px"><input type="checkbox" data-select-all></th><th>资产编号</th><th>资产名称</th><th>状态</th></tr></thead><tbody><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-001</td><td>1号主变在线监测主机</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-002</td><td>2号母线温度传感器</td><td><span class="tag tag--warn"><span class="tag__dot"></span></span></td>
+        
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-2026-003</td><td>汇聚交换机 SW-01</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        
+      </tr></tbody></table></div><div class="pager">
+        <span class="pager__info">共 3 条　每页 10 条</span>
+        <button class="pager__btn">上一页</button>
+        <button class="pager__btn is-active">1</button>
+        <button class="pager__btn">2</button>
+        <button class="pager__btn">下一页</button>
+      </div></div></div>
+</div>
+<div class="scene" data-scene="compare">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产台账 · 改版前后对照</h1>
+        <p class="page-head__desc">左侧为存量线上版本，右侧为本次需求改版后版本，组件形态与配色均来自同一套组件契约。</p>
+        
+      </div>
+      
+    </div>
+<div class="compare" data-compare>
+      <div class="compare__col"><div class="compare__title">改版前（线上 v2.4）</div><div class="alert alert--info"><div><b>旧版</b>　仅支持名称 / 类型两个筛选条件，状态为纯文字，表格无多选列。</div></div>
+<div class="table-wrap"><table class="table"><thead><tr><th>编号</th><th>名称</th><th>状态</th></tr></thead><tbody><tr>
+        
+        <td>ZC-001</td><td>1号主变主机</td><td>在运</td>
+        
+      </tr><tr>
+        
+        <td>ZC-002</td><td>母线传感器</td><td>检修</td>
+        
+      </tr></tbody></table></div></div>
+      <div class="compare__col is-new"><div class="compare__title">改版后（本次需求）</div><div class="alert alert--ok"><div><b>新版</b>　五个筛选条件、语义色状态标签、多选列与批量操作工具条。</div></div>
+<div class="table-wrap"><table class="table"><thead><tr><th style="width:36px"><input type="checkbox" data-select-all></th><th>编号</th><th>名称</th><th>状态</th><th>操作</th></tr></thead><tbody><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-001</td><td>1号主变主机</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">详情</span></div></td>
+      </tr><tr>
+        <td><input type="checkbox" data-row-check></td>
+        <td>ZC-002</td><td>母线传感器</td><td><span class="tag tag--warn"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:asset-detail">详情</span></div></td>
+      </tr></tbody></table></div></div>
+    </div><div class="change-note">对照页用同一组件契约渲染，差异只来自数据，因此不会出现「画歪」的对照图。</div>
+</div>
+<div class="scene" data-scene="error">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产台账</h1>
+        <p class="page-head__desc">数据读取失败。</p>
+        
+      </div>
+      
+    </div>
+<div class="alert alert--risk"><div><b>服务异常</b>　资产列表接口返回 500，请稍后重试或联系系统管理员。</div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="empty"><div class="empty__icon">□</div>
+      <div class="empty__title">数据加载失败</div>
+      <div class="empty__desc">原型中可直接模拟重试流程。</div>
+      <div class="toolbar__left"><button type="button" class="btn btn--primary" data-act="scene:loading|wait:600|scene:default|toast:数据已恢复">重新加载</button><button type="button" class="btn" data-act="navigate:../index">返回门户</button></div></div></div></div>
+</div>
+<div class="footnote">
+    页面 <b>asset-ledger</b> · 存量页面功能优化 ·
+    状态 6 个 · 样式宪章 <code>27becad3059bfb20</code><br>
+    需求来源：examples/需求-存量优化.md ｜ 一致性基线：受控浏览器探索存量页 computedStyle + 原页面截图色板量化<br>
+    存量页功能优化：新增批量操作与筛选增强，状态标签改为语义色，表格行可跳转详情与发起巡检。
+  </div>
+</div></main>
+</div>
+</div>
+<div class="overlay" data-overlay="create"><div class="overlay__mask"></div><div class="dialog"><div class="dialog__head"><span>新增资产</span><span class="dialog__close" data-overlay-close>×</span></div>
+          <div class="dialog__body"><div class="alert alert--info"><div><b>填写说明</b>　带 * 的字段为必填；留空点提交会触发校验错误态。</div></div>
+<form class="form" data-form="create" onsubmit="return false">
+      <div class="form__section">基本信息</div>
+        <div class="form__row" data-form-row="assetName"><label class="form__label"><i>*</i>资产名称</label><div class="form__control"><input class="input" type="text" name="assetName" data-field="assetName" data-required="1" data-error="资产名称不能为空" placeholder="请输入资产名称" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="assetCode"><label class="form__label"><i>*</i>资产编号</label><div class="form__control"><input class="input" type="text" name="assetCode" data-field="assetCode" data-required="1" data-rule="min:4" data-error="编号至少 4 个字符" placeholder="例如 ZC-2026-007" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="assetType"><label class="form__label"><i>*</i>资产类型</label><div class="form__control"><select class="select" name="assetType" data-field="assetType" data-required="1" data-error="请选择资产类型" placeholder="请选择"><option value="">请选择</option><option value="主机设备">主机设备</option><option value="传感设备">传感设备</option><option value="网络设备">网络设备</option><option value="控制柜">控制柜</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="assetOwner"><label class="form__label">所属班组</label><div class="form__control"><select class="select" name="assetOwner" data-field="assetOwner" placeholder="请选择"><option value="">请选择</option><option value="运行一班">运行一班</option><option value="运行二班">运行二班</option><option value="检修班">检修班</option><option value="自动化组">自动化组</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="memo"><label class="form__label">备注</label><div class="form__control"><textarea class="textarea" name="memo" data-field="memo" placeholder="选填"></textarea><div class="form__error"></div></div></div>
+      <div class="form__foot"></div>
+    </form></div>
+          <div class="dialog__foot"><button type="button" class="btn" data-act="overlay:close">取消</button><button type="button" class="btn btn--primary" data-act="form:validate:create|overlay:close|toast:新增资产已提交|scene:loading|wait:600|scene:default">提交</button></div></div></div>
+<div class="overlay" data-overlay="batch"><div class="overlay__mask"></div><div class="dialog"><div class="dialog__head"><span>批量停用确认</span><span class="dialog__close" data-overlay-close>×</span></div>
+          <div class="dialog__body"><div class="alert alert--warn"><div><b>影响范围</b>　本次将停用 3 条资产，停用后不再参与巡检编排。</div></div>
+<div class="desc-list"><div class="desc-item">
+      <div class="desc-item__label">选中条数</div><div class="desc-item__value">3 条</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">操作类型</div><div class="desc-item__value">批量停用</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">操作人</div><div class="desc-item__value">需求分析演示账号</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">可回滚</div><div class="desc-item__value">是（30 天内）</div>
+    </div></div></div>
+          <div class="dialog__foot"><button type="button" class="btn" data-act="overlay:close">取消</button><button type="button" class="btn btn--primary" data-act="overlay:close|toast:已批量停用 3 项|scene:default">确认停用</button></div></div></div>
+<div class="toast" data-toast></div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

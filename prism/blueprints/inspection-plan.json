@@ -1,0 +1,151 @@
+{
+  "id": "inspection-plan",
+  "title": "智能巡检编排",
+  "group": "智能巡检",
+  "scenario": "new-feature",
+  "order": 30,
+  "generator": { "model": "Qwen3.7-plus", "stage": "新增功能需求 → 三步流程蓝图" },
+  "nav": true,
+  "breadcrumb": ["智能巡检", "智能巡检编排"],
+  "summary": "全新功能页：三步编排（基础信息 → 规则配置 → 确认提交），含真实输入、必填与格式校验、弹窗新增规则、加载态与成功态，再跳结果看板。",
+  "source": {
+    "requirement": "examples/需求-新增功能.md",
+    "baseline": "样式宪章 + 组件契约（无存量页面可比，一致性由编译期保证）",
+    "reference": "examples/参考截图-示例.png",
+    "componentLib": "examples/组件库映射.md"
+  },
+  "defaultScene": "step1",
+  "scenes": {
+    "step1": {
+      "label": "① 基础信息",
+      "blocks": [
+        { "component": "pageHead", "props": {
+          "title": "智能巡检编排",
+          "desc": "按资产类型与运行态自动编排巡检任务；本页为新增功能，所有区块仍取自同一组件契约。",
+          "badges": [ { "text": "新增功能", "tone": "brand" }, { "text": "三步编排", "tone": "info" } ],
+          "actions": [ { "label": "返回台账", "act": ["navigate:asset-ledger"] }, { "label": "查看编排结果", "act": ["navigate:inspection-result"] } ]
+        } },
+        { "component": "steps", "props": { "id": "plan", "current": 1, "items": [ { "title": "基础信息" }, { "title": "规则配置" }, { "title": "确认提交" } ] } },
+        { "component": "notice", "props": { "tone": "info", "title": "交互提示", "text": "带 * 为必填；留空点「下一步」会显示错误态；「联系电话」填错格式也会拦下。校验通过后自动进入第 ② 步。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "form", "props": { "id": "plan", "sections": [
+            { "title": "计划信息", "fields": [
+              { "label": "计划名称", "name": "planName", "type": "input", "required": true, "placeholder": "例如 主变季度专项巡检", "error": "计划名称不能为空" },
+              { "label": "计划编号", "name": "planCode", "type": "input", "required": true, "rule": "min:4", "placeholder": "例如 XJ-2026-0090", "error": "计划编号至少 4 个字符" },
+              { "label": "巡检类型", "name": "planType", "type": "select", "required": true, "placeholder": "请选择", "options": ["例行巡检", "专项巡检", "故障排查", "验收巡检"], "error": "请选择巡检类型" },
+              { "label": "开始日期", "name": "startDate", "type": "date", "required": true, "placeholder": "选择日期", "error": "请选择开始日期" },
+              { "label": "责任班组", "name": "owner", "type": "select", "placeholder": "请选择", "options": ["运行一班", "运行二班", "检修班", "自动化组"] },
+              { "label": "联系人电话", "name": "phone", "type": "input", "rule": "phone", "placeholder": "选填，11 位手机号", "error": "手机号格式不正确" },
+              { "label": "启用自动派发", "name": "autoDispatch", "type": "switch", "hint": "启用后按规则自动生成巡检单", "value": true },
+              { "label": "备注", "name": "memo", "type": "textarea", "placeholder": "选填，说明编排目标与边界" }
+            ] }
+          ], "foot": [
+            { "label": "存为草稿", "act": ["scene:draft", "toast:草稿已保存"] },
+            { "label": "下一步：规则配置", "tone": "primary", "act": ["form:validate:plan", "step:2", "scene:step2"] }
+          ] } }
+        ] } }
+      ]
+    },
+    "step2": {
+      "label": "② 规则配置",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "智能巡检编排 · 规则配置", "desc": "配置触发条件与阈值；新增规则在弹窗中完成输入与校验。", "actions": [ { "label": "返回台账", "act": ["navigate:asset-ledger"] } ] } },
+        { "component": "steps", "props": { "id": "plan", "current": 2, "items": [ { "title": "基础信息" }, { "title": "规则配置" }, { "title": "确认提交" } ] } },
+        { "component": "panel", "props": { "title": "已配置规则", "headExtra": [ { "label": "新增规则", "tone": "primary", "size": "sm", "act": ["dialog:addRule"] } ], "body": [
+          { "component": "dataTable", "props": {
+            "columns": [ { "key": "code", "title": "规则编号" }, { "key": "name", "title": "规则名称" }, { "key": "scope", "title": "适用范围" }, { "key": "threshold", "title": "阈值" }, { "key": "state", "title": "状态" } ],
+            "rows": [
+              { "code": "R-001", "name": "主变温度越限", "scope": "主机设备", "threshold": "≥ 85 ℃", "state": { "tag": "启用", "tone": "ok" } },
+              { "code": "R-002", "name": "局放值突增", "scope": "传感设备", "threshold": "≥ 300 pC", "state": { "tag": "启用", "tone": "ok" } },
+              { "code": "R-003", "name": "链路中断", "scope": "网络设备", "threshold": "连续 3 次", "state": { "tag": "停用", "tone": "info" } }
+            ],
+            "selectable": false, "pager": false,
+            "rowActs": [ { "label": "编辑", "act": ["dialog:addRule"] }, { "label": "停用", "act": ["toast:规则已停用"] } ], "opsTitle": "操作"
+          } }
+        ] } },
+        { "component": "notice", "props": { "tone": "warn", "title": "编排约束", "text": "至少保留 1 条启用规则才可提交；本原型已预置 2 条启用规则。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "toolbar", "props": { "count": "规则校验通过", "left": [
+            { "label": "上一步", "size": "sm", "act": ["step:1", "scene:step1"] },
+            { "label": "下一步：确认提交", "tone": "primary", "size": "sm", "act": ["step:3", "scene:step3"] }
+          ], "right": [ { "label": "新增规则", "size": "sm", "act": ["dialog:addRule"] } ] } }
+        ] } }
+      ]
+    },
+    "step3": {
+      "label": "③ 确认提交",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "智能巡检编排 · 确认提交", "desc": "核对编排信息后提交；提交过程会经过加载状态再到成功状态。" } },
+        { "component": "steps", "props": { "id": "plan", "current": 3, "items": [ { "title": "基础信息" }, { "title": "规则配置" }, { "title": "确认提交" } ] } },
+        { "component": "panel", "props": { "title": "编排摘要", "body": [
+          { "component": "descList", "props": { "items": [
+            { "label": "计划名称", "value": "主变季度专项巡检" }, { "label": "计划编号", "value": "XJ-2026-0090" },
+            { "label": "巡检类型", "value": "专项巡检" }, { "label": "责任班组", "value": "运行一班" },
+            { "label": "启用规则", "value": "2 条（R-001 / R-002）" }, { "label": "自动派发", "value": "启用" }
+          ] } }
+        ] } },
+        { "component": "panel", "props": { "body": [
+          { "component": "toolbar", "props": { "count": "提交后将生成 12 张巡检单", "left": [
+            { "label": "上一步", "size": "sm", "act": ["step:2", "scene:step2"] },
+            { "label": "确认提交", "tone": "primary", "size": "sm", "act": ["scene:loading", "wait:800", "scene:success", "toast:编排已提交"] }
+          ], "right": [ { "label": "返回台账", "size": "sm", "act": ["navigate:asset-ledger"] } ] } }
+        ] } }
+      ]
+    },
+    "loading": {
+      "label": "提交中",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "智能巡检编排", "desc": "正在生成巡检单…" } },
+        { "component": "panel", "props": { "body": [ { "component": "loadingState", "props": { "rows": 6, "text": "正在按 2 条启用规则生成 12 张巡检单…" } } ] } }
+      ]
+    },
+    "success": {
+      "label": "提交成功",
+      "blocks": [
+        { "component": "steps", "props": { "id": "plan", "current": 3, "items": [ { "title": "基础信息" }, { "title": "规则配置" }, { "title": "确认提交" } ] } },
+        { "component": "panel", "props": { "body": [
+          { "component": "successState", "props": { "title": "编排提交成功", "desc": "已按启用规则生成 12 张巡检单，可在结果看板查看分布与趋势。", "actions": [
+            { "label": "查看编排结果", "tone": "primary", "act": ["navigate:inspection-result"] },
+            { "label": "再建一版", "act": ["step:1", "scene:step1"] },
+            { "label": "返回台账", "act": ["navigate:asset-ledger"] }
+          ] } }
+        ] } }
+      ]
+    },
+    "draft": {
+      "label": "草稿态",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "info", "title": "草稿已保存", "text": "草稿不会触发巡检单生成，可随时继续编辑。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "emptyState", "props": { "title": "当前没有提交中的编排", "desc": "继续填写基础信息或返回台账。", "actions": [
+            { "label": "继续编辑", "tone": "primary", "act": ["scene:step1"] },
+            { "label": "返回台账", "act": ["navigate:asset-ledger"] }
+          ] } }
+        ] } }
+      ]
+    }
+  },
+  "overlays": [
+    {
+      "id": "addRule",
+      "kind": "dialog",
+      "title": "新增触发规则",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "info", "title": "填写说明", "text": "规则名称必填；阈值需为数字，填字母会被校验拦下。" } },
+        { "component": "form", "props": { "id": "rule", "sections": [
+          { "title": "规则定义", "fields": [
+            { "label": "规则名称", "name": "ruleName", "type": "input", "required": true, "placeholder": "例如 主变温度越限", "error": "规则名称不能为空" },
+            { "label": "监测指标", "name": "metric", "type": "select", "required": true, "placeholder": "请选择", "options": ["温度", "局放值", "电流", "链路时延", "湿度"], "error": "请选择监测指标" },
+            { "label": "阈值", "name": "threshold", "type": "input", "required": true, "rule": "number", "placeholder": "仅数字", "error": "阈值必须是数字" },
+            { "label": "适用资产类型", "name": "scope", "type": "checkbox", "options": ["主机设备", "传感设备", "网络设备", "控制柜"] },
+            { "label": "立即启用", "name": "enabled", "type": "switch", "hint": "启用后参与编排", "value": true }
+          ] }
+        ], "foot": [] } }
+      ],
+      "foot": [
+        { "label": "取消", "act": ["overlay:close"] },
+        { "label": "保存规则", "tone": "primary", "act": ["form:validate:rule", "overlay:close", "toast:规则已添加"] }
+      ]
+    }
+  ]
+}

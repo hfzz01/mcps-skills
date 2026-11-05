@@ -1,0 +1,29 @@
+{
+  "batchGroup": "special-ledger",
+  "group": "专项台账",
+  "template": "blueprints/batch/_template.json",
+  "linkTo": "asset-ledger",
+  "statuses": ["在运", "停用", "检修", "待验收"],
+  "columns": [
+    { "key": "code", "title": "台账编号" },
+    { "key": "name", "title": "台账项名称" },
+    { "key": "status", "title": "运行状态" },
+    { "key": "owner", "title": "归口班组" },
+    { "key": "updated", "title": "更新日期" },
+    { "key": "count", "title": "关联设备数" }
+  ],
+  "items": [
+    { "id": "ledger-station", "title": "站点资产台账", "code": "ST", "owner": "运行一班", "total": 46 },
+    { "id": "ledger-transformer", "title": "主变设备台账", "code": "TR", "owner": "运行一班", "total": 38 },
+    { "id": "ledger-sensor", "title": "传感设备台账", "code": "SE", "owner": "自动化组", "total": 124 },
+    { "id": "ledger-network", "title": "网络设备台账", "code": "NW", "owner": "自动化组", "total": 67 },
+    { "id": "ledger-cabinet", "title": "控制柜台账", "code": "CB", "owner": "运行二班", "total": 29 },
+    { "id": "ledger-power", "title": "电源设备台账", "code": "PW", "owner": "运行二班", "total": 53 },
+    { "id": "ledger-line", "title": "输电线路台账", "code": "LN", "owner": "检修班", "total": 88 },
+    { "id": "ledger-meter", "title": "计量装置台账", "code": "MT", "owner": "检修班", "total": 71 },
+    { "id": "ledger-protect", "title": "保护装置台账", "code": "PT", "owner": "自动化组", "total": 42 },
+    { "id": "ledger-comm", "title": "通信设备台账", "code": "CM", "owner": "自动化组", "total": 35 },
+    { "id": "ledger-spare", "title": "备品备件台账", "code": "SP", "owner": "外包运维", "total": 96 },
+    { "id": "ledger-tool", "title": "工器具台账", "code": "TL", "owner": "外包运维", "total": 58 }
+  ]
+}

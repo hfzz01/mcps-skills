@@ -1,0 +1,109 @@
+{
+  "id": "inspection-result",
+  "title": "巡检结果看板",
+  "group": "智能巡检",
+  "scenario": "new-feature",
+  "order": 40,
+  "generator": { "model": "deepseekv4.1-flash1017", "stage": "看板字段与状态文案补全" },
+  "nav": true,
+  "breadcrumb": ["智能巡检", "巡检结果看板"],
+  "summary": "新增功能的配套页面：指标卡、趋势占位图、巡检单表格与详情抽屉，组件形态与存量页完全一致。",
+  "source": {
+    "requirement": "examples/需求-新增功能.md",
+    "baseline": "样式宪章 + 组件契约",
+    "componentLib": "examples/组件库映射.md"
+  },
+  "defaultScene": "default",
+  "scenes": {
+    "default": {
+      "label": "结果总览",
+      "blocks": [
+        { "component": "pageHead", "props": {
+          "title": "巡检结果看板",
+          "desc": "汇总编排执行结果；指标卡、图表容器、表格全部来自同一组件契约。",
+          "badges": [ { "text": "新增功能", "tone": "brand" }, { "text": "本周期 12 单", "tone": "info" } ],
+          "actions": [
+            { "label": "返回编排", "act": ["navigate:inspection-plan"] },
+            { "label": "返回台账", "act": ["navigate:asset-ledger"] },
+            { "label": "刷新", "tone": "primary", "act": ["scene:loading", "wait:600", "scene:default", "toast:数据已刷新"] }
+          ]
+        } },
+        { "component": "statGrid", "props": { "items": [
+          { "label": "生成巡检单", "value": "12", "trend": "较上周期 +3" },
+          { "label": "已完成", "value": "9", "trend": "完成率 75%" },
+          { "label": "异常项", "value": "2", "trend": "需复核", "direction": "down" },
+          { "label": "自动派发率", "value": "100%", "trend": "规则全部命中" }
+        ] } },
+        { "component": "chartGrid", "props": { "boxes": [
+          { "title": "近 8 周期巡检单量", "bars": [35, 52, 44, 68, 57, 76, 63, 88] },
+          { "title": "异常项分布", "bars": [20, 45, 30, 72, 38, 55, 26, 48] }
+        ] } },
+        { "component": "panel", "props": { "title": "巡检单明细", "body": [
+          { "component": "dataTable", "props": {
+            "columns": [ { "key": "code", "title": "巡检单号" }, { "key": "asset", "title": "资产" }, { "key": "rule", "title": "命中规则" }, { "key": "owner", "title": "执行班组" }, { "key": "date", "title": "执行日期" }, { "key": "result", "title": "结论" } ],
+            "rows": [
+              { "code": "XJ-2026-0091", "asset": "1号主变在线监测主机", "rule": "R-001 温度越限", "owner": "运行一班", "date": "2026-11-02", "result": { "tag": "正常", "tone": "ok" } },
+              { "code": "XJ-2026-0092", "asset": "2号母线温度传感器", "rule": "R-002 局放突增", "owner": "检修班", "date": "2026-11-02", "result": { "tag": "异常", "tone": "warn" } },
+              { "code": "XJ-2026-0093", "asset": "汇聚交换机 SW-01", "rule": "R-003 链路中断", "owner": "自动化组", "date": "2026-11-01", "result": { "tag": "正常", "tone": "ok" } },
+              { "code": "XJ-2026-0094", "asset": "直流屏控制柜", "rule": "R-001 温度越限", "owner": "运行二班", "date": "2026-11-01", "result": { "tag": "待复核", "tone": "brand" } },
+              { "code": "XJ-2026-0095", "asset": "局放监测网关", "rule": "R-002 局放突增", "owner": "自动化组", "date": "2026-10-31", "result": { "tag": "异常", "tone": "warn" } }
+            ],
+            "selectable": true, "pager": { "total": 12, "page": 1, "size": 10 },
+            "rowActs": [ { "label": "查看详情", "act": ["drawer:detail"] }, { "label": "返回编排", "act": ["navigate:inspection-plan"] } ], "opsTitle": "操作"
+          } }
+        ] } }
+      ]
+    },
+    "loading": {
+      "label": "加载中",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "巡检结果看板", "desc": "正在汇总…" } },
+        { "component": "panel", "props": { "body": [ { "component": "loadingState", "props": { "rows": 6, "text": "正在汇总巡检结果…" } } ] } }
+      ]
+    },
+    "empty": {
+      "label": "无结果",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "巡检结果看板", "desc": "本周期还没有执行结果。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "emptyState", "props": { "title": "暂无巡检结果", "desc": "先在编排页提交一版规则，再回来看结果。", "actions": [
+            { "label": "去编排", "tone": "primary", "act": ["navigate:inspection-plan"] },
+            { "label": "返回总览", "act": ["scene:default"] }
+          ] } }
+        ] } }
+      ]
+    },
+    "error": {
+      "label": "汇总失败",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "risk", "title": "汇总失败", "text": "统计接口返回异常，可重试。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "emptyState", "props": { "title": "统计不可用", "desc": "点重新汇总走一遍加载状态。", "actions": [
+            { "label": "重新汇总", "tone": "primary", "act": ["scene:loading", "wait:600", "scene:default"] },
+            { "label": "返回台账", "act": ["navigate:asset-ledger"] }
+          ] } }
+        ] } }
+      ]
+    }
+  },
+  "overlays": [
+    {
+      "id": "detail",
+      "kind": "drawer",
+      "title": "巡检单详情 · XJ-2026-0091",
+      "blocks": [
+        { "component": "descList", "props": { "items": [
+          { "label": "巡检单号", "value": "XJ-2026-0091" }, { "label": "资产", "value": "1号主变在线监测主机" },
+          { "label": "命中规则", "value": "R-001 温度越限" }, { "label": "执行班组", "value": "运行一班" },
+          { "label": "执行日期", "value": "2026-11-02" }, { "label": "结论", "value": "正常" }
+        ] } },
+        { "component": "timeline", "props": { "items": [
+          { "time": "09:12", "title": "自动派发", "desc": "按 R-001 规则生成", "tone": "info" },
+          { "time": "10:05", "title": "现场执行", "desc": "运行一班完成采集", "tone": "info" },
+          { "time": "10:31", "title": "结论正常", "desc": "温度 62 ℃，低于阈值 85 ℃", "tone": "ok" }
+        ] } }
+      ],
+      "foot": [ { "label": "关闭", "act": ["overlay:close"] } ]
+    }
+  ]
+}

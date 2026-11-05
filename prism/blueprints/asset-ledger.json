@@ -1,0 +1,243 @@
+{
+  "id": "asset-ledger",
+  "title": "资产台账",
+  "group": "资产管理",
+  "scenario": "existing-optimization",
+  "order": 10,
+  "generator": { "model": "Qwen3.7-max", "stage": "需求文档 + 存量基线 → 差异蓝图" },
+  "nav": true,
+  "breadcrumb": ["资产管理", "资产台账"],
+  "summary": "存量页功能优化：新增批量操作与筛选增强，状态标签改为语义色，表格行可跳转详情与发起巡检。",
+  "source": {
+    "requirement": "examples/需求-存量优化.md",
+    "baseline": "受控浏览器探索存量页 computedStyle + 原页面截图色板量化",
+    "reference": "examples/参考截图-示例.png",
+    "componentLib": "examples/组件库映射.md"
+  },
+  "defaultScene": "default",
+  "scenes": {
+    "default": {
+      "label": "常规列表",
+      "blocks": [
+        {
+          "component": "pageHead",
+          "props": {
+            "title": "资产台账",
+            "desc": "管理全量设备资产，支持按类型、状态、班组筛选；本次优化增加批量操作与状态语义化展示。",
+            "badges": [
+              { "text": "存量页面优化", "tone": "warn" },
+              { "text": "基线：线上 v2.4", "tone": "info" }
+            ],
+            "actions": [
+              { "label": "新增资产", "tone": "primary", "act": ["dialog:create"] },
+              { "label": "发起巡检", "act": ["navigate:inspection-plan"] },
+              { "label": "导出台账", "act": ["toast:导出任务已创建"] }
+            ]
+          }
+        },
+        {
+          "component": "notice",
+          "props": {
+            "tone": "info",
+            "title": "交互提示",
+            "text": "点「显示变更标记」看本次改了哪里；点顶部状态按钮切加载 / 空数据 / 异常 / 批量选中；表格行可跳转详情页；点「新增资产」在弹窗里试必填校验。"
+          }
+        },
+        {
+          "component": "filterBar",
+          "changed": true,
+          "changeLabel": "筛选增强",
+          "changeNote": "新增「所属班组」「更新日期」两个筛选条件，并把「查询」接到加载状态剧本。",
+          "props": {
+            "fields": [
+              { "label": "资产名称", "name": "kw", "type": "input", "placeholder": "输入名称或编号" },
+              { "label": "资产类型", "name": "type", "type": "select", "placeholder": "全部类型", "options": ["主机设备", "传感设备", "网络设备", "控制柜"] },
+              { "label": "运行状态", "name": "status", "type": "select", "placeholder": "全部状态", "options": ["在运", "停用", "检修", "待验收"] },
+              { "label": "所属班组", "name": "owner", "type": "select", "placeholder": "全部班组", "options": ["运行一班", "运行二班", "检修班", "自动化组"] },
+              { "label": "更新日期", "name": "date", "type": "date", "placeholder": "选择日期" }
+            ],
+            "actions": [
+              { "label": "查询", "tone": "primary", "act": ["scene:loading", "wait:600", "scene:default", "toast:查询完成"] },
+              { "label": "重置", "act": ["toast:筛选条件已重置"] }
+            ],
+            "note": "输入任意条件后点查询，会真实经过加载状态再回到列表。"
+          }
+        },
+        {
+          "component": "panel",
+          "changed": true,
+          "changeLabel": "批量操作",
+          "changeNote": "表格增加多选列，工具条增加批量停用 / 批量导出，选中行后状态可用。",
+          "props": {
+            "body": [
+              {
+                "component": "toolbar",
+                "props": {
+                  "count": "共 128 条资产",
+                  "left": [
+                    { "label": "批量停用", "size": "sm", "act": ["scene:selected"] },
+                    { "label": "批量导出", "size": "sm", "act": ["toast:已导出选中项"] },
+                    { "label": "全选", "size": "sm", "act": ["select:all"] },
+                    { "label": "取消全选", "size": "sm", "act": ["select:none"] }
+                  ],
+                  "right": [
+                    { "label": "列设置", "size": "sm", "act": ["toast:列设置面板"] },
+                    { "label": "刷新", "size": "sm", "act": ["scene:loading", "wait:600", "scene:default"] }
+                  ]
+                }
+              },
+              {
+                "component": "dataTable",
+                "props": {
+                  "columns": [
+                    { "key": "code", "title": "资产编号" },
+                    { "key": "name", "title": "资产名称" },
+                    { "key": "type", "title": "类型" },
+                    { "key": "status", "title": "运行状态" },
+                    { "key": "owner", "title": "所属班组" },
+                    { "key": "updated", "title": "更新日期" }
+                  ],
+                  "rows": [
+                    { "code": "ZC-2026-001", "name": { "text": "1号主变在线监测主机", "sub": "站点 A / 机柜 03" }, "type": "主机设备", "status": { "tag": "在运", "tone": "ok" }, "owner": "运行一班", "updated": "2026-10-28" },
+                    { "code": "ZC-2026-002", "name": { "text": "2号母线温度传感器", "sub": "站点 A / 母线室" }, "type": "传感设备", "status": { "tag": "检修", "tone": "warn" }, "owner": "检修班", "updated": "2026-10-27" },
+                    { "code": "ZC-2026-003", "name": { "text": "汇聚交换机 SW-01", "sub": "站点 B / 通信柜" }, "type": "网络设备", "status": { "tag": "在运", "tone": "ok" }, "owner": "自动化组", "updated": "2026-10-26" },
+                    { "code": "ZC-2026-004", "name": { "text": "直流屏控制柜", "sub": "站点 B / 直流室" }, "type": "控制柜", "status": { "tag": "停用", "tone": "info" }, "owner": "运行二班", "updated": "2026-10-24" },
+                    { "code": "ZC-2026-005", "name": { "text": "局放监测网关", "sub": "站点 C / 高压室" }, "type": "网络设备", "status": { "tag": "待验收", "tone": "brand" }, "owner": "自动化组", "updated": "2026-10-22" },
+                    { "code": "ZC-2026-006", "name": { "text": "环境温湿度传感器", "sub": "站点 C / 主控室" }, "type": "传感设备", "status": { "tag": "在运", "tone": "ok" }, "owner": "运行一班", "updated": "2026-10-20" }
+                  ],
+                  "selectable": true,
+                  "pager": { "total": 128, "page": 1, "size": 10 },
+                  "rowActs": [
+                    { "label": "查看详情", "act": ["navigate:asset-detail"] },
+                    { "label": "发起巡检", "act": ["navigate:inspection-plan"] }
+                  ],
+                  "opsTitle": "操作"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "loading": {
+      "label": "加载中",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "资产台账", "desc": "正在读取资产数据…" } },
+        { "component": "panel", "props": { "body": [ { "component": "loadingState", "props": { "rows": 7, "text": "正在加载资产台账数据…" } } ] } }
+      ],
+      "note": "此状态由「查询」「刷新」「提交」等动作自动经过，也可在上方状态条直接切换。"
+    },
+    "empty": {
+      "label": "空数据",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "资产台账", "desc": "当前筛选条件下没有资产。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "emptyState", "props": { "title": "没有符合条件的资产", "desc": "试试放宽筛选条件，或新增一条资产记录。", "actions": [
+            { "label": "新增资产", "tone": "primary", "act": ["dialog:create"] },
+            { "label": "清除筛选", "act": ["scene:default", "toast:已回到全量列表"] }
+          ] } }
+        ] } }
+      ]
+    },
+    "selected": {
+      "label": "批量选中",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "资产台账", "desc": "已选中 3 条资产，可执行批量操作。", "badges": [ { "text": "已选 3 项", "tone": "brand" } ] } },
+        { "component": "notice", "props": { "tone": "warn", "title": "批量操作确认", "text": "停用操作会写入变更记录，执行前请在弹窗中确认影响范围。" } },
+        { "component": "panel", "props": { "body": [
+          { "component": "toolbar", "props": { "count": "已选 3 条 / 共 128 条", "left": [
+            { "label": "批量停用", "tone": "danger", "size": "sm", "act": ["dialog:batch"] },
+            { "label": "批量导出", "size": "sm", "act": ["toast:已导出 3 条资产"] },
+            { "label": "取消选择", "size": "sm", "act": ["select:none", "scene:default"] }
+          ], "right": [ { "label": "返回列表", "size": "sm", "act": ["scene:default"] } ] } },
+          { "component": "dataTable", "props": {
+            "columns": [ { "key": "code", "title": "资产编号" }, { "key": "name", "title": "资产名称" }, { "key": "status", "title": "状态" } ],
+            "rows": [
+              { "code": "ZC-2026-001", "name": "1号主变在线监测主机", "status": { "tag": "在运", "tone": "ok" } },
+              { "code": "ZC-2026-002", "name": "2号母线温度传感器", "status": { "tag": "检修", "tone": "warn" } },
+              { "code": "ZC-2026-003", "name": "汇聚交换机 SW-01", "status": { "tag": "在运", "tone": "ok" } }
+            ],
+            "selectable": true, "pager": { "total": 3, "page": 1, "size": 10 }, "rowActs": [], "opsTitle": "操作"
+          } }
+        ] } }
+      ]
+    },
+    "compare": {
+      "label": "新旧对照",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "资产台账 · 改版前后对照", "desc": "左侧为存量线上版本，右侧为本次需求改版后版本，组件形态与配色均来自同一套组件契约。" } },
+        { "component": "compare", "props": {
+          "oldTitle": "改版前（线上 v2.4）",
+          "newTitle": "改版后（本次需求）",
+          "old": [
+            { "component": "notice", "props": { "tone": "info", "title": "旧版", "text": "仅支持名称 / 类型两个筛选条件，状态为纯文字，表格无多选列。" } },
+            { "component": "dataTable", "props": { "columns": [ { "key": "code", "title": "编号" }, { "key": "name", "title": "名称" }, { "key": "status", "title": "状态" } ], "rows": [
+              { "code": "ZC-001", "name": "1号主变主机", "status": "在运" },
+              { "code": "ZC-002", "name": "母线传感器", "status": "检修" }
+            ], "selectable": false, "pager": false, "rowActs": [], "opsTitle": "操作" } }
+          ],
+          "new": [
+            { "component": "notice", "props": { "tone": "ok", "title": "新版", "text": "五个筛选条件、语义色状态标签、多选列与批量操作工具条。" } },
+            { "component": "dataTable", "props": { "columns": [ { "key": "code", "title": "编号" }, { "key": "name", "title": "名称" }, { "key": "status", "title": "状态" } ], "rows": [
+              { "code": "ZC-001", "name": "1号主变主机", "status": { "tag": "在运", "tone": "ok" } },
+              { "code": "ZC-002", "name": "母线传感器", "status": { "tag": "检修", "tone": "warn" } }
+            ], "selectable": true, "pager": false, "rowActs": [ { "label": "详情", "act": ["navigate:asset-detail"] } ], "opsTitle": "操作" } }
+          ]
+        } }
+      ],
+      "note": "对照页用同一组件契约渲染，差异只来自数据，因此不会出现「画歪」的对照图。"
+    },
+    "error": {
+      "label": "接口异常",
+      "blocks": [
+        { "component": "pageHead", "props": { "title": "资产台账", "desc": "数据读取失败。" } },
+        { "component": "notice", "props": { "tone": "risk", "title": "服务异常", "text": "资产列表接口返回 500，请稍后重试或联系系统管理员。" } },
+        { "component": "panel", "props": { "body": [ { "component": "emptyState", "props": { "title": "数据加载失败", "desc": "原型中可直接模拟重试流程。", "actions": [
+          { "label": "重新加载", "tone": "primary", "act": ["scene:loading", "wait:600", "scene:default", "toast:数据已恢复"] },
+          { "label": "返回门户", "act": ["navigate:../index"] }
+        ] } } ] } }
+      ]
+    }
+  },
+  "overlays": [
+    {
+      "id": "create",
+      "kind": "dialog",
+      "title": "新增资产",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "info", "title": "填写说明", "text": "带 * 的字段为必填；留空点提交会触发校验错误态。" } },
+        { "component": "form", "props": { "id": "create", "sections": [
+          { "title": "基本信息", "fields": [
+            { "label": "资产名称", "name": "assetName", "type": "input", "required": true, "placeholder": "请输入资产名称", "error": "资产名称不能为空" },
+            { "label": "资产编号", "name": "assetCode", "type": "input", "required": true, "rule": "min:4", "placeholder": "例如 ZC-2026-007", "error": "编号至少 4 个字符" },
+            { "label": "资产类型", "name": "assetType", "type": "select", "required": true, "placeholder": "请选择", "options": ["主机设备", "传感设备", "网络设备", "控制柜"], "error": "请选择资产类型" },
+            { "label": "所属班组", "name": "assetOwner", "type": "select", "placeholder": "请选择", "options": ["运行一班", "运行二班", "检修班", "自动化组"] },
+            { "label": "备注", "name": "memo", "type": "textarea", "placeholder": "选填" }
+          ] }
+        ], "foot": [] } }
+      ],
+      "foot": [
+        { "label": "取消", "act": ["overlay:close"] },
+        { "label": "提交", "tone": "primary", "act": ["form:validate:create", "overlay:close", "toast:新增资产已提交", "scene:loading", "wait:600", "scene:default"] }
+      ]
+    },
+    {
+      "id": "batch",
+      "kind": "dialog",
+      "title": "批量停用确认",
+      "blocks": [
+        { "component": "notice", "props": { "tone": "warn", "title": "影响范围", "text": "本次将停用 3 条资产，停用后不再参与巡检编排。" } },
+        { "component": "descList", "props": { "items": [
+          { "label": "选中条数", "value": "3 条" },
+          { "label": "操作类型", "value": "批量停用" },
+          { "label": "操作人", "value": "需求分析演示账号" },
+          { "label": "可回滚", "value": "是（30 天内）" }
+        ] } }
+      ],
+      "foot": [
+        { "label": "取消", "act": ["overlay:close"] },
+        { "label": "确认停用", "tone": "primary", "act": ["overlay:close", "toast:已批量停用 3 项", "scene:default"] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资产详情 · 可交互原型</title>
+<link rel="stylesheet" href="../assets/charter.css">
+<link rel="stylesheet" href="../assets/components.css">
+</head>
+<body data-base="" data-default-scene="default"
+  data-charter-hash="27becad3059bfb20" data-page-id="asset-detail" data-scenario="existing-optimization">
+<div class="app">
+<header class="app-header">
+    <div class="brand" data-act="navigate:../index" style="cursor:pointer">
+      <div class="brand__mark">P</div>
+      <div><span class="brand__text">PRISM</span><span class="brand__sub">可交互原型</span></div>
+    </div>
+    <div class="header-path">资产管理 / 资产详情</div>
+    <div class="header-right">
+      <span class="header-chip">存量页面功能优化</span>
+      <span>内网原型 · 非生产系统</span><span class="avatar">需</span>
+    </div>
+  </header>
+<div class="app-body">
+<nav class="sidebar"><div class="nav-group"><div class="nav-group__title">资产管理</div><div class="nav-item" data-act="navigate:asset-ledger">资产台账</div><div class="nav-item is-active" data-act="navigate:asset-detail">资产详情</div></div><div class="nav-group"><div class="nav-group__title">智能巡检</div><div class="nav-item" data-act="navigate:inspection-plan">智能巡检编排<span class="nav-item__dot"></span></div><div class="nav-item" data-act="navigate:inspection-result">巡检结果看板<span class="nav-item__dot"></span></div></div><div class="nav-group"><div class="nav-group__title">专项台账</div><div class="nav-item" data-act="navigate:ledger-station">站点资产台账</div><div class="nav-item" data-act="navigate:ledger-transformer">主变设备台账</div><div class="nav-item" data-act="navigate:ledger-sensor">传感设备台账</div><div class="nav-item" data-act="navigate:ledger-network">网络设备台账</div><div class="nav-item" data-act="navigate:ledger-cabinet">控制柜台账</div><div class="nav-item" data-act="navigate:ledger-power">电源设备台账</div><div class="nav-item" data-act="navigate:ledger-line">输电线路台账</div><div class="nav-item" data-act="navigate:ledger-meter">计量装置台账</div><div class="nav-item" data-act="navigate:ledger-protect">保护装置台账</div><div class="nav-item" data-act="navigate:ledger-comm">通信设备台账</div><div class="nav-item" data-act="navigate:ledger-spare">备品备件台账</div><div class="nav-item" data-act="navigate:ledger-tool">工器具台账</div></div></nav>
+<main class="main"><div class="page">
+<div class="breadcrumb"><span>资产管理</span><span>资产台账</span><b>资产详情</b></div>
+<div class="toolbar" style="border:1px solid var(--line);border-radius:var(--r-md);margin-bottom:var(--sp-4)">
+    <div class="toolbar__left">
+      <span class="tag tag--warn">存量页面优化</span>
+      <span class="toolbar__count">橙色虚线框标出本次变更区域；「新旧对照」场景可并排比较改版前后</span>
+    </div>
+    <div class="toolbar__right">
+      <button type="button" class="btn btn--sm" data-act="diff:on">显示变更标记</button>
+      <button type="button" class="btn btn--sm" data-act="diff:off">隐藏变更标记</button>
+    </div>
+  </div>
+<div class="scene-bar"><span class="scene-bar__label">交互状态（点击切换）</span><button type="button" class="scene-btn is-active" data-scene-btn="default" data-act="scene:default">详情查看</button><button type="button" class="scene-btn" data-scene-btn="edit" data-act="scene:edit">编辑态</button><button type="button" class="scene-btn" data-scene-btn="loading" data-act="scene:loading">加载中</button><button type="button" class="scene-btn" data-scene-btn="error" data-act="scene:error">加载失败</button></div>
+<div class="scene is-active" data-scene="default">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产详情 · ZC-2026-001</h1>
+        <p class="page-head__desc">1号主变在线监测主机；页面区块与台账页共用同一组件契约。</p>
+        <div class="page-head__badges"><span class="tag tag--ok"><span class="tag__dot"></span>在运</span><span class="tag tag--info"><span class="tag__dot"></span>存量页面</span></div>
+      </div>
+      <div class="page-head__actions"><button type="button" class="btn" data-act="navigate:asset-ledger">返回台账</button><button type="button" class="btn btn--primary" data-act="scene:edit">编辑资产</button><button type="button" class="btn" data-act="drawer:transfer">转派班组</button></div>
+    </div>
+<div class="panel">
+      <div class="panel__head"><span>基本信息</span><div class="toolbar__right"></div></div>
+      <div class="panel__body"><div class="desc-list"><div class="desc-item">
+      <div class="desc-item__label">资产编号</div><div class="desc-item__value">ZC-2026-001</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">资产名称</div><div class="desc-item__value">1号主变在线监测主机</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">资产类型</div><div class="desc-item__value">主机设备</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">运行状态</div><div class="desc-item__value">在运</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">所属班组</div><div class="desc-item__value">运行一班</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">安装位置</div><div class="desc-item__value">站点 A / 机柜 03</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">投运日期</div><div class="desc-item__value">2024-03-18</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">最近更新</div><div class="desc-item__value">2026-10-28</div>
+    </div></div></div></div>
+<div class="is-changed"><span class="diff-badge">标签页分组</span><div class="panel">
+      
+      <div class=""><div class="tabs" data-tabs="assetDetail"><div class="tab is-active" data-tab-pane="spec" data-act="tab:assetDetail:spec">技术参数</div><div class="tab" data-tab-pane="inspection" data-act="tab:assetDetail:inspection">关联巡检</div><div class="tab" data-tab-pane="history" data-act="tab:assetDetail:history">变更记录</div></div>
+      <div class="tabpane" data-tab-body="assetDetail:spec"><div class="desc-list"><div class="desc-item">
+      <div class="desc-item__label">额定容量</div><div class="desc-item__value">180 MVA</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">电压等级</div><div class="desc-item__value">110 kV</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">采样频率</div><div class="desc-item__value">1 Hz</div>
+    </div><div class="desc-item">
+      <div class="desc-item__label">通讯协议</div><div class="desc-item__value">IEC 61850</div>
+    </div></div></div><div class="tabpane is-hidden" data-tab-body="assetDetail:inspection" hidden><div class="table-wrap"><table class="table"><thead><tr><th>巡检单号</th><th>巡检计划</th><th>执行日期</th><th>结论</th><th>操作</th></tr></thead><tbody><tr>
+        
+        <td>XJ-2026-0081</td><td>主变周巡检</td><td>2026-10-26</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:inspection-result">查看结果</span></div></td>
+      </tr><tr>
+        
+        <td>XJ-2026-0075</td><td>局放专项</td><td>2026-10-19</td><td><span class="tag tag--warn"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:inspection-result">查看结果</span></div></td>
+      </tr><tr>
+        
+        <td>XJ-2026-0062</td><td>主变周巡检</td><td>2026-10-12</td><td><span class="tag tag--ok"><span class="tag__dot"></span></span></td>
+        <td><div class="row-ops"><span class="table__link" data-act="navigate:inspection-result">查看结果</span></div></td>
+      </tr></tbody></table></div></div><div class="tabpane is-hidden" data-tab-body="assetDetail:history" hidden><div><div class="alert alert--ok" style="margin-bottom:var(--sp-2)">
+      <div style="min-width:var(--col-label-w);color:var(--ink-500)">2026-10-28</div>
+      <div><b>状态变更</b>　由「检修」变更为「在运」</div></div><div class="alert alert--info" style="margin-bottom:var(--sp-2)">
+      <div style="min-width:var(--col-label-w);color:var(--ink-500)">2026-10-14</div>
+      <div><b>班组调整</b>　由「检修班」转派至「运行一班」</div></div><div class="alert alert--info" style="margin-bottom:var(--sp-2)">
+      <div style="min-width:var(--col-label-w);color:var(--ink-500)">2026-09-30</div>
+      <div><b>参数更新</b>　采样频率由 0.5 Hz 调整为 1 Hz</div></div></div></div></div></div>
+    <div class="change-note">把原先纵向堆叠的三块信息收进标签页，减少首屏高度。</div></div>
+</div>
+<div class="scene" data-scene="edit">
+<div class="page-head">
+      <div><h1 class="page-head__title">编辑资产</h1>
+        <p class="page-head__desc">必填项留空点保存会显示校验错误态。</p>
+        
+      </div>
+      <div class="page-head__actions"><button type="button" class="btn" data-act="scene:default">取消</button></div>
+    </div>
+<div class="panel">
+      
+      <div class="panel__body"><form class="form" data-form="assetEdit" onsubmit="return false">
+      <div class="form__section">基本信息</div>
+        <div class="form__row" data-form-row="name"><label class="form__label"><i>*</i>资产名称</label><div class="form__control"><input class="input" type="text" name="name" data-field="name" data-required="1" data-error="资产名称不能为空" value="1号主变在线监测主机"><div class="form__error"></div></div></div><div class="form__row" data-form-row="type"><label class="form__label"><i>*</i>资产类型</label><div class="form__control"><select class="select" name="type" data-field="type" data-required="1" data-error="资产类型不能为空"><option value="">请选择</option><option value="主机设备" selected>主机设备</option><option value="传感设备">传感设备</option><option value="网络设备">网络设备</option><option value="控制柜">控制柜</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="place"><label class="form__label">安装位置</label><div class="form__control"><input class="input" type="text" name="place" data-field="place" value="站点 A / 机柜 03"><div class="form__error"></div></div></div><div class="form__row" data-form-row="phone"><label class="form__label">联系电话</label><div class="form__control"><input class="input" type="text" name="phone" data-field="phone" data-rule="phone" data-error="手机号格式不正确" placeholder="选填，11 位手机号" value=""><div class="form__error"></div></div></div>
+      <div class="form__foot"><button type="button" class="btn" data-act="scene:default">返回查看</button><button type="button" class="btn btn--primary" data-act="form:validate:assetEdit|scene:loading|wait:600|scene:default|toast:资产信息已保存">保存</button></div>
+    </form></div></div>
+</div>
+<div class="scene" data-scene="loading">
+<div class="page-head">
+      <div><h1 class="page-head__title">资产详情</h1>
+        <p class="page-head__desc">正在保存…</p>
+        
+      </div>
+      
+    </div>
+<div class="panel">
+      
+      <div class="panel__body"><div style="padding:var(--sp-6)"><div class="toolbar__left" style="margin-bottom:var(--sp-4)"><span class="spinner"></span><span>正在提交变更…</span></div>
+      <div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:88%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:76%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:100%"></div><div class="skeleton" style="margin-bottom:var(--sp-3);width:88%"></div></div></div></div>
+</div>
+<div class="scene" data-scene="error">
+<div class="alert alert--risk"><div><b>加载失败</b>　资产详情接口不可用。</div></div>
+<div class="panel">
+      
+      <div class="panel__body"><div class="empty"><div class="empty__icon">□</div>
+      <div class="empty__title">无法读取资产</div>
+      <div class="empty__desc">可返回台账页重新进入。</div>
+      <div class="toolbar__left"><button type="button" class="btn btn--primary" data-act="navigate:asset-ledger">返回台账</button></div></div></div></div>
+</div>
+<div class="footnote">
+    页面 <b>asset-detail</b> · 存量页面功能优化 ·
+    状态 4 个 · 样式宪章 <code>27becad3059bfb20</code><br>
+    需求来源：examples/需求-存量优化.md ｜ 一致性基线：受控浏览器探索存量详情页 computedStyle<br>
+    存量详情页：补充标签页分组与转派抽屉，编辑态保留原页面字段与组件形态。
+  </div>
+</div></main>
+</div>
+</div>
+<div class="overlay" data-overlay="transfer"><div class="overlay__mask"></div><div class="drawer"><div class="drawer__head"><span>转派班组</span><span class="dialog__close drawer__close" data-overlay-close>×</span></div>
+          <div class="drawer__body"><div class="alert alert--info"><div><b>说明</b>　转派后该资产的巡检任务会同步到新班组。</div></div>
+<form class="form" data-form="transfer" onsubmit="return false">
+      <div class="form__section">转派信息</div>
+        <div class="form__row" data-form-row="target"><label class="form__label"><i>*</i>目标班组</label><div class="form__control"><select class="select" name="target" data-field="target" data-required="1" data-error="请选择目标班组" placeholder="请选择"><option value="">请选择</option><option value="运行一班">运行一班</option><option value="运行二班">运行二班</option><option value="检修班">检修班</option><option value="自动化组">自动化组</option></select><div class="form__error"></div></div></div><div class="form__row" data-form-row="date"><label class="form__label"><i>*</i>生效日期</label><div class="form__control"><input class="date" type="text" name="date" data-field="date" data-required="1" data-error="请选择生效日期" placeholder="选择日期" value=""><div class="form__error"></div></div></div><div class="form__row" data-form-row="reason"><label class="form__label">转派原因</label><div class="form__control"><textarea class="textarea" name="reason" data-field="reason" placeholder="选填"></textarea><div class="form__error"></div></div></div>
+      <div class="form__foot"></div>
+    </form></div>
+          <div class="drawer__foot"><button type="button" class="btn" data-act="overlay:close">取消</button><button type="button" class="btn btn--primary" data-act="form:validate:transfer|overlay:close|toast:转派已提交">确认转派</button></div></div></div>
+<div class="toast" data-toast></div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

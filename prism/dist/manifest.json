@@ -1,0 +1,414 @@
+{
+  "generatedAt": "2026-11-05T14:26:51.189Z",
+  "charterHash": "27becad3059bfb20",
+  "contractHash": "4179855a9ef0c1d7",
+  "componentCount": 19,
+  "pages": [
+    {
+      "id": "asset-ledger",
+      "title": "资产台账",
+      "group": "资产管理",
+      "scenario": "existing-optimization",
+      "nav": true,
+      "sceneCount": 6,
+      "scenes": [
+        "default",
+        "loading",
+        "empty",
+        "selected",
+        "compare",
+        "error"
+      ],
+      "fingerprint": "a4a5b4bdbdbc",
+      "file": "pages/asset-ledger.html",
+      "order": 10
+    },
+    {
+      "id": "asset-detail",
+      "title": "资产详情",
+      "group": "资产管理",
+      "scenario": "existing-optimization",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "edit",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "8df4d0675d36",
+      "file": "pages/asset-detail.html",
+      "order": 20
+    },
+    {
+      "id": "inspection-plan",
+      "title": "智能巡检编排",
+      "group": "智能巡检",
+      "scenario": "new-feature",
+      "nav": true,
+      "sceneCount": 6,
+      "scenes": [
+        "step1",
+        "step2",
+        "step3",
+        "loading",
+        "success",
+        "draft"
+      ],
+      "fingerprint": "04f829850ba8",
+      "file": "pages/inspection-plan.html",
+      "order": 30
+    },
+    {
+      "id": "inspection-result",
+      "title": "巡检结果看板",
+      "group": "智能巡检",
+      "scenario": "new-feature",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "fingerprint": "7c613b0b16b6",
+      "file": "pages/inspection-result.html",
+      "order": 40
+    },
+    {
+      "id": "ledger-station",
+      "title": "站点资产台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-station.html",
+      "order": 100
+    },
+    {
+      "id": "ledger-transformer",
+      "title": "主变设备台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-transformer.html",
+      "order": 101
+    },
+    {
+      "id": "ledger-sensor",
+      "title": "传感设备台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-sensor.html",
+      "order": 102
+    },
+    {
+      "id": "ledger-network",
+      "title": "网络设备台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-network.html",
+      "order": 103
+    },
+    {
+      "id": "ledger-cabinet",
+      "title": "控制柜台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-cabinet.html",
+      "order": 104
+    },
+    {
+      "id": "ledger-power",
+      "title": "电源设备台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-power.html",
+      "order": 105
+    },
+    {
+      "id": "ledger-line",
+      "title": "输电线路台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-line.html",
+      "order": 106
+    },
+    {
+      "id": "ledger-meter",
+      "title": "计量装置台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-meter.html",
+      "order": 107
+    },
+    {
+      "id": "ledger-protect",
+      "title": "保护装置台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-protect.html",
+      "order": 108
+    },
+    {
+      "id": "ledger-comm",
+      "title": "通信设备台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-comm.html",
+      "order": 109
+    },
+    {
+      "id": "ledger-spare",
+      "title": "备品备件台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-spare.html",
+      "order": 110
+    },
+    {
+      "id": "ledger-tool",
+      "title": "工器具台账",
+      "group": "专项台账",
+      "scenario": "batch",
+      "nav": true,
+      "sceneCount": 4,
+      "scenes": [
+        "default",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "fingerprint": "bf10c65a9cf8",
+      "file": "pages/ledger-tool.html",
+      "order": 111
+    }
+  ],
+  "edges": [
+    {
+      "from": "asset-ledger",
+      "to": "inspection-plan"
+    },
+    {
+      "from": "asset-ledger",
+      "to": "asset-detail"
+    },
+    {
+      "from": "asset-detail",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "asset-detail",
+      "to": "inspection-result"
+    },
+    {
+      "from": "inspection-plan",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "inspection-plan",
+      "to": "inspection-result"
+    },
+    {
+      "from": "inspection-result",
+      "to": "inspection-plan"
+    },
+    {
+      "from": "inspection-result",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-station",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-transformer",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-sensor",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-network",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-cabinet",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-power",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-line",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-meter",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-protect",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-comm",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-spare",
+      "to": "asset-ledger"
+    },
+    {
+      "from": "ledger-tool",
+      "to": "asset-ledger"
+    }
+  ],
+  "stats": {
+    "pages": 16,
+    "scenes": 68,
+    "blocks": 299,
+    "forms": 17,
+    "inputs": 53,
+    "actions": 455,
+    "navigations": 68,
+    "overlays": 17,
+    "byScenario": {
+      "existing-optimization": 2,
+      "new-feature": 2,
+      "batch": 12
+    },
+    "byModel": {
+      "Qwen3.7-max": 1,
+      "GLM5.2": 1,
+      "Qwen3.7-plus": 1,
+      "deepseekv4.1-flash1017": 1,
+      "MiniMax-M3": 12
+    },
+    "fingerprints": {
+      "asset-ledger": "a4a5b4bdbdbc3566611c0381ae10c1cdf53a7d71e9aa265e7d1d17d0e69d2f99",
+      "asset-detail": "8df4d0675d36b56d2a1e53eeec5b54648f9f4f79febd9205410578b384593a12",
+      "inspection-plan": "04f829850ba8f76e4b2e48462e05fd9160f9679a7a1f312bb1fda9af8faf78cd",
+      "inspection-result": "7c613b0b16b635a21a4d26a15fe8caf46753426060c30fc813db59390fc2d7ab",
+      "ledger-station": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-transformer": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-sensor": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-network": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-cabinet": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-power": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-line": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-meter": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-protect": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-comm": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-spare": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53",
+      "ledger-tool": "bf10c65a9cf8a34b6044e90c0231ea335bd774fa4ccfc76bb859cfe6b11d9c53"
+    },
+    "batchGroups": {
+      "special-ledger": {
+        "pages": 12,
+        "distinctStructures": 1,
+        "consistent": true,
+        "fingerprint": "bf10c65a9cf8"
+      }
+    }
+  }
+}

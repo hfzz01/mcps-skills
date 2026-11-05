@@ -1,0 +1,8 @@
+/* 模拟编译产物里的 CSS 变量（供 extract-repo 交叉验证） */
+:root {
+  --el-color-primary: #1f6feb;
+  --el-color-success: #18a058;
+  --el-border-radius-base: 6px;
+  --el-font-size-base: 14px;
+  --el-component-size: 32px;
+}
