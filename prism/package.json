@@ -5,11 +5,13 @@
   "type": "module",
   "description": "规格驱动的内网可交互 HTML 原型铸造台：零依赖、零 API key、零网络请求",
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
+    "doctor": "node engine/prism.mjs doctor",
+    "run": "node engine/prism.mjs run",
     "help": "node engine/prism.mjs help",
     "expand": "node engine/prism.mjs expand",
     "lint": "node engine/prism.mjs lint",
@@ -17,5 +19,5 @@
     "selftest": "node engine/prism.mjs selftest",
     "verify-browser": "node engine/prism.mjs verify-browser"
   },
-  "notes": "不要执行 npm install：本目录没有任何依赖，所有能力由 Node 内置模块实现。"
+  "notes": "不要执行 npm install：本目录没有任何依赖，所有能力由 Node 内置模块实现。Node 20+ 可跑 doctor/lint/run/charter(repo,image)/compile/selftest；charter --kind=dom 与 verify-browser 需要 Node 22+ 的全局 WebSocket。"
 }

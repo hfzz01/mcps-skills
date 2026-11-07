@@ -1,5 +1,7 @@
 /* ============================================================
  * Prism CLI —— 内网零依赖命令行入口
+ *   node engine/prism.mjs doctor     ← 内网第一条命令
+ *   node engine/prism.mjs run        ← 日常只敲这一条
  *   node engine/prism.mjs help
  *   node engine/prism.mjs charter <来源> --kind=repo|image|dom
  *   node engine/prism.mjs expand
@@ -31,6 +33,10 @@ function help() {
   console.log([
     'Prism · 规格驱动的可交互 HTML 原型铸造台（内网 / 零依赖）',
     '',
+    '第一条命令：',
+    '  doctor                        环境体检 + 告诉你下一步敲什么（不改文件、不联网）',
+    '  run                           展开 + 校验 + 铸造，日常只敲这一条',
+    '',
     '命令：',
     '  help                          显示本说明',
     '  charter <来源> --kind=repo    从代码仓 CSS/SCSS 变量提取样式宪章草案',
@@ -48,7 +54,8 @@ function help() {
     '  --port=<n>       dom 模式默认 9222；verify-browser 默认 9223',
     '  --dist=<dir>     compile 的输出目录',
     '',
-    '标准流程：charter（一次性）→ 模型写 blueprints/*.json → expand → lint → compile',
+    '首次落地：doctor → 双击 dist/index.html 看成品 → 按 docs/00-内网落地手册.md 让 codeagent 写蓝图',
+    '日常迭代：改 blueprints/*.json 或 examples/batch-matrix.json → node engine/prism.mjs run',
     '产出：dist/index.html（门户）+ dist/pages/*.html（每个页面独立可打开）',
   ].join('\n'));
 }
@@ -85,6 +92,30 @@ async function cmdCharter() {
 async function main() {
   switch (cmd) {
     case 'help': help(); break;
+    case 'doctor': {
+      const { doctor } = await import('./doctor.mjs');
+      doctor(ROOTDIR);
+      break;
+    }
+    case 'run': {
+      const { expand } = await import('./expand.mjs');
+      const ex = expand(ROOTDIR);
+      console.log(`[1/3] 批量展开 ${ex.count} 份蓝图 → ${ex.dir}`);
+      const r = compile(ROOTDIR, { dist: flags.dist ? path.resolve(flags.dist) : undefined });
+      if (!r.ok) {
+        console.error(`[2/3] 编译期校验未通过：${r.errors.length} 个错误`);
+        r.errors.forEach(e => console.error(`  [错误] ${e}`));
+        console.error('  按 docs/00-内网落地手册.md 的「一页纸故障表」改蓝图，再跑一次 run。');
+        process.exitCode = 1;
+        break;
+      }
+      console.log(`[2/3] 校验通过（error 0）`);
+      console.log(`[3/3] 铸造完成：${r.pages} 页 / ${r.edges} 条跳转 / ${r.stats.scenes} 个状态`);
+      console.log(`  双击打开：${path.join(r.dist, 'index.html')}`);
+      console.log(`  发给别人：把 ${r.dist} 整个目录压缩发过去（不要只发 index.html）`);
+      r.warnings.forEach(w => console.log(`  [警告] ${w}`));
+      break;
+    }
     case 'lint': cmdLint(); break;
     case 'compile': {
       const r = compile(ROOTDIR, { dist: flags.dist ? path.resolve(flags.dist) : undefined });

@@ -5,6 +5,21 @@
 
 ---
 
+## 内网第一次用？只做这五件事
+
+| # | 做什么 | 命令 / 位置 |
+| --- | --- | --- |
+| 1 | 环境体检 | `node engine/prism.mjs doctor` |
+| 2 | 先看成品长什么样 | **双击 `dist/index.html`**，点几下导航和状态 |
+| 3 | 什么都不改，先跑通整条链路 | `node engine/prism.mjs run` |
+| 4 | 换成自己的需求 | 整段复制 [`examples/给codeagent的提示词.md`](examples/给codeagent的提示词.md) 发给 codeagent3.0 |
+| 5 | 重新出图并交付 | `node engine/prism.mjs run` → 压缩 `dist/` 发出去 |
+
+**完整首日手册 → [docs/00-内网落地手册.md](docs/00-内网落地手册.md)**（含分工表、替换清单、一页纸故障表）。
+只想给业务方看成品：只拷 `dist/` 一个目录，不需要 Node、不需要模型、不需要引擎。
+
+---
+
 ## 一句话机制
 
 > 模型只写**声明式页面蓝图**（JSON：有哪些区块、用哪个组件、放什么数据、点了去哪、有哪些状态）；
@@ -18,29 +33,36 @@
 
 ## 快速开始（内网）
 
-要求：**Node 22+**（用到内置 `fetch` / 全局 `WebSocket`）。不需要 `npm install`，不需要 API key，不需要联网。
+要求：**Node 20+**（`doctor` / `lint` / `run` / `charter` 都够用；只有
+`charter --kind=dom` 与 `verify-browser` 需要 22+ 的全局 WebSocket）。
+不需要 `npm install`，不需要 API key，不需要联网。
 
 ```bash
 cd prism
 
-# 0. 全链路自检（含 PNG 编解码、提取、展开、校验、铸造、产物检查）
-node engine/prism.mjs selftest
+# 第一次：体检 + 跑通（都不依赖模型、不依赖登录、不依赖网络）
+node engine/prism.mjs doctor
+node engine/prism.mjs run          # 展开 + 校验 + 铸造，日常只敲这一条
 
-# 1. 一次性：从存量系统校准样式宪章（三选一或都用，草案需人工确认）
+# 换成自己的需求：复制 examples/给codeagent的提示词.md 里的模板发给 codeagent3.0
+# codeagent 会把 JSON 写进 blueprints/，然后
+node engine/prism.mjs lint         # error 必须为 0
+node engine/prism.mjs run          # 重新出 dist/
+
+# 一次性：从存量系统校准样式宪章（三选一，草案需人工确认后合并进 charter.css）
 node engine/prism.mjs charter D:/code/ioc-web/src --kind=repo     # 代码仓变量
 node engine/prism.mjs charter 原页面截图.png --kind=image          # 截图色板/分区
 node engine/prism.mjs charter --kind=dom --port=9222               # 受控浏览器 computedStyle
 
-# 2. 内网 codeagent 按 docs/04-蓝图规格说明.md 产出 blueprints/*.json
-# 3. 批量场景：把需求矩阵展开成 N 份蓝图
-node engine/prism.mjs expand
-
-# 4. 编译期校验（组件合法性 / 跳转可达 / 模型白名单 / 结构指纹）
-node engine/prism.mjs lint
-
-# 5. 铸造
-node engine/prism.mjs compile
+# 可选：全链路自检 / 真实浏览器点击验收
+node engine/prism.mjs selftest
+node engine/prism.mjs verify-browser --port=9223
 ```
+
+> **谁干什么**：codeagent + 清单内模型只写 `blueprints/*.json`；引擎把它们编译成 HTML；
+> 你负责把提示词发给 codeagent、看 `lint` 结果、发 `dist/`。
+> 模型和引擎之间没有自动连接，这一步靠 [`examples/给codeagent的提示词.md`](examples/给codeagent的提示词.md) 串起来。
+> 详细分步见 [`docs/00-内网落地手册.md`](docs/00-内网落地手册.md)。
 
 产出在 `dist/`：
 
@@ -68,6 +90,7 @@ dist/
 | `foundry/components.css` | 组件形态，只引用宪章变量；链接器强制扫描，出现色值字面量即编译失败 |
 | `foundry/contracts.mjs` | **组件契约**：19 个组件的确定性 render + 合法 props 白名单 |
 | `foundry/runtime.js` | 交互运行时：解释蓝图里的动作串，页面里零手写脚本 |
+| `engine/doctor.mjs` | **内网第一条命令**：环境体检 + 告诉你下一步敲什么 |
 | `engine/compiler.mjs` | 蓝图 → 独立 HTML；所有状态预编译成 DOM 面板 |
 | `engine/linker.mjs` | 编译期不变量：组件校验、跳转/状态/弹层可达、模型白名单、样式字段拦截、结构指纹 |
 | `engine/expand.mjs` | 需求矩阵 → N 份结构相同的批量蓝图 |
@@ -75,8 +98,10 @@ dist/
 | `engine/selftest.mjs` | 全链路自检（自己造 PNG 再解码，不依赖外部素材） |
 | `engine/verify-browser.mjs` | 真实 Chrome 里 `file://` 打开并实际点击的验收脚本 |
 | `blueprints/` | 模型产出物：声明式 JSON，人工不写 HTML |
+| `examples/给codeagent的提示词.md` | **交接点**：三份可整段复制给 codeagent3.0 的提示词 |
 | `examples/` | 三份示例需求文档、批量需求矩阵、组件库映射、模拟代码仓 |
-| `docs/` | 方案边界 / 模型约束 / 三类场景产出 / 蓝图规格说明 |
+| `docs/00-内网落地手册.md` | **第一次用先看这份**：分步、替换清单、一页纸故障表 |
+| `docs/01~04` | 方案边界 / 模型约束 / 三类场景产出 / 蓝图规格说明（给模型看） |
 | `dist/` | **交付物**：可直接打开并操作的多页面原型集合 |
 
 ---
@@ -101,5 +126,7 @@ dist/
   白名单由链接器在编译期强制，工具侧零模型调用。详见 [docs/02-模型使用约束.md](docs/02-模型使用约束.md)。
 - **截图**：不交给模型看图，只做确定性像素量化；存量页优先用受控浏览器读 computedStyle。
 
+**第一次落地按 [docs/00-内网落地手册.md](docs/00-内网落地手册.md) 走**，
+提示词在 [examples/给codeagent的提示词.md](examples/给codeagent的提示词.md)。
 完整边界见 [docs/01-方案边界.md](docs/01-方案边界.md)，三类场景产出见 [docs/03-三类需求与原型产出.md](docs/03-三类需求与原型产出.md)，
 给内网模型看的蓝图写法见 [docs/04-蓝图规格说明.md](docs/04-蓝图规格说明.md)。
